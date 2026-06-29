@@ -3,136 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Robinspect Systems — Advanced robotic NDT inspection platforms. Combining precise 6-axis robotics, advanced ultrasonics and intelligent data workflows for repeatable, traceable inspections on complex industrial components. Pre-seed.">
-    <meta name="keywords" content="robotic NDT, automated inspection, PAUT, TFM, ultrasonic testing, 6-axis robot inspection, non-destructive testing automation, aerospace NDT, nuclear inspection robotics">
-    <meta property="og:title" content="ROBINSPECT • Advanced Robotic NDT Inspection Systems">
-    <meta property="og:description" content="Precision robotic platforms for complex NDT inspections. Vendor-agnostic, traceable, built for industrial repeatability.">
-    <meta property="og:image" content="Fond noir.png">
-    <meta property="og:type" content="website">
-    <title>ROBINSPECT • Advanced Robotic NDT Inspection Systems</title>
-    
-    <!-- Favicon -->
+    <title>ROBINSPECT • Autonomous Robotic NDT Inspection Systems</title>
     <link rel="icon" type="image/png" href="Fond noir.png">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
     <style>
-        :root {
-            --accent: #eab308;
-        }
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .font-display { font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif; font-weight: 600; letter-spacing: -0.04em; }
         
-        body { 
-            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-            -webkit-font-smoothing: antialiased;
-        }
+        .section-header { font-size: 2.55rem; line-height: 1.0; font-weight: 600; letter-spacing: -0.045em; }
         
-        .font-display { 
-            font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif; 
-            font-weight: 600; 
-            letter-spacing: -0.025em;
-        }
-        
-        .section-header { 
-            font-size: 2.35rem; 
-            line-height: 1.05; 
-            font-weight: 600; 
-            letter-spacing: -0.035em; 
-        }
-        
-        .industrial-card { 
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        .industrial-card {
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             border: 1px solid #27251f;
         }
-        .industrial-card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 30px 60px -15px rgb(0 0 0 / 0.35);
+        .industrial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 40px 70px -15px rgb(0 0 0 / 0.45);
             border-color: #3f3a2f;
         }
 
-        .btn-primary { 
-            background-color: #eab308; 
-            color: #0a0a0a; 
-            font-weight: 600; 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            box-shadow: 0 4px 6px -1px rgb(234 179 8 / 0.2);
+        .btn-primary {
+            background: #eab308;
+            color: #0a0a0a;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .btn-primary:hover { 
-            background-color: #facc15; 
-            transform: translateY(-2px); 
-            box-shadow: 0 10px 15px -3px rgb(234 179 8 / 0.3);
+        .btn-primary:hover {
+            background: #facc15;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -8px rgb(234 179 8 / 0.4);
         }
 
-        .nav-link {
-            position: relative;
-            transition: color 0.2s ease;
-        }
-        .nav-link:hover {
-            color: #fff;
-        }
+        .nav-link { position: relative; }
         .nav-link:after {
             content: '';
             position: absolute;
             width: 0;
-            height: 1px;
-            bottom: -2px;
+            height: 1.5px;
+            bottom: -4px;
             left: 0;
-            background-color: #eab308;
-            transition: width 0.25s ease;
+            background: #eab308;
+            transition: width 0.3s ease;
         }
-        .nav-link:hover:after {
-            width: 100%;
-        }
-
-        .premium-divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, #27251f, transparent);
-        }
-
-        .roadmap-step {
-            position: relative;
-        }
-        
-        .roadmap-step:not(:last-child):after {
-            content: '';
-            position: absolute;
-            left: 1.25rem;
-            top: 2.75rem;
-            bottom: -1.5rem;
-            width: 1px;
-            background: #27251f;
-        }
-
-        .metric {
-            font-variant-numeric: tabular-nums;
-        }
-
-        .subtle-grid {
-            background-image: 
-                linear-gradient(rgba(234, 179, 8, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(234, 179, 8, 0.03) 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
+        .nav-link:hover:after { width: 100%; }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
 
     <!-- NAVBAR -->
-    <nav class="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur-xl border-b border-zinc-800">
-        <div class="max-w-7xl mx-auto px-6">
+    <nav class="sticky top-0 z-50 bg-zinc-950/90 backdrop-blur-2xl border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto px-8">
             <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-x-3">
+                    <img src="Fond noir.png" alt="ROBINSPECT" class="h-9">
+                    <span class="font-semibold text-2xl tracking-[-1px]">ROBINSPECT</span>
+                </div>
                 
-                <!-- Logo + Brand -->
-                <a href="#" class="flex items-center gap-x-3 group">
-                    <img src="Fond noir.png" alt="ROBINSPECT" class="h-9 w-auto transition-transform group-hover:scale-[1.02]">
-                    <span class="font-semibold text-xl tracking-[-0.5px] hidden sm:block">ROBINSPECT</span>
-                </a>
-
                 <div class="hidden md:flex items-center gap-x-9 text-sm font-medium">
                     <a href="#technology" class="nav-link text-zinc-400 hover:text-white">Technology</a>
                     <a href="#traction" class="nav-link text-zinc-400 hover:text-white">Traction</a>
@@ -140,125 +68,79 @@
                     <a href="#roadmap" class="nav-link text-zinc-400 hover:text-white">Roadmap</a>
                 </div>
 
-                <div class="flex items-center gap-x-3">
-                    <a href="#contact" 
-                       class="hidden md:inline-flex px-6 py-2.5 text-sm font-medium rounded-2xl border border-zinc-700 hover:bg-zinc-900 hover:border-zinc-600 transition-colors">
-                        Contact
-                    </a>
-                    <a href="#contact" 
-                       class="btn-primary inline-flex items-center gap-x-2 px-7 py-2.5 rounded-2xl text-sm font-semibold">
-                        <span>Book a Demo</span>
-                    </a>
-                    <button id="mobile-btn" 
-                            class="md:hidden w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
-                            aria-label="Toggle menu">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden border-t border-zinc-800 bg-zinc-950 px-6 py-5">
-            <div class="flex flex-col gap-y-1 text-sm">
-                <a href="#technology" class="py-3 px-1 border-b border-zinc-800 text-zinc-300">Technology</a>
-                <a href="#traction" class="py-3 px-1 border-b border-zinc-800 text-zinc-300">Traction</a>
-                <a href="#founder" class="py-3 px-1 border-b border-zinc-800 text-zinc-300">Founder</a>
-                <a href="#roadmap" class="py-3 px-1 border-b border-zinc-800 text-zinc-300">Roadmap</a>
-                <div class="pt-3 flex flex-col gap-y-2">
-                    <a href="#contact" class="btn-primary text-center py-3.5 rounded-2xl text-sm font-semibold">Book a technical demo</a>
-                    <a href="mailto:vpretet@robinspect-systems.com" class="text-center py-3 text-sm text-zinc-400 hover:text-white">Talk to Vincent</a>
+                <div class="flex items-center gap-x-4">
+                    <a href="#contact" class="hidden md:block px-6 py-2.5 text-sm font-medium rounded-2xl border border-zinc-700 hover:bg-zinc-900 transition-colors">Contact</a>
+                    <a href="#contact" class="btn-primary px-8 py-3 rounded-2xl text-sm font-bold">Book a Demo</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- HERO - Version mise à jour avec logo large -->
-    <section class="max-w-5xl mx-auto px-6 pt-12 pb-20 text-center">
-        
-        <!-- Logo large (bannière LinkedIn) bien mis en valeur -->
-        <div class="flex justify-center mb-9">
-            <img src="linkedin noir.png" alt="ROBINSPECT" 
-                 class="w-full max-w-[520px] md:max-w-[580px] h-auto rounded-3xl shadow-2xl shadow-black/60 ring-1 ring-white/5">
-        </div>
-
-        <div class="max-w-3xl mx-auto">
-            <!-- Status badge -->
-            <div class="inline-flex items-center gap-x-2 px-4 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-sm mb-6">
-                <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-                <span class="font-medium text-zinc-400 tracking-[0.5px]">Pre-seed • Focused execution</span>
+    <!-- HERO -->
+    <section class="relative min-h-[92dvh] flex items-center justify-center pt-8 pb-16" style="background: #0a0a0a;">
+        <div class="max-w-5xl mx-auto px-8 text-center">
+            
+            <div class="flex justify-center mb-10">
+                <img src="linkedin noir.png" alt="ROBINSPECT" 
+                     class="w-full max-w-[620px] h-auto rounded-3xl shadow-2xl ring-1 ring-white/10">
             </div>
 
-            <h1 class="font-display text-5xl md:text-[56px] leading-[1.05] tracking-[-3.2px] font-semibold mb-6 text-balance">
-                Advanced Robotic NDT<br>Inspection Systems
+            <div class="inline-flex items-center gap-x-2 px-5 py-1.5 rounded-full bg-zinc-900 border border-zinc-700 mb-8">
+                <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
+                <span class="text-xs font-mono tracking-[1.5px] text-yellow-500">PRE-SEED</span>
+                <span class="text-sm text-zinc-400">• Focused execution</span>
+            </div>
+
+            <h1 class="font-display text-6xl md:text-[72px] leading-[0.95] tracking-[-4.2px] font-semibold mb-6">
+                Autonomous Robotic<br>Inspection Systems
             </h1>
-            
-            <p class="max-w-[44ch] mx-auto text-[17px] md:text-[17.5px] text-zinc-400 mb-10 leading-relaxed">
-                We build modular, vendor-agnostic robotic platforms that combine precise 6-axis motion, 
-                advanced ultrasonics and intelligent data workflows to deliver repeatable, fully traceable NDT 
+
+            <p class="max-w-2xl mx-auto text-[17.5px] text-zinc-300 mb-12 leading-relaxed">
+                We build modular, vendor-agnostic robotic platforms that combine advanced ultrasonics, 
+                precise 6-axis motion and intelligent data workflows to deliver repeatable, fully traceable NDT 
                 on complex industrial components.
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" 
-                   class="btn-primary inline-flex justify-center items-center gap-x-3 px-9 py-4 rounded-3xl text-lg font-semibold">
-                    Book a technical demo
-                </a>
-                <a href="#traction" 
-                   class="inline-flex justify-center items-center gap-x-3 px-9 py-4 rounded-3xl border border-zinc-700 hover:bg-zinc-900 hover:border-zinc-600 text-lg font-medium transition-colors">
-                    See our progress
-                </a>
+                <a href="#contact" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Book a Technical Demo</a>
+                <a href="#technology" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-zinc-700 hover:bg-zinc-900 text-lg font-medium transition-colors">See our progress</a>
             </div>
             
-            <div class="mt-8 text-xs text-zinc-500 flex items-center justify-center gap-x-2">
+            <div class="mt-9 text-xs text-zinc-500 flex items-center justify-center gap-x-2">
                 <i class="fa-solid fa-globe"></i>
                 <span>Belgium • Europe &amp; United States focus</span>
             </div>
         </div>
     </section>
 
-    <!-- PROBLEM / THE CHALLENGE -->
-    <section class="max-w-7xl mx-auto px-6 py-16 border-t border-zinc-800">
-        <div class="grid md:grid-cols-12 gap-x-16 gap-y-10">
-            <div class="md:col-span-5">
-                <div class="sticky top-24">
-                    <span class="text-yellow-500 text-xs font-semibold tracking-[2.5px] uppercase">The Challenge</span>
-                    <h2 class="section-header mt-3">Advanced NDT is still too manual, too variable, and too difficult to scale on complex geometries.</h2>
-                </div>
+    <!-- PROBLEM -->
+    <section class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800">
+        <div class="grid lg:grid-cols-12 gap-x-16">
+            <div class="lg:col-span-5">
+                <span class="text-yellow-500 text-xs font-mono tracking-[3px]">THE CHALLENGE</span>
+                <h2 class="section-header mt-4">Advanced NDT is still too manual, too variable, and too difficult to scale on complex geometries.</h2>
             </div>
-            
-            <div class="md:col-span-7">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div class="industrial-card bg-zinc-900 rounded-3xl p-8">
-                        <div class="flex items-center gap-x-4 mb-5">
-                            <i class="fa-solid fa-user-tie text-yellow-500 text-3xl"></i>
-                        </div>
+            <div class="lg:col-span-7 mt-10 lg:mt-0">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="industrial-card bg-zinc-900 p-9 rounded-3xl">
+                        <i class="fa-solid fa-user-tie text-yellow-500 text-3xl mb-5"></i>
                         <h4 class="font-semibold text-xl mb-2.5">High operator dependency</h4>
-                        <p class="text-zinc-400 leading-relaxed">Inspection quality still varies significantly between operators. Complex geometries make consistent probe orientation and coupling extremely difficult to repeat.</p>
+                        <p class="text-zinc-400">Inspection quality still varies significantly between operators. Complex geometries make consistent probe orientation and coupling extremely difficult to repeat.</p>
                     </div>
-                    
-                    <div class="industrial-card bg-zinc-900 rounded-3xl p-8">
-                        <div class="flex items-center gap-x-4 mb-5">
-                            <i class="fa-solid fa-clock text-yellow-500 text-3xl"></i>
-                        </div>
+                    <div class="industrial-card bg-zinc-900 p-9 rounded-3xl">
+                        <i class="fa-solid fa-clock text-yellow-500 text-3xl mb-5"></i>
                         <h4 class="font-semibold text-xl mb-2.5">Cost, time &amp; scalability</h4>
-                        <p class="text-zinc-400 leading-relaxed">Long inspection cycles, production downtime, and a growing shortage of qualified Level 2/3 experts create bottlenecks for critical assets.</p>
+                        <p class="text-zinc-400">Long inspection cycles, production downtime, and a growing shortage of qualified Level 2/3 experts create bottlenecks for critical assets.</p>
                     </div>
-                    
-                    <div class="industrial-card bg-zinc-900 rounded-3xl p-8">
-                        <div class="flex items-center gap-x-4 mb-5">
-                            <i class="fa-solid fa-file-lines text-yellow-500 text-3xl"></i>
-                        </div>
+                    <div class="industrial-card bg-zinc-900 p-9 rounded-3xl">
+                        <i class="fa-solid fa-file-lines text-yellow-500 text-3xl mb-5"></i>
                         <h4 class="font-semibold text-xl mb-2.5">Traceability &amp; audit burden</h4>
-                        <p class="text-zinc-400 leading-relaxed">Manual documentation is slow, error-prone and often disconnected from the actual inspection data and robot path.</p>
+                        <p class="text-zinc-400">Manual documentation is slow, error-prone and often disconnected from the actual inspection data and robot path.</p>
                     </div>
-                    
-                    <div class="industrial-card bg-zinc-900 rounded-3xl p-8">
-                        <div class="flex items-center gap-x-4 mb-5">
-                            <i class="fa-solid fa-shield-halved text-yellow-500 text-3xl"></i>
-                        </div>
+                    <div class="industrial-card bg-zinc-900 p-9 rounded-3xl">
+                        <i class="fa-solid fa-shield-halved text-yellow-500 text-3xl mb-5"></i>
                         <h4 class="font-semibold text-xl mb-2.5">Safety &amp; access constraints</h4>
-                        <p class="text-zinc-400 leading-relaxed">Many high-value inspections occur in confined, radiological or hazardous environments where manual execution carries high HSE cost.</p>
+                        <p class="text-zinc-400">Many high-value inspections occur in confined, radiological or hazardous environments where manual execution carries high HSE cost.</p>
                     </div>
                 </div>
             </div>
@@ -266,142 +148,94 @@
     </section>
 
     <!-- TECHNOLOGY -->
-    <section id="technology" class="max-w-7xl mx-auto px-6 py-20 border-t border-zinc-800 bg-zinc-900/20">
-        <div class="max-w-2xl mb-12">
-            <span class="text-yellow-500 text-xs font-semibold tracking-[2.5px] uppercase">Our Approach</span>
-            <h2 class="section-header mt-3">A modular, vendor-agnostic robotic inspection platform.</h2>
-            <p class="mt-4 text-lg text-zinc-400">We integrate the best available hardware and software into coherent, repeatable inspection workflows — without locking customers into a single robot or sensor brand.</p>
+    <section id="technology" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800 bg-zinc-900/40">
+        <div class="max-w-2xl mb-14">
+            <span class="text-yellow-500 text-xs font-mono tracking-[3px]">OUR APPROACH</span>
+            <h2 class="section-header mt-4">A modular, vendor-agnostic robotic inspection platform.</h2>
+            <p class="mt-3 text-lg text-zinc-400">We integrate the best available hardware and software into coherent, repeatable inspection workflows — without locking customers into a single robot or sensor brand.</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-6">
-            <div class="industrial-card bg-zinc-900 border border-zinc-800 rounded-3xl p-8 group">
-                <div class="w-12 h-12 flex items-center justify-center rounded-2xl bg-yellow-500/10 text-yellow-500 mb-6 group-hover:bg-yellow-500/20 transition-colors">
-                    <i class="fa-solid fa-robot text-3xl"></i>
-                </div>
-                <h3 class="font-semibold text-2xl mb-3 tracking-tight">Robotics &amp; Trajectory</h3>
-                <p class="text-zinc-400 leading-relaxed">6-axis robots with intelligent surface following, automatic TCP calibration, and precise, repeatable paths even on complex curved or welded geometries.</p>
-                <div class="mt-6 text-xs text-yellow-500/80 font-medium">Multi-brand • Real-time control • Surface normal maintenance</div>
+            <div class="industrial-card p-9 rounded-3xl">
+                <i class="fa-solid fa-robot text-yellow-500 text-3xl mb-6"></i>
+                <h3 class="font-semibold text-2xl mb-3">Robotics &amp; Trajectory</h3>
+                <p class="text-zinc-400">6-axis robots with intelligent surface following, automatic TCP calibration, and precise, repeatable paths even on complex curved or welded geometries.</p>
+                <div class="mt-5 text-xs text-yellow-500/80 font-medium">Multi-brand • Real-time control • Surface normal maintenance</div>
             </div>
-            
-            <div class="industrial-card bg-zinc-900 border border-zinc-800 rounded-3xl p-8 group">
-                <div class="w-12 h-12 flex items-center justify-center rounded-2xl bg-yellow-500/10 text-yellow-500 mb-6 group-hover:bg-yellow-500/20 transition-colors">
-                    <i class="fa-solid fa-waveform-lines text-3xl"></i>
-                </div>
-                <h3 class="font-semibold text-2xl mb-3 tracking-tight">Advanced NDT Integration</h3>
-                <p class="text-zinc-400 leading-relaxed">UT, PAUT, TFM/ATFM with stable coupling and full synchronization between robot position and ultrasonic data acquisition. Hardware-agnostic by design.</p>
-                <div class="mt-6 text-xs text-yellow-500/80 font-medium">UT • PAUT • TFM • Future-proof</div>
+            <div class="industrial-card p-9 rounded-3xl">
+                <i class="fa-solid fa-waveform-lines text-yellow-500 text-3xl mb-6"></i>
+                <h3 class="font-semibold text-2xl mb-3">Advanced NDT Integration</h3>
+                <p class="text-zinc-400">UT, PAUT, TFM/ATFM with stable coupling and full synchronization between robot position and ultrasonic data acquisition. Hardware-agnostic by design.</p>
+                <div class="mt-5 text-xs text-yellow-500/80 font-medium">UT • PAUT • TFM • Future-proof</div>
             </div>
-            
-            <div class="industrial-card bg-zinc-900 border border-zinc-800 rounded-3xl p-8 group">
-                <div class="w-12 h-12 flex items-center justify-center rounded-2xl bg-yellow-500/10 text-yellow-500 mb-6 group-hover:bg-yellow-500/20 transition-colors">
-                    <i class="fa-solid fa-laptop-code text-3xl"></i>
-                </div>
-                <h3 class="font-semibold text-2xl mb-3 tracking-tight">Software &amp; Data Layer</h3>
-                <p class="text-zinc-400 leading-relaxed">Digital inspection workflows, real-time robot–NDT synchronization, automated reporting and complete traceability from geometry to final report.</p>
-                <div class="mt-6 text-xs text-yellow-500/80 font-medium">Traceability by design • Audit-ready • Extensible</div>
+            <div class="industrial-card p-9 rounded-3xl">
+                <i class="fa-solid fa-laptop-code text-yellow-500 text-3xl mb-6"></i>
+                <h3 class="font-semibold text-2xl mb-3">Software &amp; Data Layer</h3>
+                <p class="text-zinc-400">Digital inspection workflows, real-time robot–NDT synchronization, automated reporting and complete traceability from geometry to final report.</p>
+                <div class="mt-5 text-xs text-yellow-500/80 font-medium">Traceability by design • Audit-ready • Extensible</div>
             </div>
-        </div>
-        
-        <div class="mt-8 text-center">
-            <p class="text-sm text-zinc-500 max-w-md mx-auto">The value is in the integration: turning existing high-end hardware into reliable, industrial-grade inspection systems.</p>
         </div>
     </section>
 
     <!-- TRACTION -->
-    <section id="traction" class="max-w-7xl mx-auto px-6 py-20 border-t border-zinc-800">
-        <div class="max-w-2xl mb-10">
-            <span class="text-yellow-500 text-xs font-semibold tracking-[2.5px] uppercase">Early traction</span>
-            <h2 class="section-header mt-3">Building credibility through targeted technical conversations.</h2>
-            <p class="mt-4 text-[17px] text-zinc-400 leading-relaxed">
-                We are in active technical discussions with leading players in advanced ultrasonics, robot control systems, and high-value industrial sectors. 
-                Our priority is to convert this interest into demonstrable prototypes and first paid Proofs of Concept.
-            </p>
+    <section id="traction" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800">
+        <div class="max-w-2xl mb-12">
+            <span class="text-yellow-500 text-xs font-mono tracking-[3px]">EARLY TRACTION</span>
+            <h2 class="section-header mt-4">Building credibility through targeted technical conversations.</h2>
+            <p class="mt-3 text-lg text-zinc-400">We are in active technical discussions with leading players in advanced ultrasonics, robot control systems, and high-value industrial sectors. Our priority is to convert this interest into demonstrable prototypes and first paid Proofs of Concept.</p>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl px-7 py-7 hover:border-zinc-700 transition-colors">
-                <div class="flex items-center gap-x-3 mb-4">
-                    <i class="fa-solid fa-microchip text-yellow-500 text-xl"></i>
-                    <div class="font-semibold">NDT Technology Partners</div>
-                </div>
-                <div class="text-sm text-zinc-400 leading-relaxed">Active discussions with providers of advanced ultrasonic systems (PAUT, TFM/ATFM) for integration into robotic workflows.</div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
+                <i class="fa-solid fa-microchip text-yellow-500 text-2xl mb-5"></i>
+                <div class="font-semibold mb-2">NDT Technology Partners</div>
+                <p class="text-sm text-zinc-400">Active discussions with providers of advanced ultrasonic systems (PAUT, TFM/ATFM) for integration into robotic workflows.</p>
             </div>
-            
-            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl px-7 py-7 hover:border-zinc-700 transition-colors">
-                <div class="flex items-center gap-x-3 mb-4">
-                    <i class="fa-solid fa-robot text-yellow-500 text-xl"></i>
-                    <div class="font-semibold">Robotics &amp; Control</div>
-                </div>
-                <div class="text-sm text-zinc-400 leading-relaxed">Exploratory work on real-time robot control, multi-brand trajectory generation and low-level synchronization.</div>
+            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
+                <i class="fa-solid fa-robot text-yellow-500 text-2xl mb-5"></i>
+                <div class="font-semibold mb-2">Robotics &amp; Control</div>
+                <p class="text-sm text-zinc-400">Exploratory work on real-time robot control, multi-brand trajectory generation and low-level synchronization.</p>
             </div>
-            
-            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl px-7 py-7 hover:border-zinc-700 transition-colors">
-                <div class="flex items-center gap-x-3 mb-4">
-                    <i class="fa-solid fa-rocket text-yellow-500 text-xl"></i>
-                    <div class="font-semibold">Aerospace &amp; Space</div>
-                </div>
-                <div class="text-sm text-zinc-400 leading-relaxed">Early technical interest from organizations seeking advanced, traceable inspection methods for complex critical components.</div>
+            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
+                <i class="fa-solid fa-rocket text-yellow-500 text-2xl mb-5"></i>
+                <div class="font-semibold mb-2">Aerospace &amp; Space</div>
+                <p class="text-sm text-zinc-400">Early technical interest from organizations seeking advanced, traceable inspection methods for complex critical components.</p>
             </div>
-            
-            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl px-7 py-7 hover:border-zinc-700 transition-colors">
-                <div class="flex items-center gap-x-3 mb-4">
-                    <i class="fa-solid fa-industry text-yellow-500 text-xl"></i>
-                    <div class="font-semibold">Industrial &amp; Energy</div>
-                </div>
-                <div class="text-sm text-zinc-400 leading-relaxed">Ongoing outreach to companies operating high-value assets that require frequent, high-quality, documented inspections.</div>
+            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
+                <i class="fa-solid fa-industry text-yellow-500 text-2xl mb-5"></i>
+                <div class="font-semibold mb-2">Industrial &amp; Energy</div>
+                <p class="text-sm text-zinc-400">Ongoing outreach to companies operating high-value assets that require frequent, high-quality, documented inspections.</p>
             </div>
         </div>
 
-        <div class="mt-8 max-w-3xl">
-            <p class="text-xs text-zinc-500 leading-relaxed">
-                All conversations remain at an early stage. No commercial agreements or binding commitments have been signed. 
-                Our focus is on building demonstrable technical proof before expanding commercial discussions.
-            </p>
+        <div class="mt-8 text-xs text-zinc-500 max-w-3xl">
+            All conversations remain at an early stage. No commercial agreements or binding commitments have been signed. Our focus is on building demonstrable technical proof before expanding commercial discussions.
         </div>
     </section>
 
-    <!-- FOUNDER / LEADERSHIP -->
-    <section id="founder" class="max-w-7xl mx-auto px-6 py-20 border-t border-zinc-800 bg-zinc-900/20">
-        <div class="grid md:grid-cols-12 gap-x-16 gap-y-10 items-center">
-            <div class="md:col-span-5">
-                <div class="sticky top-24">
-                    <span class="text-yellow-500 text-xs font-semibold tracking-[2.5px] uppercase">Leadership</span>
-                    <h2 class="section-header mt-3">Built by someone who has lived the problem on the shop floor.</h2>
-                    <p class="mt-4 text-zinc-400">Robinspect is not a robotics idea applied to NDT from the outside. It comes from direct experience with the real constraints of advanced ultrasonic inspection in demanding industrial environments.</p>
-                </div>
+    <!-- FOUNDER -->
+    <section id="founder" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800 bg-zinc-900/40">
+        <div class="grid lg:grid-cols-12 gap-x-16 items-center">
+            <div class="lg:col-span-5 mb-10 lg:mb-0">
+                <span class="text-yellow-500 text-xs font-mono tracking-[3px]">LEADERSHIP</span>
+                <h2 class="section-header mt-4">Built by someone who has lived the problem on the shop floor.</h2>
+                <p class="mt-3 text-zinc-400">Robinspect is not a robotics idea applied to NDT from the outside. It comes from direct experience with the real constraints of advanced ultrasonic inspection in demanding industrial environments.</p>
             </div>
             
-            <div class="md:col-span-7">
-                <div class="industrial-card bg-zinc-900 border border-zinc-800 rounded-3xl p-9">
-                    <div class="flex flex-col sm:flex-row items-start gap-x-6 gap-y-6">
-                        
-                        <!-- Photo placeholder amélioré -->
-                        <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded-2xl bg-zinc-800 border border-zinc-700 flex items-center justify-center overflow-hidden ring-1 ring-white/5">
-                            <div class="text-center">
-                                <i class="fa-solid fa-user text-4xl text-zinc-500"></i>
-                                <div class="text-[10px] text-zinc-500 mt-1 tracking-wider">PHOTO À VENIR</div>
-                            </div>
+            <div class="lg:col-span-7">
+                <div class="industrial-card p-10 rounded-3xl">
+                    <div class="flex flex-col md:flex-row gap-x-8">
+                        <div class="w-28 h-28 flex-shrink-0 rounded-2xl bg-zinc-800 border border-zinc-700 flex items-center justify-center mb-8 md:mb-0">
+                            <i class="fa-solid fa-user text-5xl text-zinc-500"></i>
                         </div>
-                        
-                        <div class="flex-1 pt-1">
-                            <div class="flex items-center gap-x-3 mb-1">
-                                <div class="font-semibold text-2xl tracking-tight">Vincent Pretet</div>
-                            </div>
-                            <div class="text-yellow-500 font-medium text-sm tracking-[0.5px]">FOUNDER &amp; CEO</div>
+                        <div>
+                            <div class="font-semibold text-3xl tracking-tight">Vincent Pretet</div>
+                            <div class="text-yellow-500 font-medium tracking-wider mt-1">FOUNDER &amp; CEO</div>
                             
-                            <div class="mt-5 space-y-3.5 text-[15px] text-zinc-300 leading-relaxed">
-                                <div class="flex gap-x-3">
-                                    <span class="text-yellow-500 mt-1">•</span>
-                                    <span>NDT Level 2 certified (UT &amp; ET) with hands-on experience in nuclear, aerospace and critical industrial environments.</span>
-                                </div>
-                                <div class="flex gap-x-3">
-                                    <span class="text-yellow-500 mt-1">•</span>
-                                    <span>Direct experience delivering 6-axis robotic inspection projects in highly regulated sectors.</span>
-                                </div>
-                                <div class="flex gap-x-3">
-                                    <span class="text-yellow-500 mt-1">•</span>
-                                    <span>Deep understanding of both advanced NDT physics and real-world customer constraints around quality, HSE and documentation.</span>
-                                </div>
+                            <div class="mt-7 space-y-4 text-[15px] text-zinc-300">
+                                <div>• NDT Level 2 certified (UT &amp; ET) with hands-on experience in nuclear, aerospace and critical industrial environments.</div>
+                                <div>• Direct experience delivering 6-axis robotic inspection projects in highly regulated sectors.</div>
+                                <div>• Deep understanding of both advanced NDT physics and real-world customer constraints around quality, HSE and documentation.</div>
                             </div>
                             
                             <div class="mt-6 inline-flex items-center text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-yellow-500/90">
@@ -415,156 +249,80 @@
     </section>
 
     <!-- ROADMAP -->
-    <section id="roadmap" class="max-w-7xl mx-auto px-6 py-20 border-t border-zinc-800">
-        <div class="max-w-2xl mb-10">
-            <span class="text-yellow-500 text-xs font-semibold tracking-[2.5px] uppercase">Execution plan</span>
-            <h2 class="section-header mt-3">Clear, focused 24-month roadmap.</h2>
+    <section id="roadmap" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800">
+        <div class="max-w-2xl mb-12">
+            <span class="text-yellow-500 text-xs font-mono tracking-[3px]">EXECUTION PLAN</span>
+            <h2 class="section-header mt-4">Clear, focused 24-month roadmap.</h2>
         </div>
 
-        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 md:p-10">
-            <div class="grid md:grid-cols-4 gap-x-8 gap-y-10 text-sm">
-                
-                <div class="roadmap-step">
-                    <div class="flex items-center gap-x-3 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-sm font-mono font-semibold flex-shrink-0">01</div>
-                        <div class="font-semibold text-yellow-500">0–6 months</div>
-                    </div>
-                    <div class="font-medium mb-2 text-lg tracking-tight">Proof of Concept</div>
-                    <div class="text-zinc-400 leading-snug">First robot + UT demonstrations on representative geometries. Initial LOIs. Incubator support. Core team formation.</div>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-10 md:p-14">
+            <div class="grid md:grid-cols-4 gap-x-8 gap-y-10">
+                <div>
+                    <div class="text-yellow-500 font-mono text-sm mb-2">01 • 0–6 MONTHS</div>
+                    <div class="font-semibold text-xl mb-2">Proof of Concept</div>
+                    <div class="text-zinc-400 text-sm">First robot + UT demonstrations on representative geometries. Initial LOIs. Incubator support. Core team formation.</div>
                 </div>
-                
-                <div class="roadmap-step">
-                    <div class="flex items-center gap-x-3 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-sm font-mono font-semibold flex-shrink-0">02</div>
-                        <div class="font-semibold text-yellow-500">6–12 months</div>
-                    </div>
-                    <div class="font-medium mb-2 text-lg tracking-tight">Prototype Platform</div>
-                    <div class="text-zinc-400 leading-snug">Robust, repeatable demo system. First paid PoCs. Core software layer. Early customer references.</div>
+                <div>
+                    <div class="text-yellow-500 font-mono text-sm mb-2">02 • 6–12 MONTHS</div>
+                    <div class="font-semibold text-xl mb-2">Prototype Platform</div>
+                    <div class="text-zinc-400 text-sm">Robust, repeatable demo system. First paid PoCs. Core software layer. Early customer references.</div>
                 </div>
-                
-                <div class="roadmap-step">
-                    <div class="flex items-center gap-x-3 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-sm font-mono font-semibold flex-shrink-0">03</div>
-                        <div class="font-semibold text-yellow-500">12–18 months</div>
-                    </div>
-                    <div class="font-medium mb-2 text-lg tracking-tight">Industrial Pilots</div>
-                    <div class="text-zinc-400 leading-snug">Customer-funded pilots. Documented deployments. First system sales. Product hardening.</div>
+                <div>
+                    <div class="text-yellow-500 font-mono text-sm mb-2">03 • 12–18 MONTHS</div>
+                    <div class="font-semibold text-xl mb-2">Industrial Pilots</div>
+                    <div class="text-zinc-400 text-sm">Customer-funded pilots. Documented deployments. First system sales. Product hardening.</div>
                 </div>
-                
-                <div class="roadmap-step">
-                    <div class="flex items-center gap-x-3 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-sm font-mono font-semibold flex-shrink-0">04</div>
-                        <div class="font-semibold text-yellow-500">18–24 months</div>
-                    </div>
-                    <div class="font-medium mb-2 text-lg tracking-tight">Preparation for Scale</div>
-                    <div class="text-zinc-400 leading-snug">Productization. International expansion readiness (Europe + US). Team and process scaling.</div>
+                <div>
+                    <div class="text-yellow-500 font-mono text-sm mb-2">04 • 18–24 MONTHS</div>
+                    <div class="font-semibold text-xl mb-2">Preparation for Scale</div>
+                    <div class="text-zinc-400 text-sm">Productization. International expansion readiness (Europe + US). Team and process scaling.</div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="max-w-3xl mx-auto px-8 py-24 text-center border-t border-zinc-800">
+        <h2 class="font-display text-5xl tracking-[-1.5px] font-semibold mb-5">Let’s discuss your inspection challenge.</h2>
+        <p class="text-xl text-zinc-400 mb-10">Whether you are an industrial end-user, technology partner, or investor evaluating the opportunity — I’m happy to talk.</p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#contact" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Request a technical demo</a>
+            <a href="mailto:vpretet@robinspect-systems.com" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-zinc-700 hover:bg-zinc-900 text-lg font-medium transition-colors">Talk to Vincent</a>
         </div>
         
-        <p class="text-center text-xs text-zinc-500 mt-8 max-w-lg mx-auto">This is an execution-focused plan. Every phase is designed to reduce technical and market risk before the next step.</p>
-    </section>
-
-    <!-- FINAL CTA / CONTACT -->
-    <section id="contact" class="max-w-3xl mx-auto px-6 py-20 text-center border-t border-zinc-800">
-        <div class="max-w-xl mx-auto">
-            <h2 class="font-display text-5xl tracking-[-1.5px] font-semibold mb-5">Let’s discuss your inspection challenge.</h2>
-            <p class="text-xl text-zinc-400 mb-10">Whether you are an industrial end-user, technology partner, or investor evaluating the opportunity — I’m happy to talk.</p>
-            
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" 
-                   class="btn-primary inline-flex items-center justify-center gap-x-3 px-10 py-4 rounded-3xl text-lg font-semibold">
-                    Request a technical demo
-                </a>
-                <a href="mailto:vpretet@robinspect-systems.com" 
-                   class="inline-flex items-center justify-center gap-x-3 px-10 py-4 rounded-3xl border border-zinc-700 hover:bg-zinc-900 hover:border-zinc-600 text-lg font-medium transition-colors">
-                    Talk to Vincent
-                </a>
+        <div class="mt-14">
+            <div class="font-medium text-xl">Vincent Pretet</div>
+            <div class="text-yellow-500 text-sm tracking-[1px] mt-0.5">FOUNDER &amp; CEO</div>
+            <div class="mt-5 text-sm text-zinc-400">
+                +32 498 66 34 24<br>
+                vpretet@robinspect-systems.com
             </div>
-            
-            <div class="mt-14">
-                <div class="font-medium text-lg">Vincent Pretet</div>
-                <div class="text-yellow-500 text-sm tracking-[1px] mt-0.5">FOUNDER &amp; CEO</div>
-                
-                <div class="mt-4 text-sm text-zinc-400 space-y-1">
-                    <div>+32 498 66 34 24</div>
-                    <div>vpretet@robinspect-systems.com</div>
-                </div>
-                
-                <div class="text-xs text-zinc-500 mt-6 tracking-wider">BELGIUM • EUROPE &amp; UNITED STATES</div>
-            </div>
+            <div class="text-xs text-zinc-500 mt-6 tracking-wider">BELGIUM • EUROPE &amp; UNITED STATES</div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="border-t border-zinc-800 py-9 text-sm">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row md:items-center justify-between gap-y-4 text-zinc-500">
+    <footer class="border-t border-zinc-800 py-8 text-sm">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between text-zinc-500">
             <div>© 2026 ROBINSPECT Systems — All rights reserved.</div>
-            <div class="flex items-center gap-x-5 text-xs">
-                <span>Belgium</span>
-                <span class="hidden md:inline">•</span>
-                <span>Europe &amp; United States focus</span>
-            </div>
-            <div class="text-xs">
-                <a href="https://www.linkedin.com/company/robinspect" target="_blank" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
-            </div>
+            <div>Belgium • Europe &amp; United States focus</div>
         </div>
     </footer>
 
     <script>
-        // Mobile menu
-        const btn = document.getElementById('mobile-btn');
-        const menu = document.getElementById('mobile-menu');
-        
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-            const icon = btn.querySelector('i');
-            if (menu.classList.contains('hidden')) {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            } else {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            }
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('shadow-2xl', window.scrollY > 20);
         });
-        
-        // Close mobile menu on link click
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.add('hidden');
-                const icon = btn.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            });
-        });
-        
-        // Smooth scroll for anchor links
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     e.preventDefault();
-                    const offset = 80;
-                    const bodyRect = document.body.getBoundingClientRect().top;
-                    const elementPosition = target.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition - bodyRect - offset;
-                    
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
-        });
-        
-        // Subtle navbar background change on scroll
-        const nav = document.querySelector('nav');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                nav.classList.add('shadow-xl', 'shadow-black/30');
-            } else {
-                nav.classList.remove('shadow-xl', 'shadow-black/30');
-            }
         });
     </script>
 </body>
