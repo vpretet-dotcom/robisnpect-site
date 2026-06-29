@@ -77,25 +77,23 @@
     </nav>
 
     <!-- HERO -->
-    <section class="relative min-h-[92dvh] flex items-center justify-center pt-8 pb-16" style="background: #0a0a0a;">
-        <div class="max-w-5xl mx-auto px-8 text-center">
+    <section class="relative min-h-[92dvh] flex items-center justify-center pt-8 pb-16 overflow-hidden" 
+             style="background-image: url('hero section.jpg'); background-size: cover; background-position: center 30%;">
+        
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-8 text-center pt-10">
             
-            <div class="flex justify-center mb-10">
-                <img src="linkedin noir.png" alt="ROBINSPECT" 
-                     class="w-full max-w-[620px] h-auto rounded-3xl shadow-2xl ring-1 ring-white/10">
-            </div>
-
-            <div class="inline-flex items-center gap-x-2 px-5 py-1.5 rounded-full bg-zinc-900 border border-zinc-700 mb-8">
+            <div class="inline-flex items-center gap-x-2 px-5 py-1.5 rounded-full bg-black/60 border border-white/10 mb-6">
                 <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-                <span class="text-xs font-mono tracking-[1.5px] text-yellow-500">PRE-SEED</span>
-                <span class="text-sm text-zinc-400">• Focused execution</span>
+                <span class="text-xs font-mono tracking-[1.5px] text-yellow-500">PRE-SEED • FOCUSED EXECUTION</span>
             </div>
 
-            <h1 class="font-display text-6xl md:text-[72px] leading-[0.95] tracking-[-4.2px] font-semibold mb-6">
+            <h1 class="font-display text-6xl md:text-[70px] leading-[0.92] tracking-[-4.5px] font-semibold mb-6 text-white">
                 Autonomous Robotic<br>Inspection Systems
             </h1>
 
-            <p class="max-w-2xl mx-auto text-[17.5px] text-zinc-300 mb-12 leading-relaxed">
+            <p class="max-w-xl mx-auto text-[17.5px] text-zinc-200 mb-10 leading-relaxed">
                 We build modular, vendor-agnostic robotic platforms that combine advanced ultrasonics, 
                 precise 6-axis motion and intelligent data workflows to deliver repeatable, fully traceable NDT 
                 on complex industrial components.
@@ -103,45 +101,52 @@
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#contact" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Book a Technical Demo</a>
-                <a href="#technology" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-zinc-700 hover:bg-zinc-900 text-lg font-medium transition-colors">See our progress</a>
+                <a href="#traction" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-white/30 hover:bg-white/10 text-lg font-medium transition-colors">See our progress</a>
             </div>
             
-            <div class="mt-9 text-xs text-zinc-500 flex items-center justify-center gap-x-2">
+            <div class="mt-10 text-xs text-zinc-400 flex items-center justify-center gap-x-2">
                 <i class="fa-solid fa-globe"></i>
                 <span>Belgium • Europe &amp; United States focus</span>
             </div>
         </div>
     </section>
 
-    <!-- PROBLEM -->
-    <section class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800">
-        <div class="grid lg:grid-cols-12 gap-x-16">
-            <div class="lg:col-span-5">
-                <span class="text-yellow-500 text-xs font-mono tracking-[3px]">THE CHALLENGE</span>
-                <h2 class="section-header mt-4">Advanced NDT is still too manual, too variable, and too difficult to scale on complex geometries.</h2>
+    <!-- PROBLEM / CHALLENGE (Photo à gauche + 4 blocs à droite) -->
+    <section class="max-w-7xl mx-auto px-8 py-20 border-t border-zinc-800">
+        
+        <div class="mb-10">
+            <span class="text-yellow-500 text-xs font-mono tracking-[3px]">THE CHALLENGE</span>
+            <h2 class="section-header mt-3">Advanced NDT is still too manual, too variable, and too difficult to scale on complex geometries.</h2>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-x-12 gap-y-10 items-start">
+            
+            <!-- Photo à gauche -->
+            <div class="rounded-3xl overflow-hidden shadow-2xl">
+                <img src="challenge section.jpg" alt="Manual NDT on complex welded structure" class="w-full h-auto object-cover">
             </div>
-            <div class="lg:col-span-7 mt-10 lg:mt-0">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="industrial-card bg-zinc-900 p-9 rounded-3xl">
-                        <i class="fa-solid fa-user-tie text-yellow-500 text-3xl mb-5"></i>
-                        <h4 class="font-semibold text-xl mb-2.5">High operator dependency</h4>
-                        <p class="text-zinc-400">Inspection quality still varies significantly between operators. Complex geometries make consistent probe orientation and coupling extremely difficult to repeat.</p>
-                    </div>
-                    <div class="industrial-card bg-zinc-900 p-9 rounded-3xl">
-                        <i class="fa-solid fa-clock text-yellow-500 text-3xl mb-5"></i>
-                        <h4 class="font-semibold text-xl mb-2.5">Cost, time &amp; scalability</h4>
-                        <p class="text-zinc-400">Long inspection cycles, production downtime, and a growing shortage of qualified Level 2/3 experts create bottlenecks for critical assets.</p>
-                    </div>
-                    <div class="industrial-card bg-zinc-900 p-9 rounded-3xl">
-                        <i class="fa-solid fa-file-lines text-yellow-500 text-3xl mb-5"></i>
-                        <h4 class="font-semibold text-xl mb-2.5">Traceability &amp; audit burden</h4>
-                        <p class="text-zinc-400">Manual documentation is slow, error-prone and often disconnected from the actual inspection data and robot path.</p>
-                    </div>
-                    <div class="industrial-card bg-zinc-900 p-9 rounded-3xl">
-                        <i class="fa-solid fa-shield-halved text-yellow-500 text-3xl mb-5"></i>
-                        <h4 class="font-semibold text-xl mb-2.5">Safety &amp; access constraints</h4>
-                        <p class="text-zinc-400">Many high-value inspections occur in confined, radiological or hazardous environments where manual execution carries high HSE cost.</p>
-                    </div>
+
+            <!-- 4 blocs à droite -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
+                    <i class="fa-solid fa-user-tie text-yellow-500 text-3xl mb-4"></i>
+                    <h4 class="font-semibold text-xl mb-2">High operator dependency</h4>
+                    <p class="text-zinc-400">Inspection quality still varies significantly between operators. Complex geometries make consistent probe orientation and coupling extremely difficult to repeat.</p>
+                </div>
+                <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
+                    <i class="fa-solid fa-clock text-yellow-500 text-3xl mb-4"></i>
+                    <h4 class="font-semibold text-xl mb-2">Cost, time &amp; scalability</h4>
+                    <p class="text-zinc-400">Long inspection cycles, production downtime, and a growing shortage of qualified Level 2/3 experts create bottlenecks for critical assets.</p>
+                </div>
+                <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
+                    <i class="fa-solid fa-file-lines text-yellow-500 text-3xl mb-4"></i>
+                    <h4 class="font-semibold text-xl mb-2">Traceability &amp; audit burden</h4>
+                    <p class="text-zinc-400">Manual documentation is slow, error-prone and often disconnected from the actual inspection data and robot path.</p>
+                </div>
+                <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
+                    <i class="fa-solid fa-shield-halved text-yellow-500 text-3xl mb-4"></i>
+                    <h4 class="font-semibold text-xl mb-2">Safety &amp; access constraints</h4>
+                    <p class="text-zinc-400">Many high-value inspections occur in confined, radiological or hazardous environments where manual execution carries high HSE cost.</p>
                 </div>
             </div>
         </div>
@@ -282,16 +287,21 @@
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="max-w-3xl mx-auto px-8 py-24 text-center border-t border-zinc-800">
+    <section id="contact" class="max-w-3xl mx-auto px-8 py-20 text-center border-t border-zinc-800">
         <h2 class="font-display text-5xl tracking-[-1.5px] font-semibold mb-5">Let’s discuss your inspection challenge.</h2>
         <p class="text-xl text-zinc-400 mb-10">Whether you are an industrial end-user, technology partner, or investor evaluating the opportunity — I’m happy to talk.</p>
         
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-14">
             <a href="#contact" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Request a technical demo</a>
             <a href="mailto:vpretet@robinspect-systems.com" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-zinc-700 hover:bg-zinc-900 text-lg font-medium transition-colors">Talk to Vincent</a>
         </div>
-        
-        <div class="mt-14">
+
+        <!-- Gros logo LinkedIn -->
+        <div class="flex justify-center mb-8">
+            <img src="linkedin noir.png" alt="ROBINSPECT" class="w-full max-w-[520px] h-auto">
+        </div>
+
+        <div>
             <div class="font-medium text-xl">Vincent Pretet</div>
             <div class="text-yellow-500 text-sm tracking-[1px] mt-0.5">FOUNDER &amp; CEO</div>
             <div class="mt-5 text-sm text-zinc-400">
