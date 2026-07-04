@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://robinspect-systems.com/sitemap.xml
