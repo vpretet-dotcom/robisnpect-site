@@ -3,8 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROBINSPECT • Autonomous Robotic NDT Inspection Systems</title>
-    <link rel="icon" type="image/png" href="Fond noir.png">
+    <title>ROBINSPECT — Autonomous Robotic NDT Inspection Systems | Ultrasonic Testing Automation</title>
+    <meta name="description" content="ROBINSPECT builds modular, vendor-agnostic robotic platforms for automated non-destructive testing (NDT). Combining advanced ultrasonics (UT, PAUT, TFM), 6-axis robotics and intelligent data workflows for repeatable, traceable inspection on complex industrial components.">
+    <meta name="keywords" content="robotic NDT, autonomous inspection, ultrasonic testing, PAUT, TFM, non-destructive testing, robotic inspection systems, industrial inspection automation, NDT robotics, Belgium">
+    <meta name="author" content="Vincent Pretet — ROBINSPECT Systems">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://robinspect-systems.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://robinspect-systems.com/">
+    <meta property="og:title" content="ROBINSPECT — Autonomous Robotic NDT Inspection Systems">
+    <meta property="og:description" content="Modular, vendor-agnostic robotic platforms for automated non-destructive testing. Advanced ultrasonics, 6-axis robotics, and intelligent data workflows for repeatable, traceable inspection.">
+    <meta property="og:image" content="https://robinspect-systems.com/hero-section.jpg">
+    <meta property="og:site_name" content="ROBINSPECT Systems">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ROBINSPECT — Autonomous Robotic NDT Inspection Systems">
+    <meta name="twitter:description" content="Modular robotic platforms for automated NDT. Advanced ultrasonics, 6-axis robotics, and intelligent data workflows.">
+    <meta name="twitter:image" content="https://robinspect-systems.com/hero-section.jpg">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ROBINSPECT Systems",
+        "url": "https://robinspect-systems.com",
+        "logo": "https://robinspect-systems.com/fond-noir.png",
+        "description": "ROBINSPECT builds modular, vendor-agnostic robotic platforms for automated non-destructive testing (NDT) on complex industrial components.",
+        "founder": {
+            "@type": "Person",
+            "name": "Vincent Pretet",
+            "jobTitle": "Founder & CEO",
+            "email": "vpretet@robinspect-systems.com",
+            "telephone": "+32498663424"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BE"
+        },
+        "areaServed": ["Europe", "United States"],
+        "knowsAbout": [
+            "Non-Destructive Testing",
+            "Robotic Inspection",
+            "Ultrasonic Testing",
+            "Phased Array Ultrasonic Testing",
+            "Total Focusing Method",
+            "Industrial Automation",
+            "6-axis Robotics"
+        ],
+        "sameAs": []
+    }
+    </script>
+
+    <link rel="icon" type="image/png" href="fond-noir.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -52,14 +109,18 @@
 </head>
 <body class="bg-zinc-950 text-zinc-200">
 
+    <!-- HEADER -->
+    <header>
+
     <!-- NAVBAR -->
-    <nav class="sticky top-0 z-50 bg-zinc-950/90 backdrop-blur-2xl border-b border-zinc-800">
+    <nav class="sticky top-0 z-50 bg-zinc-950/90 backdrop-blur-2xl border-b border-zinc-800" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-8">
             <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-x-3">
-                    <img src="Fond noir.png" alt="ROBINSPECT" class="h-9">
+                <a href="/" class="flex items-center gap-x-3" aria-label="ROBINSPECT — Home">
+                    <img src="fond-noir.png" alt="ROBINSPECT Systems logo" class="h-9" width="36" height="36">
                     <span class="font-semibold text-2xl tracking-[-1px]">ROBINSPECT</span>
-                </div>
+                </a>
+
                 
                 <div class="hidden md:flex items-center gap-x-9 text-sm font-medium">
                     <a href="#technology" class="nav-link text-zinc-400 hover:text-white">Technology</a>
@@ -75,10 +136,15 @@
             </div>
         </div>
     </nav>
+    </header>
+
+    <main>
 
     <!-- HERO -->
-    <section class="relative min-h-[92dvh] flex items-center justify-center pt-8 pb-16 overflow-hidden" 
-             style="background-image: url('hero section.jpg'); background-size: cover; background-position: center 30%;">
+    <section id="hero" class="relative min-h-[92dvh] flex items-center justify-center pt-8 pb-16 overflow-hidden" 
+             style="background-image: url('hero-section.jpg'); background-size: cover; background-position: center 30%;">
+        <!-- Preload hero image for LCP -->
+        <link rel="preload" as="image" href="hero-section.jpg">
         
         <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70"></div>
 
@@ -111,41 +177,41 @@
         </div>
     </section>
 
-    <!-- PROBLEM / CHALLENGE (Photo à gauche + 4 blocs à droite) -->
-    <section class="max-w-7xl mx-auto px-8 py-20 border-t border-zinc-800">
+    <!-- PROBLEM / CHALLENGE -->
+    <section id="challenge" class="max-w-7xl mx-auto px-8 py-20 border-t border-zinc-800">
         
         <div class="mb-10">
             <span class="text-yellow-500 text-xs font-mono tracking-[3px]">THE CHALLENGE</span>
-            <h2 class="section-header mt-3">Advanced NDT is still too manual, too variable, and too difficult to scale on complex geometries.</h2>
+            <h2 class="section-header mt-3">Why NDT automation is critical: too manual, too variable, too hard to scale on complex geometries</h2>
         </div>
 
         <div class="grid lg:grid-cols-2 gap-x-12 gap-y-10 items-start">
             
             <!-- Photo à gauche -->
             <div class="rounded-3xl overflow-hidden shadow-2xl">
-                <img src="challenge section.jpg" alt="Manual NDT on complex welded structure" class="w-full h-auto object-cover">
+                <img src="challenge-section.jpg" alt="Technician performing manual ultrasonic NDT inspection on a complex welded industrial structure" class="w-full h-auto object-cover" width="640" height="480" loading="lazy">
             </div>
 
             <!-- 4 blocs à droite -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
                     <i class="fa-solid fa-user-tie text-yellow-500 text-3xl mb-4"></i>
-                    <h4 class="font-semibold text-xl mb-2">High operator dependency</h4>
+                    <h3 class="font-semibold text-xl mb-2">High operator dependency</h3>
                     <p class="text-zinc-400">Inspection quality still varies significantly between operators. Complex geometries make consistent probe orientation and coupling extremely difficult to repeat.</p>
                 </div>
                 <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
                     <i class="fa-solid fa-clock text-yellow-500 text-3xl mb-4"></i>
-                    <h4 class="font-semibold text-xl mb-2">Cost, time &amp; scalability</h4>
+                    <h3 class="font-semibold text-xl mb-2">Cost, time &amp; scalability</h3>
                     <p class="text-zinc-400">Long inspection cycles, production downtime, and a growing shortage of qualified Level 2/3 experts create bottlenecks for critical assets.</p>
                 </div>
                 <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
                     <i class="fa-solid fa-file-lines text-yellow-500 text-3xl mb-4"></i>
-                    <h4 class="font-semibold text-xl mb-2">Traceability &amp; audit burden</h4>
+                    <h3 class="font-semibold text-xl mb-2">Traceability &amp; audit burden</h3>
                     <p class="text-zinc-400">Manual documentation is slow, error-prone and often disconnected from the actual inspection data and robot path.</p>
                 </div>
                 <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
                     <i class="fa-solid fa-shield-halved text-yellow-500 text-3xl mb-4"></i>
-                    <h4 class="font-semibold text-xl mb-2">Safety &amp; access constraints</h4>
+                    <h3 class="font-semibold text-xl mb-2">Safety &amp; access constraints</h3>
                     <p class="text-zinc-400">Many high-value inspections occur in confined, radiological or hazardous environments where manual execution carries high HSE cost.</p>
                 </div>
             </div>
@@ -156,7 +222,7 @@
     <section id="technology" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800 bg-zinc-900/40">
         <div class="max-w-2xl mb-14">
             <span class="text-yellow-500 text-xs font-mono tracking-[3px]">OUR APPROACH</span>
-            <h2 class="section-header mt-4">A modular, vendor-agnostic robotic inspection platform.</h2>
+            <h2 class="section-header mt-4">Modular, vendor-agnostic robotic inspection platform for automated NDT</h2>
             <p class="mt-3 text-lg text-zinc-400">We integrate the best available hardware and software into coherent, repeatable inspection workflows — without locking customers into a single robot or sensor brand.</p>
         </div>
 
@@ -298,7 +364,7 @@
 
         <!-- Gros logo LinkedIn -->
         <div class="flex justify-center mb-8">
-            <img src="linkedin noir.png" alt="ROBINSPECT" class="w-full max-w-[520px] h-auto">
+            <img src="linkedin-noir.png" alt="ROBINSPECT Systems LinkedIn company page" class="w-full max-w-[520px] h-auto" loading="lazy" width="520" height="auto">
         </div>
 
         <div>
@@ -312,10 +378,14 @@
         </div>
     </section>
 
+    </main>
+
     <footer class="border-t border-zinc-800 py-8 text-sm">
         <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between text-zinc-500">
             <div>© 2026 ROBINSPECT Systems — All rights reserved.</div>
-            <div>Belgium • Europe &amp; United States focus</div>
+            <nav aria-label="Footer navigation">
+                <div>Belgium • Europe &amp; United States focus</div>
+            </nav>
         </div>
     </footer>
 
