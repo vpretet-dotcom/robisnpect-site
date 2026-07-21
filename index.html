@@ -165,6 +165,7 @@
             70%  { box-shadow: 0 0 0 10px rgb(234 179 8 / 0); }
             100% { box-shadow: 0 0 0 0 rgb(234 179 8 / 0); }
         }
+<<<<<<< HEAD
 
         @media (prefers-reduced-motion: reduce) {
             .demo-live-dot { animation: none; }
@@ -173,6 +174,8 @@
             .btn-primary { transition: none; }
             .btn-primary:hover { transform: none; }
         }
+=======
+>>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -355,10 +358,17 @@
                         muted
                         loop
                         playsinline
+<<<<<<< HEAD
                         preload="none"
                         poster="demo-wide-poster.webp"
                         aria-label="Fairino FR5 robot trajectory and tool positioning on a yellow test part — July 2026">
                         <source src="demo-wide.mp4" type="video/mp4">
+=======
+                        preload="metadata"
+                        poster="fond-noir.png"
+                        aria-label="Fairino FR5 robot trajectory and tool positioning on a yellow test part — July 2026">
+                        <source src="20260721_162013.mp4" type="video/mp4">
+>>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
                     </video>
 
                     <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pointer-events-none">
@@ -376,17 +386,28 @@
                     </div>
                 </div>
 
+<<<<<<< HEAD
                 <!-- Square overhead / close framing -->
+=======
+                <!-- Square close-up -->
+>>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
                 <div class="lg:col-span-2 demo-video-shell demo-video-shell--square relative max-w-md mx-auto lg:max-w-none w-full">
                     <video
                         autoplay
                         muted
                         loop
                         playsinline
+<<<<<<< HEAD
                         preload="none"
                         poster="demo-square-poster.webp"
                         aria-label="Fairino FR5 overhead view of tool positioning on test part — July 2026">
                         <source src="demo-square.mp4" type="video/mp4">
+=======
+                        preload="metadata"
+                        poster="fond-noir.png"
+                        aria-label="Fairino FR5 close-up of tool positioning on test part — July 2026">
+                        <source src="20260721_162038.mp4" type="video/mp4">
+>>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
                     </video>
 
                     <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6 pointer-events-none">
@@ -612,30 +633,41 @@
             });
         });
 
+<<<<<<< HEAD
         // Ambient demo videos: load + play only when visible; respect reduced motion
+=======
+        // Ensure ambient demo videos autoplay (browsers require muted + may still block until visible)
+>>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
         (function () {
             const videos = document.querySelectorAll('#demo video');
             if (!videos.length) return;
 
+<<<<<<< HEAD
             const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+=======
+>>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
             videos.forEach((video) => {
                 video.muted = true;
                 video.defaultMuted = true;
                 video.setAttribute('muted', '');
                 video.setAttribute('playsinline', '');
 
+<<<<<<< HEAD
                 if (prefersReduced) {
                     video.removeAttribute('autoplay');
                     video.pause();
                     return;
                 }
 
+=======
+>>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
                 const tryPlay = () => {
                     const p = video.play();
                     if (p && typeof p.catch === 'function') p.catch(() => {});
                 };
 
+<<<<<<< HEAD
                 if ('IntersectionObserver' in window) {
                     const io = new IntersectionObserver((entries) => {
                         entries.forEach((entry) => {
@@ -654,6 +686,19 @@
                 } else {
                     video.preload = 'auto';
                     tryPlay();
+=======
+                tryPlay();
+                video.addEventListener('loadeddata', tryPlay, { once: true });
+
+                if ('IntersectionObserver' in window) {
+                    const io = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) tryPlay();
+                            else video.pause();
+                        });
+                    }, { threshold: 0.25 });
+                    io.observe(video);
+>>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
                 }
             });
         })();
