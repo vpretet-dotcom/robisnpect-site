@@ -105,6 +105,55 @@
             transition: width 0.3s ease;
         }
         .nav-link:hover:after { width: 100%; }
+
+        /* Demo video — ambient background */
+        .demo-video-shell {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid #27251f;
+            background: #000;
+            box-shadow: 0 40px 70px -15px rgb(0 0 0 / 0.55);
+            height: 100%;
+        }
+        .demo-video-shell video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+        .demo-video-shell--wide video {
+            aspect-ratio: 16 / 9;
+        }
+        .demo-video-shell--square video {
+            aspect-ratio: 1 / 1;
+        }
+        .demo-video-shell::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgb(9 9 11 / 0.75) 0%,
+                rgb(9 9 11 / 0.15) 45%,
+                rgb(9 9 11 / 0.25) 100%
+            );
+            pointer-events: none;
+        }
+        .demo-live-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 9999px;
+            background: #eab308;
+            box-shadow: 0 0 0 0 rgb(234 179 8 / 0.55);
+            animation: demo-pulse 2s ease-out infinite;
+        }
+        @keyframes demo-pulse {
+            0%   { box-shadow: 0 0 0 0 rgb(234 179 8 / 0.55); }
+            70%  { box-shadow: 0 0 0 10px rgb(234 179 8 / 0); }
+            100% { box-shadow: 0 0 0 0 rgb(234 179 8 / 0); }
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -124,6 +173,7 @@
                 
                 <div class="hidden md:flex items-center gap-x-9 text-sm font-medium">
                     <a href="#technology" class="nav-link text-zinc-400 hover:text-white">Technology</a>
+                    <a href="#demo" class="nav-link text-zinc-400 hover:text-white">Demo</a>
                     <a href="#traction" class="nav-link text-zinc-400 hover:text-white">Traction</a>
                     <a href="#founder" class="nav-link text-zinc-400 hover:text-white">Founder</a>
                     <a href="#roadmap" class="nav-link text-zinc-400 hover:text-white">Roadmap</a>
@@ -244,6 +294,70 @@
                 <h3 class="font-semibold text-2xl mb-3">Software &amp; Data Layer</h3>
                 <p class="text-zinc-400">Digital inspection workflows, real-time robot–NDT synchronization, automated reporting and complete traceability from geometry to final report.</p>
                 <div class="mt-5 text-xs text-yellow-500/80 font-medium">Traceability by design • Audit-ready • Extensible</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEMO — robot in action (autoplay ambient) -->
+    <section id="demo" class="border-t border-zinc-800 bg-zinc-950">
+        <div class="max-w-7xl mx-auto px-8 py-24">
+            <div class="max-w-2xl mb-12">
+                <span class="text-yellow-500 text-xs font-mono tracking-[3px]">FIRST DEMONSTRATION</span>
+                <h2 class="section-header mt-4">The robot in action.</h2>
+                <p class="mt-3 text-lg text-zinc-400">Early tests with the Fairino FR5 — first trajectory and tool positioning on a representative test part. NDT-integrated demos coming next.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-5 gap-6 items-stretch">
+                <!-- Wide shot -->
+                <div class="lg:col-span-3 demo-video-shell demo-video-shell--wide relative">
+                    <video
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        poster="fond-noir.png"
+                        aria-label="Fairino FR5 robot trajectory and tool positioning on a yellow test part — July 2026">
+                        <source src="20260721_162013.mp4" type="video/mp4">
+                    </video>
+
+                    <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pointer-events-none">
+                        <div>
+                            <div class="inline-flex items-center gap-x-2 px-3 py-1 rounded-full bg-black/55 border border-white/10 mb-3">
+                                <span class="demo-live-dot" aria-hidden="true"></span>
+                                <span class="text-[10px] font-mono tracking-[1.5px] text-yellow-500 uppercase">Live loop</span>
+                            </div>
+                            <div class="text-white font-semibold text-lg md:text-xl tracking-tight">Fairino FR5 · Trajectory &amp; TCP</div>
+                            <div class="text-sm text-zinc-300 mt-1">Wide view · positioning on test geometry</div>
+                        </div>
+                        <div class="text-xs text-zinc-400 font-mono tracking-wider sm:text-right">
+                            PRE-SEED PROOF
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Square close-up -->
+                <div class="lg:col-span-2 demo-video-shell demo-video-shell--square relative max-w-md mx-auto lg:max-w-none w-full">
+                    <video
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        poster="fond-noir.png"
+                        aria-label="Fairino FR5 close-up of tool positioning on test part — July 2026">
+                        <source src="20260721_162038.mp4" type="video/mp4">
+                    </video>
+
+                    <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6 pointer-events-none">
+                        <div class="inline-flex items-center gap-x-2 px-3 py-1 rounded-full bg-black/55 border border-white/10 mb-3">
+                            <span class="demo-live-dot" aria-hidden="true"></span>
+                            <span class="text-[10px] font-mono tracking-[1.5px] text-yellow-500 uppercase">Live loop</span>
+                        </div>
+                        <div class="text-white font-semibold text-base md:text-lg tracking-tight">Close-up · Tool path</div>
+                        <div class="text-sm text-zinc-300 mt-1">Detail on test geometry — July 2026</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -404,6 +518,37 @@
                 }
             });
         });
+
+        // Ensure ambient demo videos autoplay (browsers require muted + may still block until visible)
+        (function () {
+            const videos = document.querySelectorAll('#demo video');
+            if (!videos.length) return;
+
+            videos.forEach((video) => {
+                video.muted = true;
+                video.defaultMuted = true;
+                video.setAttribute('muted', '');
+                video.setAttribute('playsinline', '');
+
+                const tryPlay = () => {
+                    const p = video.play();
+                    if (p && typeof p.catch === 'function') p.catch(() => {});
+                };
+
+                tryPlay();
+                video.addEventListener('loadeddata', tryPlay, { once: true });
+
+                if ('IntersectionObserver' in window) {
+                    const io = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) tryPlay();
+                            else video.pause();
+                        });
+                    }, { threshold: 0.25 });
+                    io.observe(video);
+                }
+            });
+        })();
     </script>
 </body>
 </html>
