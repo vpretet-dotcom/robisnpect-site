@@ -165,7 +165,6 @@
             70%  { box-shadow: 0 0 0 10px rgb(234 179 8 / 0); }
             100% { box-shadow: 0 0 0 0 rgb(234 179 8 / 0); }
         }
-<<<<<<< HEAD
 
         @media (prefers-reduced-motion: reduce) {
             .demo-live-dot { animation: none; }
@@ -174,16 +173,10 @@
             .btn-primary { transition: none; }
             .btn-primary:hover { transform: none; }
         }
-=======
->>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
 
-    <!-- HEADER -->
-    <header>
-
-    <!-- NAVBAR -->
     <nav class="sticky top-0 z-50 bg-zinc-950/90 backdrop-blur-2xl border-b border-zinc-800" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-6 md:px-8">
             <div class="flex items-center justify-between h-20">
@@ -207,13 +200,12 @@
                     <a href="#contact" class="hidden md:block px-6 py-2.5 text-sm font-medium rounded-2xl border border-zinc-700 hover:bg-zinc-900 transition-colors">Contact</a>
                     <a href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20%2F%20sector%3A%20%0A" class="btn-primary hidden sm:inline-flex px-6 md:px-8 py-3 rounded-2xl text-sm font-bold">Book a Demo</a>
                     <button type="button" id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-2xl border border-zinc-700 text-zinc-200 hover:bg-zinc-900 hover:border-zinc-600 transition-colors" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">
-                        <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Mobile menu -->
-            <div id="mobile-menu" class="hidden md:hidden border-t border-zinc-800 pb-5 pt-3" hidden>
+            <div id="mobile-menu" class="hidden border-t border-zinc-800 pb-5 pt-3 md:!hidden">
                 <div class="flex flex-col gap-1 text-sm font-medium">
                     <a href="#technology" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Technology</a>
                     <a href="#demo" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Demo</a>
@@ -226,7 +218,6 @@
             </div>
         </div>
     </nav>
-    </header>
 
     <main>
 
@@ -358,17 +349,10 @@
                         muted
                         loop
                         playsinline
-<<<<<<< HEAD
                         preload="none"
                         poster="demo-wide-poster.webp"
                         aria-label="Fairino FR5 robot trajectory and tool positioning on a yellow test part — July 2026">
                         <source src="demo-wide.mp4" type="video/mp4">
-=======
-                        preload="metadata"
-                        poster="fond-noir.png"
-                        aria-label="Fairino FR5 robot trajectory and tool positioning on a yellow test part — July 2026">
-                        <source src="20260721_162013.mp4" type="video/mp4">
->>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
                     </video>
 
                     <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pointer-events-none">
@@ -386,28 +370,17 @@
                     </div>
                 </div>
 
-<<<<<<< HEAD
                 <!-- Square overhead / close framing -->
-=======
-                <!-- Square close-up -->
->>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
                 <div class="lg:col-span-2 demo-video-shell demo-video-shell--square relative max-w-md mx-auto lg:max-w-none w-full">
                     <video
                         autoplay
                         muted
                         loop
                         playsinline
-<<<<<<< HEAD
                         preload="none"
                         poster="demo-square-poster.webp"
                         aria-label="Fairino FR5 overhead view of tool positioning on test part — July 2026">
                         <source src="demo-square.mp4" type="video/mp4">
-=======
-                        preload="metadata"
-                        poster="fond-noir.png"
-                        aria-label="Fairino FR5 close-up of tool positioning on test part — July 2026">
-                        <source src="20260721_162038.mp4" type="video/mp4">
->>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
                     </video>
 
                     <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6 pointer-events-none">
@@ -588,89 +561,94 @@
     </footer>
 
     <script>
-        const nav = document.querySelector('nav');
-        window.addEventListener('scroll', () => {
-            nav.classList.toggle('shadow-2xl', window.scrollY > 20);
-        });
-
-        // Mobile menu
         (function () {
-            const btn = document.getElementById('mobile-menu-btn');
-            const menu = document.getElementById('mobile-menu');
-            if (!btn || !menu) return;
+            var nav = document.querySelector('nav');
+            if (nav) {
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 20) nav.classList.add('shadow-2xl');
+                    else nav.classList.remove('shadow-2xl');
+                });
+            }
 
-            const icon = btn.querySelector('i');
-            const setOpen = (open) => {
-                menu.classList.toggle('hidden', !open);
-                if (open) menu.removeAttribute('hidden');
-                else menu.setAttribute('hidden', '');
-                btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-                btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            // Mobile menu
+            var btn = document.getElementById('mobile-menu-btn');
+            var menu = document.getElementById('mobile-menu');
+            var icon = document.getElementById('mobile-menu-icon');
+            var menuOpen = false;
+
+            function setMenuOpen(open) {
+                menuOpen = !!open;
+                if (!menu || !btn) return;
+                if (menuOpen) menu.classList.remove('hidden');
+                else menu.classList.add('hidden');
+                btn.setAttribute('aria-expanded', menuOpen ? 'true' : 'false');
+                btn.setAttribute('aria-label', menuOpen ? 'Close menu' : 'Open menu');
                 if (icon) {
-                    icon.classList.toggle('fa-bars', !open);
-                    icon.classList.toggle('fa-xmark', open);
+                    icon.className = menuOpen
+                        ? 'fa-solid fa-xmark text-lg'
+                        : 'fa-solid fa-bars text-lg';
                 }
-            };
+            }
 
-            btn.addEventListener('click', () => {
-                setOpen(menu.classList.contains('hidden') || menu.hasAttribute('hidden'));
-            });
+            if (btn && menu) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setMenuOpen(!menuOpen);
+                });
+                menu.querySelectorAll('a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        setMenuOpen(false);
+                    });
+                });
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth >= 768) setMenuOpen(false);
+                });
+            }
 
-            menu.querySelectorAll('a').forEach((link) => {
-                link.addEventListener('click', () => setOpen(false));
-            });
-        })();
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (!href || href.length < 2) return;
-                const target = document.querySelector(href);
-                if (target) {
+            // Smooth scroll for in-page anchors
+            document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+                anchor.addEventListener('click', function (e) {
+                    var href = this.getAttribute('href');
+                    if (!href || href.length < 2) return;
+                    var target = document.querySelector(href);
+                    if (!target) return;
                     e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                });
             });
-        });
 
-<<<<<<< HEAD
-        // Ambient demo videos: load + play only when visible; respect reduced motion
-=======
-        // Ensure ambient demo videos autoplay (browsers require muted + may still block until visible)
->>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
-        (function () {
-            const videos = document.querySelectorAll('#demo video');
+            // Ambient demo videos: play only when visible
+            var videos = document.querySelectorAll('#demo video');
             if (!videos.length) return;
 
-<<<<<<< HEAD
-            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var prefersReduced = false;
+            try {
+                prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            } catch (err) {}
 
-=======
->>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
-            videos.forEach((video) => {
+            videos.forEach(function (video) {
                 video.muted = true;
                 video.defaultMuted = true;
                 video.setAttribute('muted', '');
                 video.setAttribute('playsinline', '');
 
-<<<<<<< HEAD
                 if (prefersReduced) {
                     video.removeAttribute('autoplay');
-                    video.pause();
+                    try { video.pause(); } catch (err) {}
                     return;
                 }
 
-=======
->>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
-                const tryPlay = () => {
-                    const p = video.play();
-                    if (p && typeof p.catch === 'function') p.catch(() => {});
-                };
+                function tryPlay() {
+                    var p = video.play();
+                    if (p && typeof p.then === 'function') {
+                        p.catch(function () {});
+                    }
+                }
 
-<<<<<<< HEAD
                 if ('IntersectionObserver' in window) {
-                    const io = new IntersectionObserver((entries) => {
-                        entries.forEach((entry) => {
+                    var io = new IntersectionObserver(function (entries) {
+                        entries.forEach(function (entry) {
                             if (entry.isIntersecting) {
                                 if (video.preload !== 'auto') {
                                     video.preload = 'auto';
@@ -678,7 +656,7 @@
                                 }
                                 tryPlay();
                             } else {
-                                video.pause();
+                                try { video.pause(); } catch (err) {}
                             }
                         });
                     }, { threshold: 0.25 });
@@ -686,19 +664,6 @@
                 } else {
                     video.preload = 'auto';
                     tryPlay();
-=======
-                tryPlay();
-                video.addEventListener('loadeddata', tryPlay, { once: true });
-
-                if ('IntersectionObserver' in window) {
-                    const io = new IntersectionObserver((entries) => {
-                        entries.forEach((entry) => {
-                            if (entry.isIntersecting) tryPlay();
-                            else video.pause();
-                        });
-                    }, { threshold: 0.25 });
-                    io.observe(video);
->>>>>>> 48c20972f30b800a476cdab8450158a8e61ddecb
                 }
             });
         })();
