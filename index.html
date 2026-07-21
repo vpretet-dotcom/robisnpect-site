@@ -15,7 +15,10 @@
     <meta property="og:url" content="https://robinspect-systems.com/">
     <meta property="og:title" content="ROBINSPECT — Autonomous Robotic NDT Inspection Systems">
     <meta property="og:description" content="Modular, vendor-agnostic robotic platforms for automated non-destructive testing. Advanced ultrasonics, 6-axis robotics, and intelligent data workflows for repeatable, traceable inspection.">
-    <meta property="og:image" content="https://robinspect-systems.com/hero-section.jpg">
+    <meta property="og:image" content="https://robinspect-systems.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="ROBINSPECT — Autonomous Robotic Inspection Systems">
     <meta property="og:site_name" content="ROBINSPECT Systems">
     <meta property="og:locale" content="en_US">
 
@@ -23,7 +26,11 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ROBINSPECT — Autonomous Robotic NDT Inspection Systems">
     <meta name="twitter:description" content="Modular robotic platforms for automated NDT. Advanced ultrasonics, 6-axis robotics, and intelligent data workflows.">
-    <meta name="twitter:image" content="https://robinspect-systems.com/hero-section.jpg">
+    <meta name="twitter:image" content="https://robinspect-systems.com/og-image.jpg">
+
+    <!-- LCP: preload hero (WebP preferred) -->
+    <link rel="preload" as="image" href="hero-section.webp" type="image/webp">
+    <link rel="preload" as="image" href="hero-section.jpg" type="image/jpeg">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -39,7 +46,8 @@
             "name": "Vincent Pretet",
             "jobTitle": "Founder & CEO",
             "email": "vpretet@robinspect-systems.com",
-            "telephone": "+32498663424"
+            "telephone": "+32498663424",
+            "image": "https://robinspect-systems.com/founder.jpg"
         },
         "address": {
             "@type": "PostalAddress",
@@ -55,10 +63,13 @@
             "Industrial Automation",
             "6-axis Robotics"
         ],
-        "sameAs": []
+        "sameAs": [
+            "https://www.linkedin.com/company/robinspect/"
+        ]
     }
     </script>
 
+    <link rel="icon" type="image/webp" href="fond-noir.webp">
     <link rel="icon" type="image/png" href="fond-noir.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,6 +116,63 @@
             transition: width 0.3s ease;
         }
         .nav-link:hover:after { width: 100%; }
+
+        /* Demo video — ambient background */
+        .demo-video-shell {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid #27251f;
+            background: #000;
+            box-shadow: 0 40px 70px -15px rgb(0 0 0 / 0.55);
+            height: 100%;
+        }
+        .demo-video-shell video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+        .demo-video-shell--wide video {
+            aspect-ratio: 16 / 9;
+        }
+        .demo-video-shell--square video {
+            aspect-ratio: 1 / 1;
+        }
+        .demo-video-shell::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgb(9 9 11 / 0.75) 0%,
+                rgb(9 9 11 / 0.15) 45%,
+                rgb(9 9 11 / 0.25) 100%
+            );
+            pointer-events: none;
+        }
+        .demo-live-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 9999px;
+            background: #eab308;
+            box-shadow: 0 0 0 0 rgb(234 179 8 / 0.55);
+            animation: demo-pulse 2s ease-out infinite;
+        }
+        @keyframes demo-pulse {
+            0%   { box-shadow: 0 0 0 0 rgb(234 179 8 / 0.55); }
+            70%  { box-shadow: 0 0 0 10px rgb(234 179 8 / 0); }
+            100% { box-shadow: 0 0 0 0 rgb(234 179 8 / 0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .demo-live-dot { animation: none; }
+            .industrial-card { transition: none; }
+            .industrial-card:hover { transform: none; }
+            .btn-primary { transition: none; }
+            .btn-primary:hover { transform: none; }
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -114,24 +182,43 @@
 
     <!-- NAVBAR -->
     <nav class="sticky top-0 z-50 bg-zinc-950/90 backdrop-blur-2xl border-b border-zinc-800" aria-label="Main navigation">
-        <div class="max-w-7xl mx-auto px-8">
+        <div class="max-w-7xl mx-auto px-6 md:px-8">
             <div class="flex items-center justify-between h-20">
                 <a href="/" class="flex items-center gap-x-3" aria-label="ROBINSPECT — Home">
-                    <img src="fond-noir.png" alt="ROBINSPECT Systems logo" class="h-9" width="36" height="36">
+                    <picture>
+                        <source srcset="fond-noir.webp" type="image/webp">
+                        <img src="fond-noir.png" alt="ROBINSPECT Systems logo" class="h-9 w-9 object-contain" width="36" height="36">
+                    </picture>
                     <span class="font-semibold text-2xl tracking-[-1px]">ROBINSPECT</span>
                 </a>
 
-                
                 <div class="hidden md:flex items-center gap-x-9 text-sm font-medium">
                     <a href="#technology" class="nav-link text-zinc-400 hover:text-white">Technology</a>
+                    <a href="#demo" class="nav-link text-zinc-400 hover:text-white">Demo</a>
                     <a href="#traction" class="nav-link text-zinc-400 hover:text-white">Traction</a>
                     <a href="#founder" class="nav-link text-zinc-400 hover:text-white">Founder</a>
                     <a href="#roadmap" class="nav-link text-zinc-400 hover:text-white">Roadmap</a>
                 </div>
 
-                <div class="flex items-center gap-x-4">
+                <div class="flex items-center gap-x-3 md:gap-x-4">
                     <a href="#contact" class="hidden md:block px-6 py-2.5 text-sm font-medium rounded-2xl border border-zinc-700 hover:bg-zinc-900 transition-colors">Contact</a>
-                    <a href="#contact" class="btn-primary px-8 py-3 rounded-2xl text-sm font-bold">Book a Demo</a>
+                    <a href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20%2F%20sector%3A%20%0A" class="btn-primary hidden sm:inline-flex px-6 md:px-8 py-3 rounded-2xl text-sm font-bold">Book a Demo</a>
+                    <button type="button" id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-2xl border border-zinc-700 text-zinc-200 hover:bg-zinc-900 hover:border-zinc-600 transition-colors" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">
+                        <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="hidden md:hidden border-t border-zinc-800 pb-5 pt-3" hidden>
+                <div class="flex flex-col gap-1 text-sm font-medium">
+                    <a href="#technology" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Technology</a>
+                    <a href="#demo" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Demo</a>
+                    <a href="#traction" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Traction</a>
+                    <a href="#founder" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Founder</a>
+                    <a href="#roadmap" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Roadmap</a>
+                    <a href="#contact" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Contact</a>
+                    <a href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20%2F%20sector%3A%20%0A" class="btn-primary mt-2 inline-flex items-center justify-center px-6 py-3.5 rounded-2xl text-sm font-bold">Book a Demo</a>
                 </div>
             </div>
         </div>
@@ -141,11 +228,11 @@
     <main>
 
     <!-- HERO -->
-    <section id="hero" class="relative min-h-[92dvh] flex items-center justify-center pt-8 pb-16 overflow-hidden" 
-             style="background-image: url('hero-section.jpg'); background-size: cover; background-position: center 30%;">
-        <!-- Preload hero image for LCP -->
-        <link rel="preload" as="image" href="hero-section.jpg">
-        
+    <section id="hero" class="relative min-h-[92dvh] flex items-center justify-center pt-8 pb-16 overflow-hidden">
+        <picture class="absolute inset-0 -z-0">
+            <source srcset="hero-section.webp" type="image/webp">
+            <img src="hero-section.jpg" alt="" class="w-full h-full object-cover object-[center_30%]" width="768" height="1152" fetchpriority="high" decoding="async">
+        </picture>
         <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70"></div>
 
         <div class="relative z-10 max-w-4xl mx-auto px-8 text-center pt-10">
@@ -166,8 +253,8 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Book a Technical Demo</a>
-                <a href="#traction" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-white/30 hover:bg-white/10 text-lg font-medium transition-colors">See our progress</a>
+                <a href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20%2F%20sector%3A%20%0A" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Book a Technical Demo</a>
+                <a href="#demo" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-white/30 hover:bg-white/10 text-lg font-medium transition-colors">See the robot</a>
             </div>
             
             <div class="mt-10 text-xs text-zinc-400 flex items-center justify-center gap-x-2">
@@ -189,7 +276,10 @@
             
             <!-- Photo à gauche -->
             <div class="rounded-3xl overflow-hidden shadow-2xl">
-                <img src="challenge-section.jpg" alt="Technician performing manual ultrasonic NDT inspection on a complex welded industrial structure" class="w-full h-auto object-cover" width="640" height="480" loading="lazy">
+                <picture>
+                    <source srcset="challenge-section.webp" type="image/webp">
+                    <img src="challenge-section.jpg" alt="Technician performing manual ultrasonic NDT inspection on a complex welded industrial structure" class="w-full h-auto object-cover" width="768" height="1152" loading="lazy" decoding="async">
+                </picture>
             </div>
 
             <!-- 4 blocs à droite -->
@@ -248,6 +338,70 @@
         </div>
     </section>
 
+    <!-- DEMO — robot in action (autoplay ambient) -->
+    <section id="demo" class="border-t border-zinc-800 bg-zinc-950">
+        <div class="max-w-7xl mx-auto px-8 py-24">
+            <div class="max-w-2xl mb-12">
+                <span class="text-yellow-500 text-xs font-mono tracking-[3px]">FIRST DEMONSTRATION</span>
+                <h2 class="section-header mt-4">The robot in action.</h2>
+                <p class="mt-3 text-lg text-zinc-400">Early tests with the Fairino FR5 — first trajectory and tool positioning on a representative test part. NDT-integrated demos coming next.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-5 gap-6 items-stretch">
+                <!-- Wide shot -->
+                <div class="lg:col-span-3 demo-video-shell demo-video-shell--wide relative">
+                    <video
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="none"
+                        poster="demo-wide-poster.webp"
+                        aria-label="Fairino FR5 robot trajectory and tool positioning on a yellow test part — July 2026">
+                        <source src="demo-wide.mp4" type="video/mp4">
+                    </video>
+
+                    <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pointer-events-none">
+                        <div>
+                            <div class="inline-flex items-center gap-x-2 px-3 py-1 rounded-full bg-black/55 border border-white/10 mb-3">
+                                <span class="demo-live-dot" aria-hidden="true"></span>
+                                <span class="text-[10px] font-mono tracking-[1.5px] text-yellow-500 uppercase">Live loop</span>
+                            </div>
+                            <div class="text-white font-semibold text-lg md:text-xl tracking-tight">Fairino FR5 · Trajectory &amp; TCP</div>
+                            <div class="text-sm text-zinc-300 mt-1">Wide view · positioning on test geometry</div>
+                        </div>
+                        <div class="text-xs text-zinc-400 font-mono tracking-wider sm:text-right">
+                            PRE-SEED PROOF
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Square overhead / close framing -->
+                <div class="lg:col-span-2 demo-video-shell demo-video-shell--square relative max-w-md mx-auto lg:max-w-none w-full">
+                    <video
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="none"
+                        poster="demo-square-poster.webp"
+                        aria-label="Fairino FR5 overhead view of tool positioning on test part — July 2026">
+                        <source src="demo-square.mp4" type="video/mp4">
+                    </video>
+
+                    <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6 pointer-events-none">
+                        <div class="inline-flex items-center gap-x-2 px-3 py-1 rounded-full bg-black/55 border border-white/10 mb-3">
+                            <span class="demo-live-dot" aria-hidden="true"></span>
+                            <span class="text-[10px] font-mono tracking-[1.5px] text-yellow-500 uppercase">Live loop</span>
+                        </div>
+                        <div class="text-white font-semibold text-base md:text-lg tracking-tight">Close-up · Tool path</div>
+                        <div class="text-sm text-zinc-300 mt-1">Detail on test geometry — July 2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- TRACTION -->
     <section id="traction" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800">
         <div class="max-w-2xl mb-12">
@@ -296,8 +450,11 @@
             <div class="lg:col-span-7">
                 <div class="industrial-card p-10 rounded-3xl">
                     <div class="flex flex-col md:flex-row gap-x-8">
-                        <div class="w-28 h-28 flex-shrink-0 rounded-2xl bg-zinc-800 border border-zinc-700 flex items-center justify-center mb-8 md:mb-0">
-                            <i class="fa-solid fa-user text-5xl text-zinc-500"></i>
+                        <div class="w-28 h-28 flex-shrink-0 rounded-2xl overflow-hidden border border-zinc-700 mb-8 md:mb-0 bg-zinc-800 shadow-lg">
+                            <picture>
+                                <source srcset="founder.webp" type="image/webp">
+                                <img src="founder.jpg" alt="Vincent Pretet, Founder &amp; CEO of ROBINSPECT Systems" class="w-full h-full object-cover object-top" width="400" height="400" loading="lazy" decoding="async">
+                            </picture>
                         </div>
                         <div>
                             <div class="font-semibold text-3xl tracking-tight">Vincent Pretet</div>
@@ -358,21 +515,37 @@
         <p class="text-xl text-zinc-400 mb-10">Whether you are an industrial end-user, technology partner, or investor evaluating the opportunity — I’m happy to talk.</p>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center mb-14">
-            <a href="#contact" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Request a technical demo</a>
-            <a href="mailto:vpretet@robinspect-systems.com" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-zinc-700 hover:bg-zinc-900 text-lg font-medium transition-colors">Talk to Vincent</a>
+            <a href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20request%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20%2F%20sector%3A%20%0A" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Request a technical demo</a>
+            <a href="mailto:vpretet@robinspect-systems.com?subject=Hello%20from%20robinspect-systems.com&amp;body=Hi%20Vincent%2C%0A%0A" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-zinc-700 hover:bg-zinc-900 text-lg font-medium transition-colors">Talk to Vincent</a>
         </div>
 
-        <!-- Gros logo LinkedIn -->
-        <div class="flex justify-center mb-8">
-            <img src="linkedin-noir.png" alt="ROBINSPECT Systems LinkedIn company page" class="w-full max-w-[520px] h-auto" loading="lazy" width="520" height="auto">
+        <!-- LinkedIn — image + bouton cliquables -->
+        <div class="flex flex-col items-center gap-5 mb-10">
+            <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener noreferrer" class="group block w-full max-w-[520px] cursor-pointer rounded-2xl border border-zinc-800 hover:border-yellow-500/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950" aria-label="ROBINSPECT Systems on LinkedIn — open company page">
+                <picture>
+                    <source srcset="linkedin-noir.webp" type="image/webp">
+                    <img src="linkedin-banner.jpg" alt="ROBINSPECT Systems on LinkedIn" class="w-full h-auto rounded-2xl transition-opacity group-hover:opacity-90" loading="lazy" width="1200" height="450" decoding="async">
+                </picture>
+            </a>
+            <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-x-3 px-7 py-3.5 rounded-2xl border border-zinc-700 bg-zinc-900/80 text-zinc-100 hover:bg-[#0A66C2] hover:border-[#0A66C2] hover:text-white transition-colors font-medium">
+                <i class="fa-brands fa-linkedin text-2xl" aria-hidden="true"></i>
+                <span>Follow ROBINSPECT on LinkedIn</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-70" aria-hidden="true"></i>
+            </a>
         </div>
 
         <div>
             <div class="font-medium text-xl">Vincent Pretet</div>
             <div class="text-yellow-500 text-sm tracking-[1px] mt-0.5">FOUNDER &amp; CEO</div>
-            <div class="mt-5 text-sm text-zinc-400">
-                +32 498 66 34 24<br>
-                vpretet@robinspect-systems.com
+            <div class="mt-5 text-sm text-zinc-400 space-y-1">
+                <div><a href="tel:+32498663424" class="hover:text-white transition-colors">+32 498 66 34 24</a></div>
+                <div><a href="mailto:vpretet@robinspect-systems.com" class="hover:text-white transition-colors">vpretet@robinspect-systems.com</a></div>
+                <div class="pt-1">
+                    <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-x-2 hover:text-white transition-colors">
+                        <i class="fa-brands fa-linkedin text-lg text-[#0A66C2]" aria-hidden="true"></i>
+                        linkedin.com/company/robinspect
+                    </a>
+                </div>
             </div>
             <div class="text-xs text-zinc-500 mt-6 tracking-wider">BELGIUM • EUROPE &amp; UNITED STATES</div>
         </div>
@@ -381,10 +554,14 @@
     </main>
 
     <footer class="border-t border-zinc-800 py-8 text-sm">
-        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between text-zinc-500">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row md:items-center justify-between gap-4 text-zinc-500">
             <div>© 2026 ROBINSPECT Systems — All rights reserved.</div>
-            <nav aria-label="Footer navigation">
-                <div>Belgium • Europe &amp; United States focus</div>
+            <nav aria-label="Footer navigation" class="flex items-center gap-x-5">
+                <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-x-2 hover:text-white transition-colors" aria-label="ROBINSPECT on LinkedIn">
+                    <i class="fa-brands fa-linkedin text-lg" aria-hidden="true"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <span>Belgium • Europe &amp; United States focus</span>
             </nav>
         </div>
     </footer>
@@ -395,15 +572,91 @@
             nav.classList.toggle('shadow-2xl', window.scrollY > 20);
         });
 
+        // Mobile menu
+        (function () {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            if (!btn || !menu) return;
+
+            const icon = btn.querySelector('i');
+            const setOpen = (open) => {
+                menu.classList.toggle('hidden', !open);
+                if (open) menu.removeAttribute('hidden');
+                else menu.setAttribute('hidden', '');
+                btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+                if (icon) {
+                    icon.classList.toggle('fa-bars', !open);
+                    icon.classList.toggle('fa-xmark', open);
+                }
+            };
+
+            btn.addEventListener('click', () => {
+                setOpen(menu.classList.contains('hidden') || menu.hasAttribute('hidden'));
+            });
+
+            menu.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => setOpen(false));
+            });
+        })();
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                const target = document.querySelector(this.getAttribute('href'));
+                const href = this.getAttribute('href');
+                if (!href || href.length < 2) return;
+                const target = document.querySelector(href);
                 if (target) {
                     e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });
+
+        // Ambient demo videos: load + play only when visible; respect reduced motion
+        (function () {
+            const videos = document.querySelectorAll('#demo video');
+            if (!videos.length) return;
+
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            videos.forEach((video) => {
+                video.muted = true;
+                video.defaultMuted = true;
+                video.setAttribute('muted', '');
+                video.setAttribute('playsinline', '');
+
+                if (prefersReduced) {
+                    video.removeAttribute('autoplay');
+                    video.pause();
+                    return;
+                }
+
+                const tryPlay = () => {
+                    const p = video.play();
+                    if (p && typeof p.catch === 'function') p.catch(() => {});
+                };
+
+                if ('IntersectionObserver' in window) {
+                    const io = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                if (video.preload !== 'auto') {
+                                    video.preload = 'auto';
+                                    video.load();
+                                }
+                                tryPlay();
+                            } else {
+                                video.pause();
+                            }
+                        });
+                    }, { threshold: 0.25 });
+                    io.observe(video);
+                } else {
+                    video.preload = 'auto';
+                    tryPlay();
+                }
+            });
+        })();
     </script>
 </body>
 </html>
