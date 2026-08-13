@@ -1,672 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROBINSPECT — Autonomous Robotic NDT Inspection Systems | Ultrasonic Testing Automation</title>
-    <meta name="description" content="ROBINSPECT builds modular, vendor-agnostic robotic platforms for automated non-destructive testing (NDT). Combining advanced ultrasonics (UT, PAUT, TFM), 6-axis robotics and intelligent data workflows for repeatable, traceable inspection on complex industrial components.">
-    <meta name="keywords" content="robotic NDT, autonomous inspection, ultrasonic testing, PAUT, TFM, non-destructive testing, robotic inspection systems, industrial inspection automation, NDT robotics, Belgium">
-    <meta name="author" content="Vincent Pretet — ROBINSPECT Systems">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link rel="canonical" href="https://robinspect-systems.com/">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://robinspect-systems.com/">
-    <meta property="og:title" content="ROBINSPECT — Autonomous Robotic NDT Inspection Systems">
-    <meta property="og:description" content="Modular, vendor-agnostic robotic platforms for automated non-destructive testing. Advanced ultrasonics, 6-axis robotics, and intelligent data workflows for repeatable, traceable inspection.">
-    <meta property="og:image" content="https://robinspect-systems.com/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="ROBINSPECT — Autonomous Robotic Inspection Systems">
-    <meta property="og:site_name" content="ROBINSPECT Systems">
-    <meta property="og:locale" content="en_US">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ROBINSPECT — Autonomous Robotic NDT Inspection Systems">
-    <meta name="twitter:description" content="Modular robotic platforms for automated NDT. Advanced ultrasonics, 6-axis robotics, and intelligent data workflows.">
-    <meta name="twitter:image" content="https://robinspect-systems.com/og-image.jpg">
-
-    <!-- LCP: preload hero (WebP preferred) -->
-    <link rel="preload" as="image" href="hero-section.webp" type="image/webp">
-    <link rel="preload" as="image" href="hero-section.jpg" type="image/jpeg">
-
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "ROBINSPECT Systems",
-        "url": "https://robinspect-systems.com",
-        "logo": "https://robinspect-systems.com/fond-noir.png",
-        "description": "ROBINSPECT builds modular, vendor-agnostic robotic platforms for automated non-destructive testing (NDT) on complex industrial components.",
-        "founder": {
-            "@type": "Person",
-            "name": "Vincent Pretet",
-            "jobTitle": "Founder & CEO",
-            "email": "vpretet@robinspect-systems.com",
-            "telephone": "+32498663424",
-            "image": "https://robinspect-systems.com/founder.jpg"
-        },
-        "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "BE"
-        },
-        "areaServed": ["Europe", "United States"],
-        "knowsAbout": [
-            "Non-Destructive Testing",
-            "Robotic Inspection",
-            "Ultrasonic Testing",
-            "Phased Array Ultrasonic Testing",
-            "Total Focusing Method",
-            "Industrial Automation",
-            "6-axis Robotics"
-        ],
-        "sameAs": [
-            "https://www.linkedin.com/company/robinspect/"
-        ]
-    }
-    </script>
-
-    <link rel="icon" type="image/webp" href="fond-noir.webp">
-    <link rel="icon" type="image/png" href="fond-noir.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', system-ui, sans-serif; }
-        .font-display { font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif; font-weight: 600; letter-spacing: -0.04em; }
-        
-        .section-header { font-size: 2.55rem; line-height: 1.0; font-weight: 600; letter-spacing: -0.045em; }
-        
-        .industrial-card {
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            border: 1px solid #27251f;
-        }
-        .industrial-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 40px 70px -15px rgb(0 0 0 / 0.45);
-            border-color: #3f3a2f;
-        }
-
-        .btn-primary {
-            background: #eab308;
-            color: #0a0a0a;
-            font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .btn-primary:hover {
-            background: #facc15;
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px -8px rgb(234 179 8 / 0.4);
-        }
-
-        .nav-link { position: relative; }
-        .nav-link:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1.5px;
-            bottom: -4px;
-            left: 0;
-            background: #eab308;
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover:after { width: 100%; }
-
-        /* Demo video — ambient background */
-        .demo-video-shell {
-            position: relative;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            border: 1px solid #27251f;
-            background: #000;
-            box-shadow: 0 40px 70px -15px rgb(0 0 0 / 0.55);
-            height: 100%;
-        }
-        .demo-video-shell video {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            pointer-events: none;
-        }
-        .demo-video-shell--wide video {
-            aspect-ratio: 16 / 9;
-        }
-        .demo-video-shell--square video {
-            aspect-ratio: 1 / 1;
-        }
-        .demo-video-shell::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to top,
-                rgb(9 9 11 / 0.75) 0%,
-                rgb(9 9 11 / 0.15) 45%,
-                rgb(9 9 11 / 0.25) 100%
-            );
-            pointer-events: none;
-        }
-        .demo-live-dot {
-            width: 0.5rem;
-            height: 0.5rem;
-            border-radius: 9999px;
-            background: #eab308;
-            box-shadow: 0 0 0 0 rgb(234 179 8 / 0.55);
-            animation: demo-pulse 2s ease-out infinite;
-        }
-        @keyframes demo-pulse {
-            0%   { box-shadow: 0 0 0 0 rgb(234 179 8 / 0.55); }
-            70%  { box-shadow: 0 0 0 10px rgb(234 179 8 / 0); }
-            100% { box-shadow: 0 0 0 0 rgb(234 179 8 / 0); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .demo-live-dot { animation: none; }
-            .industrial-card { transition: none; }
-            .industrial-card:hover { transform: none; }
-            .btn-primary { transition: none; }
-            .btn-primary:hover { transform: none; }
-        }
-    </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Robotic NDT Inspection Systems | Automated Ultrasonic Testing (UT, PAUT, TFM) | ROBINSPECT</title>
+<meta name="description" content="ROBINSPECT builds vendor-agnostic robotic NDT platforms: 6-axis robots, advanced ultrasonics (UT, PAUT, TFM) and traceable inspection data for complex industrial components. Belgium, Europe and the United States."/>
+<meta name="keywords" content="robotic NDT, automated NDT inspection, ultrasonic testing robot, PAUT robot, TFM inspection, automated ultrasonic testing, 6-axis NDT, robotic inspection systems, non-destructive testing automation, vendor-agnostic NDT"/>
+<meta name="author" content="Vincent Pretet — ROBINSPECT Systems"/>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<meta name="googlebot" content="index, follow"/>
+<meta name="geo.region" content="BE"/>
+<meta name="geo.placename" content="Belgium"/>
+<link rel="canonical" href="https://robinspect-systems.com/"/>
+<link rel="alternate" hreflang="en" href="https://robinspect-systems.com/"/>
+<link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr"/>
+<link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="ROBINSPECT Systems"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:locale:alternate" content="fr_BE"/>
+<meta property="og:url" content="https://robinspect-systems.com/"/>
+<meta property="og:title" content="Robotic NDT Inspection Systems | Automated Ultrasonic Testing (UT, PAUT, TFM) | ROBINSPECT"/>
+<meta property="og:description" content="ROBINSPECT builds vendor-agnostic robotic NDT platforms: 6-axis robots, advanced ultrasonics (UT, PAUT, TFM) and traceable inspection data for complex industrial components. Belgium, Europe and the United States."/>
+<meta property="og:image" content="https://robinspect-systems.com/og.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Robotic NDT Inspection Systems | Automated Ultrasonic Testing (UT, PAUT, TFM) | ROBINSPECT"/>
+<meta name="twitter:description" content="ROBINSPECT builds vendor-agnostic robotic NDT platforms: 6-axis robots, advanced ultrasonics (UT, PAUT, TFM) and traceable inspection data for complex industrial components. Belgium, Europe and the United States."/>
+<meta name="twitter:image" content="https://robinspect-systems.com/og.jpg"/>
+<link rel="icon" type="image/webp" href="/media/fond-noir.webp"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Organization", "name": "ROBINSPECT Systems", "alternateName": "ROBINSPECT", "url": "https://robinspect-systems.com", "logo": "https://robinspect-systems.com/media/fond-noir.png", "image": "https://robinspect-systems.com/og.jpg", "description": "ROBINSPECT builds vendor-agnostic robotic NDT platforms: 6-axis robots, advanced ultrasonics (UT, PAUT, TFM) and traceable inspection data for complex industrial components. Belgium, Europe and the United States.", "email": "vpretet@robinspect-systems.com", "telephone": "+32498663424", "foundingDate": "2026", "areaServed": ["Europe", "United States"], "address": {"@type": "PostalAddress", "addressCountry": "BE"}, "founder": {"@type": "Person", "name": "Vincent Pretet", "jobTitle": "Founder & CEO", "email": "vpretet@robinspect-systems.com"}, "sameAs": ["https://www.linkedin.com/company/robinspect/"], "knowsAbout": ["Non-destructive testing", "Robotic NDT", "Ultrasonic testing", "PAUT", "TFM", "6-axis robotics", "CND robotisé"]}, {"@context": "https://schema.org", "@type": "ProfessionalService", "name": "ROBINSPECT robotic NDT inspection systems", "url": "https://robinspect-systems.com/", "image": "https://robinspect-systems.com/og.jpg", "inLanguage": "en", "serviceType": "Robotic NDT inspection", "provider": {"@type": "Organization", "name": "ROBINSPECT Systems"}, "areaServed": ["Europe", "United States"], "description": "ROBINSPECT builds vendor-agnostic robotic NDT platforms: 6-axis robots, advanced ultrasonics (UT, PAUT, TFM) and traceable inspection data for complex industrial components. Belgium, Europe and the United States."}, {"@context": "https://schema.org", "@type": "WebSite", "name": "ROBINSPECT", "url": "https://robinspect-systems.com", "publisher": {"@type": "Organization", "name": "ROBINSPECT Systems"}}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is robotic NDT inspection?", "acceptedAnswer": {"@type": "Answer", "text": "Robotic NDT (non-destructive testing) uses a 6-axis robot to move an ultrasonic probe along a part — welds, curved skins, complex geometries — with a repeatable path, stable orientation and full traceability. ROBINSPECT builds that inspection system, not a generic robot cell."}}, {"@type": "Question", "name": "Can a robot perform ultrasonic testing (UT, PAUT, TFM)?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, if trajectory, coupling and acquisition are designed together. ROBINSPECT integrates UT, PAUT and TFM/ATFM with robot position so the scan is synchronized — the same idea as a skilled inspector, without the variability of the gesture."}}, {"@type": "Question", "name": "Which industries need automated NDT robotics?", "acceptedAnswer": {"@type": "Answer", "text": "Aerospace and space structures, energy and nuclear assets, heavy industry and any site where critical components are expensive to stop, hard to access, or must be documented for audit."}}, {"@type": "Question", "name": "Are you locked to one robot or sensor brand?", "acceptedAnswer": {"@type": "Answer", "text": "No. The platform is vendor-agnostic: multi-robot, multi-sensor. The value is the inspection workflow — geometry, trajectory, acquisition and report — not a single hardware stack."}}, {"@type": "Question", "name": "Where is ROBINSPECT based?", "acceptedAnswer": {"@type": "Answer", "text": "Belgium, with a focus on Europe and the United States. Technical discussions are already open with NDT, robotics and high-value industrial players."}}]}]</script>
+<style>
+:root{--bg:#050505;--fg:#f4f1ea;--muted:#9a958a;--dim:#6b665c;--line:#24211c;--surface:#0e0d0b;--gold:#e8c547;--gold-hot:#f3d56a;--ink:#070707}
+*{box-sizing:border-box}html{scroll-behavior:smooth;overflow-x:hidden;background:var(--bg);color:var(--fg)}
+body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--fg);overflow-x:hidden}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;background:none;border:0;color:inherit}
+img,video{max-width:100%;display:block}::selection{background:var(--gold);color:var(--ink)}
+.font-display{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;letter-spacing:-.02em;text-transform:uppercase}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;font-size:.68rem;color:var(--gold)}
+.wrap{max-width:80rem;margin:0 auto;padding:0 1.25rem}
+@media(min-width:768px){.wrap{padding:0 2rem}}
+header{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s}
+header.scrolled,header.open{background:rgba(7,7,7,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.hbar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;height:4rem;flex-wrap:nowrap}
+@media(min-width:768px){.hbar{height:5rem}}
+.brand{display:flex;align-items:center;gap:.65rem;min-height:2.75rem}
+.brand img{width:2rem;height:2rem;object-fit:contain}
+.brand span{font-family:"Barlow Condensed",sans-serif;font-size:1.35rem;letter-spacing:.14em}
+nav.desk{display:none;gap:1.25rem;font-size:13px;font-weight:500;color:var(--muted)}
+nav.desk a:hover{color:var(--fg)}
+@media(min-width:1100px){nav.desk{display:flex}}
+.actions{display:flex;align-items:center;gap:.5rem}
+.lang{display:inline-flex;height:2.75rem;border:1px solid var(--line);font-size:11px;font-weight:700;letter-spacing:.08em}
+.lang a{display:flex;align-items:center;padding:0 .65rem;min-height:2.75rem;color:var(--muted)}
+.lang a.on{background:var(--gold);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding:.65rem 1rem;font-size:.75rem;font-weight:700;letter-spacing:.04em;background:var(--gold);color:var(--ink)}
+.btn:hover{background:var(--gold-hot)}
+.btn-lg{min-height:3rem;padding:.75rem 1.5rem;font-size:.875rem}
+.btn-ghost{background:transparent;color:var(--fg);border:1px solid rgba(244,241,234,.25)}
+.btn-ghost:hover{background:rgba(244,241,234,.08)}
+.menu-btn{display:flex;width:2.75rem;height:2.75rem;align-items:center;justify-content:center;border:1px solid var(--line)}
+@media(min-width:1100px){.menu-btn{display:none}.desk-cta{display:inline-flex!important}}
+.desk-cta{display:none}
+.mobile{display:none;border-top:1px solid var(--line);background:rgba(7,7,7,.95);padding:.75rem 1rem}
+header.open .mobile{display:block}
+.mobile a{display:flex;min-height:2.75rem;align-items:center}
+.hero{position:relative;min-height:100dvh;overflow:hidden;isolation:isolate}
+.hero-media{position:absolute;inset:0;overflow:hidden}
+.hero-media video{width:100%;height:100%;object-fit:cover;transform:scale(1.05)}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(7,7,7,.55),rgba(7,7,7,.45),var(--bg))}
+.hero-in{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;min-height:100dvh;padding:6rem 0 2.5rem}
+.hero h1{margin:.9rem 0 0;font-size:16vw;line-height:.82}
+@media(min-width:768px){.hero h1{font-size:7.2rem}}
+@media(min-width:1100px){.hero h1{font-size:8.2rem}}
+.lead{max-width:36rem;margin:1.25rem 0 0;color:rgba(244,241,234,.8);line-height:1.6;font-size:15px}
+@media(min-width:768px){.lead{font-size:1.125rem}}
+.ctas{display:flex;flex-direction:column;gap:.75rem;margin-top:1.6rem}
+@media(min-width:640px){.ctas{flex-direction:row}}
+.sm-only{display:inline}@media(min-width:640px){.sm-only{display:none}.lg-only{display:inline!important}}
+.lg-only{display:none}
+.geo{margin-top:2rem;font-size:.75rem;color:var(--muted)}
+.specs{border-top:1px solid rgba(36,33,28,.8);background:rgba(7,7,7,.7);backdrop-filter:blur(10px);position:relative;z-index:2}
+.specs-g{display:grid;grid-template-columns:1fr 1fr}
+@media(min-width:768px){.specs-g{grid-template-columns:repeat(4,1fr)}}
+.specs-g div{padding:.75rem 1rem;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.sec{border-top:1px solid var(--line);overflow:hidden;position:relative}
+.split{display:grid}
+@media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}
+.photo{position:relative;min-height:68vh;overflow:hidden}
+@media(min-width:1024px){.photo{min-height:88dvh}}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pad{padding:3.5rem 1.25rem}
+@media(min-width:768px){.pad{padding:6rem 3rem}}
+h2.display{margin:.8rem 0 0;font-size:2.8rem;line-height:.9}
+@media(min-width:768px){h2.display{font-size:4.4rem}}
+.muted{color:var(--muted)}
+.grid2{display:grid;gap:2rem;margin-top:2.5rem}
+@media(min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+.ico{color:var(--gold);margin-bottom:.7rem}
+.bgvid{position:absolute;inset:0}
+.bgvid video,.bgimg{width:100%;height:100%;object-fit:cover}
+.veil{position:absolute;inset:0;background:rgba(5,5,5,.75)}
+.rel{position:relative;z-index:2}
+.cols3{display:grid;gap:1px;background:var(--line);margin-top:3rem}
+@media(min-width:768px){.cols3{grid-template-columns:repeat(3,1fr)}.cols4{grid-template-columns:repeat(4,1fr)!important}}
+.card{background:rgba(5,5,5,.8);padding:2rem}
+.gold-xs{margin-top:1.4rem;font-size:.75rem;color:rgba(232,197,71,.8)}
+.demo-g{display:grid;gap:1rem;margin-top:2.5rem}
+@media(min-width:1024px){.demo-g{grid-template-columns:3fr 2fr}}
+figure.shot{position:relative;overflow:hidden;border:1px solid var(--line);background:#000;margin:0}
+figure.shot video{width:100%;aspect-ratio:16/9;object-fit:cover}
+@media(min-width:1024px){.sq video{aspect-ratio:auto;height:100%}}
+figcaption{position:absolute;inset:auto 0 0 0;padding:1.25rem;background:linear-gradient(to top,#070707,rgba(7,7,7,.7),transparent)}
+.live{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(244,241,234,.1);background:rgba(7,7,7,.6);padding:.2rem .7rem;margin-bottom:.7rem}
+.dot{width:.45rem;height:.45rem;border-radius:99px;background:var(--gold);box-shadow:0 0 0 0 rgba(232,197,71,.5);animation:pulse 2s ease-out infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px transparent}}
+.rows{margin-top:2.5rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.row{display:grid;gap:.75rem;padding:1.4rem 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+@media(min-width:768px){.row{grid-template-columns:220px 1fr;align-items:start}}
+.row h3{display:flex;align-items:center;gap:.7rem;margin:0;font-size:1rem}
+.note{margin-top:2rem;font-size:.75rem;color:var(--dim);max-width:48rem}
+.found{display:grid;gap:2.5rem;padding:5rem 0}
+@media(min-width:1024px){.found{grid-template-columns:5fr 7fr;align-items:center}}
+.box{border:1px solid var(--line);background:var(--surface);padding:2rem}
+.frow{display:flex;flex-direction:column;gap:2rem}
+@media(min-width:768px){.frow{flex-direction:row}}
+.frow img{width:8rem;height:8rem;object-fit:cover;object-position:top}
+.faq dt{font-size:1.1rem;font-weight:600}.faq dd{margin:.7rem 0 0;color:var(--muted);font-size:.9rem;line-height:1.6}
+.faq .q{padding:1.6rem 0;border-bottom:1px solid var(--line)}
+.center{text-align:center;max-width:48rem;margin:0 auto;padding:5rem 1.25rem}
+footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:var(--dim)}
+.ft{display:flex;flex-direction:column;gap:.75rem}
+@media(min-width:768px){.ft{flex-direction:row;justify-content:space-between;align-items:center}}
+</style>
 </head>
-<body class="bg-zinc-950 text-zinc-200">
+<body>
+<header id="topbar">
+  <div class="wrap hbar">
+    <a class="brand" href="#hero" aria-label="ROBINSPECT">
+      <img src="/media/fond-noir.webp" alt="ROBINSPECT Systems logo — robotic NDT inspection"/>
+      <span class="font-display">ROBINSPECT</span>
+    </a>
+    <nav class="desk"><a href="#challenge">Challenge</a><a href="#technology">Technology</a><a href="#demo">Demo</a><a href="#traction">Traction</a><a href="#founder">Founder</a><a href="#roadmap">Roadmap</a><a href="#faq">FAQ</a></nav>
+    <div class="actions">
+      <div class="lang" role="group" aria-label="Language">
+        <a href="/" class="on">EN</a>
+        <a href="/fr" class="">FR</a>
+      </div>
+      <a class="btn desk-cta" href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20/%20sector%3A%20%0A">Book a demo</a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
+    </div>
+  </div>
+  <div class="mobile wrap" id="mobile"><a href="#challenge">Challenge</a><a href="#technology">Technology</a><a href="#demo">Demo</a><a href="#traction">Traction</a><a href="#founder">Founder</a><a href="#roadmap">Roadmap</a><a href="#faq">FAQ</a><a class="btn" style="margin-top:.5rem" href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20/%20sector%3A%20%0A">Book a demo</a></div>
+</header>
 
-    <nav class="sticky top-0 z-50 bg-zinc-950/90 backdrop-blur-2xl border-b border-zinc-800" aria-label="Main navigation">
-        <div class="max-w-7xl mx-auto px-6 md:px-8">
-            <div class="flex items-center justify-between h-20">
-                <a href="/" class="flex items-center gap-x-3" aria-label="ROBINSPECT — Home">
-                    <picture>
-                        <source srcset="fond-noir.webp" type="image/webp">
-                        <img src="fond-noir.png" alt="ROBINSPECT Systems logo" class="h-9 w-9 object-contain" width="36" height="36">
-                    </picture>
-                    <span class="font-semibold text-2xl tracking-[-1px]">ROBINSPECT</span>
-                </a>
+<main>
+<section class="hero" id="hero">
+  <div class="hero-media">
+    <video data-ambient autoplay muted loop playsinline preload="metadata" poster="/media/hero-cinema.jpg">
+      <source src="/media/hero-bg.mp4" type="video/mp4"/>
+    </video>
+  </div>
+  <div class="hero-shade"></div>
+  <div class="wrap hero-in">
+    <div class="mono">Pre-seed · Focused execution</div>
+    <h1 class="font-display">Autonomous<br/>robotic<br/>inspection</h1>
+    <p class="lead">Modular, vendor-agnostic robotic platforms that combine advanced ultrasonics, precise 6-axis motion and intelligent data workflows — repeatable, fully traceable NDT on complex industrial components.</p>
+    <div class="ctas">
+      <a class="btn btn-lg" href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20/%20sector%3A%20%0A"><span class="sm-only">Book a demo</span><span class="lg-only">Book a technical demo</span></a>
+      <a class="btn btn-lg btn-ghost" href="#demo">See the robot</a>
+    </div>
+    <div class="geo">Belgium · Europe &amp; United States</div>
+  </div>
+  <div class="specs"><div class="wrap specs-g"><div>6-axis</div><div>Vendor-agnostic</div><div>UT / PAUT / TFM</div><div>Belgium + US</div></div></div>
+</section>
 
-                <div class="hidden md:flex items-center gap-x-9 text-sm font-medium">
-                    <a href="#technology" class="nav-link text-zinc-400 hover:text-white">Technology</a>
-                    <a href="#demo" class="nav-link text-zinc-400 hover:text-white">Demo</a>
-                    <a href="#traction" class="nav-link text-zinc-400 hover:text-white">Traction</a>
-                    <a href="#founder" class="nav-link text-zinc-400 hover:text-white">Founder</a>
-                    <a href="#roadmap" class="nav-link text-zinc-400 hover:text-white">Roadmap</a>
-                </div>
+<section class="sec" id="challenge">
+  <div class="split">
+    <div class="photo">
+      <img src="/media/challenge-cinema.jpg" alt="Manual ultrasonic NDT inspection on a complex welded industrial structure"/>
+    </div>
+    <div class="pad">
+      <div class="mono">The challenge</div>
+      <h2 class="font-display display">Too manual.<br/>Too variable.<br/>Too hard to scale.</h2>
+      <p class="muted" style="max-width:28rem;margin-top:1.3rem">Why NDT automation is critical on complex geometries: the industry still depends on the gesture of the operator.</p>
+      <div class="grid2"><div><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/></svg></div><h3>High operator dependency</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Inspection quality still varies significantly between operators. Complex geometries make consistent probe orientation and coupling extremely difficult to repeat.</p></div><div><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16.5 12"/></svg></div><h3>Cost, time &amp; scalability</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Long inspection cycles, production downtime, and a growing shortage of qualified Level 2/3 experts create bottlenecks for critical assets.</p></div><div><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg></div><h3>Traceability &amp; audit burden</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Manual documentation is slow, error-prone and often disconnected from the actual inspection data and robot path.</p></div><div><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div><h3>Safety &amp; access constraints</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Many high-value inspections occur in confined, radiological or hazardous environments where manual execution carries high HSE cost.</p></div></div>
+    </div>
+  </div>
+</section>
 
-                <div class="flex items-center gap-x-3 md:gap-x-4">
-                    <a href="#contact" class="hidden md:block px-6 py-2.5 text-sm font-medium rounded-2xl border border-zinc-700 hover:bg-zinc-900 transition-colors">Contact</a>
-                    <a href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20%2F%20sector%3A%20%0A" class="btn-primary hidden sm:inline-flex px-6 md:px-8 py-3 rounded-2xl text-sm font-bold">Book a Demo</a>
-                    <button type="button" id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-2xl border border-zinc-700 text-zinc-200 hover:bg-zinc-900 hover:border-zinc-600 transition-colors" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">
-                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
+<section class="sec" id="technology">
+  <div class="bgvid">
+    <video class="bgimg" data-ambient muted loop playsinline preload="none" poster="/media/probe-cinema.jpg">
+      <source src="/media/probe-bg.mp4" type="video/mp4"/>
+    </video>
+  </div>
+  <div class="veil"></div>
+  <div class="wrap pad rel">
+    <div class="mono">Our approach</div>
+    <h2 class="font-display display" style="max-width:52rem">A modular, vendor-agnostic robotic inspection platform</h2>
+    <p class="lead">We integrate the best available hardware and software into coherent, repeatable inspection workflows — without locking customers into a single robot or sensor brand.</p>
+    <div class="cols3"><div class="card"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></div><h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0">Robotics &amp; trajectory</h3><p class="muted" style="font-size:.9rem;line-height:1.6">6-axis robots with intelligent surface following, automatic TCP calibration, and precise, repeatable paths even on complex curved or welded geometries.</p><div class="gold-xs">Multi-brand · Real-time control · Surface normal</div></div><div class="card"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M12 6c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M12 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M12 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg></div><h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0">Advanced NDT integration</h3><p class="muted" style="font-size:.9rem;line-height:1.6">UT, PAUT, TFM/ATFM with stable coupling and full synchronization between robot position and ultrasonic data acquisition. Hardware-agnostic by design.</p><div class="gold-xs">UT · PAUT · TFM · Future-proof</div></div><div class="card"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div><h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0">Software &amp; data layer</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Digital inspection workflows, real-time robot–NDT synchronization, automated reporting and complete traceability from geometry to final report.</p><div class="gold-xs">Traceability by design · Audit-ready</div></div></div>
+  </div>
+</section>
 
-            <div id="mobile-menu" class="hidden border-t border-zinc-800 pb-5 pt-3 md:!hidden">
-                <div class="flex flex-col gap-1 text-sm font-medium">
-                    <a href="#technology" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Technology</a>
-                    <a href="#demo" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Demo</a>
-                    <a href="#traction" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Traction</a>
-                    <a href="#founder" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Founder</a>
-                    <a href="#roadmap" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Roadmap</a>
-                    <a href="#contact" class="mobile-nav-link px-3 py-3 rounded-xl text-zinc-300 hover:bg-zinc-900 hover:text-white">Contact</a>
-                    <a href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20%2F%20sector%3A%20%0A" class="btn-primary mt-2 inline-flex items-center justify-center px-6 py-3.5 rounded-2xl text-sm font-bold">Book a Demo</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+<section class="sec" id="demo" style="background:var(--ink)">
+  <div class="wrap pad">
+    <div class="mono">First demonstration</div>
+    <h2 class="font-display display">The robot<br/>in action.</h2>
+    <p class="lead">Early tests with the Fairino FR5 — first trajectory and tool positioning on a representative test part. NDT-integrated demos coming next.</p>
+    <div class="demo-g">
+      <figure class="shot">
+        <video data-ambient muted loop playsinline preload="none" poster="/media/demo-wide-poster.webp">
+          <source src="/media/demo-wide.mp4" type="video/mp4"/>
+        </video>
+        <figcaption>
+          <div class="live"><span class="dot"></span><span class="mono">Live loop</span></div>
+          <div style="font-weight:600">Fairino FR5 · Trajectory &amp; TCP</div>
+          <div class="muted" style="font-size:.875rem">Wide view · positioning on test geometry</div>
+        </figcaption>
+      </figure>
+      <figure class="shot sq">
+        <video data-ambient muted loop playsinline preload="none" poster="/media/demo-square-poster.webp">
+          <source src="/media/demo-square.mp4" type="video/mp4"/>
+        </video>
+        <figcaption>
+          <div class="live"><span class="dot"></span><span class="mono">Live loop</span></div>
+          <div style="font-weight:600">Close-up · Tool path</div>
+          <div class="muted" style="font-size:.875rem">Detail on test geometry — July 2026</div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
 
-    <main>
+<section class="sec" id="traction">
+  <div class="bgvid"><img class="bgimg" src="/media/energy-cinema.jpg" alt="Industrial energy piping hall — typical environment for robotic NDT" style="opacity:.25"/></div>
+  <div class="veil"></div>
+  <div class="wrap pad rel">
+    <div class="mono">Early traction</div>
+    <h2 class="font-display display" style="max-width:52rem">Credibility through targeted technical conversations.</h2>
+    <p class="lead">We are in active technical discussions with leading players in advanced ultrasonics, robot control systems, and high-value industrial sectors. Our priority is to convert this interest into demonstrable prototypes and first paid Proofs of Concept.</p>
+    <div class="rows"><div class="row"><h3><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg> NDT technology partners</h3><p class="muted" style="font-size:.9rem;line-height:1.6;margin:0">Active discussions with providers of advanced ultrasonic systems (PAUT, TFM/ATFM) for integration into robotic workflows.</p></div><div class="row"><h3><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg> Robotics &amp; control</h3><p class="muted" style="font-size:.9rem;line-height:1.6;margin:0">Exploratory work on real-time robot control, multi-brand trajectory generation and low-level synchronization.</p></div><div class="row"><h3><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> Aerospace &amp; space</h3><p class="muted" style="font-size:.9rem;line-height:1.6;margin:0">Early technical interest from organizations seeking advanced, traceable inspection methods for complex critical components.</p></div><div class="row"><h3><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg> Industrial &amp; energy</h3><p class="muted" style="font-size:.9rem;line-height:1.6;margin:0">Ongoing outreach to companies operating high-value assets that require frequent, high-quality, documented inspections.</p></div></div>
+    <p class="note">All conversations remain at an early stage. No commercial agreements or binding commitments have been signed. Our focus is on building demonstrable technical proof before expanding commercial discussions.</p>
+  </div>
+</section>
 
-    <!-- HERO -->
-    <section id="hero" class="relative min-h-[92dvh] flex items-center justify-center pt-8 pb-16 overflow-hidden">
-        <picture class="absolute inset-0 -z-0">
-            <source srcset="hero-section.webp" type="image/webp">
-            <img src="hero-section.jpg" alt="" class="w-full h-full object-cover object-[center_30%]" width="768" height="1152" fetchpriority="high" decoding="async">
-        </picture>
-        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70"></div>
-
-        <div class="relative z-10 max-w-4xl mx-auto px-8 text-center pt-10">
-            
-            <div class="inline-flex items-center gap-x-2 px-5 py-1.5 rounded-full bg-black/60 border border-white/10 mb-6">
-                <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-                <span class="text-xs font-mono tracking-[1.5px] text-yellow-500">PRE-SEED • FOCUSED EXECUTION</span>
-            </div>
-
-            <h1 class="font-display text-6xl md:text-[70px] leading-[0.92] tracking-[-4.5px] font-semibold mb-6 text-white">
-                Autonomous Robotic<br>Inspection Systems
-            </h1>
-
-            <p class="max-w-xl mx-auto text-[17.5px] text-zinc-200 mb-10 leading-relaxed">
-                We build modular, vendor-agnostic robotic platforms that combine advanced ultrasonics, 
-                precise 6-axis motion and intelligent data workflows to deliver repeatable, fully traceable NDT 
-                on complex industrial components.
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20%2F%20sector%3A%20%0A" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Book a Technical Demo</a>
-                <a href="#demo" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-white/30 hover:bg-white/10 text-lg font-medium transition-colors">See the robot</a>
-            </div>
-            
-            <div class="mt-10 text-xs text-zinc-400 flex items-center justify-center gap-x-2">
-                <i class="fa-solid fa-globe"></i>
-                <span>Belgium • Europe &amp; United States focus</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- PROBLEM / CHALLENGE -->
-    <section id="challenge" class="max-w-7xl mx-auto px-8 py-20 border-t border-zinc-800">
-        
-        <div class="mb-10">
-            <span class="text-yellow-500 text-xs font-mono tracking-[3px]">THE CHALLENGE</span>
-            <h2 class="section-header mt-3">Why NDT automation is critical: too manual, too variable, too hard to scale on complex geometries</h2>
-        </div>
-
-        <div class="grid lg:grid-cols-2 gap-x-12 gap-y-10 items-start">
-            
-            <!-- Photo à gauche -->
-            <div class="rounded-3xl overflow-hidden shadow-2xl">
-                <picture>
-                    <source srcset="challenge-section.webp" type="image/webp">
-                    <img src="challenge-section.jpg" alt="Technician performing manual ultrasonic NDT inspection on a complex welded industrial structure" class="w-full h-auto object-cover" width="768" height="1152" loading="lazy" decoding="async">
-                </picture>
-            </div>
-
-            <!-- 4 blocs à droite -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
-                    <i class="fa-solid fa-user-tie text-yellow-500 text-3xl mb-4"></i>
-                    <h3 class="font-semibold text-xl mb-2">High operator dependency</h3>
-                    <p class="text-zinc-400">Inspection quality still varies significantly between operators. Complex geometries make consistent probe orientation and coupling extremely difficult to repeat.</p>
-                </div>
-                <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
-                    <i class="fa-solid fa-clock text-yellow-500 text-3xl mb-4"></i>
-                    <h3 class="font-semibold text-xl mb-2">Cost, time &amp; scalability</h3>
-                    <p class="text-zinc-400">Long inspection cycles, production downtime, and a growing shortage of qualified Level 2/3 experts create bottlenecks for critical assets.</p>
-                </div>
-                <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
-                    <i class="fa-solid fa-file-lines text-yellow-500 text-3xl mb-4"></i>
-                    <h3 class="font-semibold text-xl mb-2">Traceability &amp; audit burden</h3>
-                    <p class="text-zinc-400">Manual documentation is slow, error-prone and often disconnected from the actual inspection data and robot path.</p>
-                </div>
-                <div class="industrial-card bg-zinc-900 p-8 rounded-3xl">
-                    <i class="fa-solid fa-shield-halved text-yellow-500 text-3xl mb-4"></i>
-                    <h3 class="font-semibold text-xl mb-2">Safety &amp; access constraints</h3>
-                    <p class="text-zinc-400">Many high-value inspections occur in confined, radiological or hazardous environments where manual execution carries high HSE cost.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TECHNOLOGY -->
-    <section id="technology" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800 bg-zinc-900/40">
-        <div class="max-w-2xl mb-14">
-            <span class="text-yellow-500 text-xs font-mono tracking-[3px]">OUR APPROACH</span>
-            <h2 class="section-header mt-4">Modular, vendor-agnostic robotic inspection platform for automated NDT</h2>
-            <p class="mt-3 text-lg text-zinc-400">We integrate the best available hardware and software into coherent, repeatable inspection workflows — without locking customers into a single robot or sensor brand.</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="industrial-card p-9 rounded-3xl">
-                <i class="fa-solid fa-robot text-yellow-500 text-3xl mb-6"></i>
-                <h3 class="font-semibold text-2xl mb-3">Robotics &amp; Trajectory</h3>
-                <p class="text-zinc-400">6-axis robots with intelligent surface following, automatic TCP calibration, and precise, repeatable paths even on complex curved or welded geometries.</p>
-                <div class="mt-5 text-xs text-yellow-500/80 font-medium">Multi-brand • Real-time control • Surface normal maintenance</div>
-            </div>
-            <div class="industrial-card p-9 rounded-3xl">
-                <i class="fa-solid fa-waveform-lines text-yellow-500 text-3xl mb-6"></i>
-                <h3 class="font-semibold text-2xl mb-3">Advanced NDT Integration</h3>
-                <p class="text-zinc-400">UT, PAUT, TFM/ATFM with stable coupling and full synchronization between robot position and ultrasonic data acquisition. Hardware-agnostic by design.</p>
-                <div class="mt-5 text-xs text-yellow-500/80 font-medium">UT • PAUT • TFM • Future-proof</div>
-            </div>
-            <div class="industrial-card p-9 rounded-3xl">
-                <i class="fa-solid fa-laptop-code text-yellow-500 text-3xl mb-6"></i>
-                <h3 class="font-semibold text-2xl mb-3">Software &amp; Data Layer</h3>
-                <p class="text-zinc-400">Digital inspection workflows, real-time robot–NDT synchronization, automated reporting and complete traceability from geometry to final report.</p>
-                <div class="mt-5 text-xs text-yellow-500/80 font-medium">Traceability by design • Audit-ready • Extensible</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- DEMO — robot in action (autoplay ambient) -->
-    <section id="demo" class="border-t border-zinc-800 bg-zinc-950">
-        <div class="max-w-7xl mx-auto px-8 py-24">
-            <div class="max-w-2xl mb-12">
-                <span class="text-yellow-500 text-xs font-mono tracking-[3px]">FIRST DEMONSTRATION</span>
-                <h2 class="section-header mt-4">The robot in action.</h2>
-                <p class="mt-3 text-lg text-zinc-400">Early tests with the Fairino FR5 — first trajectory and tool positioning on a representative test part. NDT-integrated demos coming next.</p>
-            </div>
-
-            <div class="grid lg:grid-cols-5 gap-6 items-stretch">
-                <!-- Wide shot -->
-                <div class="lg:col-span-3 demo-video-shell demo-video-shell--wide relative">
-                    <video
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        preload="none"
-                        poster="demo-wide-poster.webp"
-                        aria-label="Fairino FR5 robot trajectory and tool positioning on a yellow test part — July 2026">
-                        <source src="demo-wide.mp4" type="video/mp4">
-                    </video>
-
-                    <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-7 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pointer-events-none">
-                        <div>
-                            <div class="inline-flex items-center gap-x-2 px-3 py-1 rounded-full bg-black/55 border border-white/10 mb-3">
-                                <span class="demo-live-dot" aria-hidden="true"></span>
-                                <span class="text-[10px] font-mono tracking-[1.5px] text-yellow-500 uppercase">Live loop</span>
-                            </div>
-                            <div class="text-white font-semibold text-lg md:text-xl tracking-tight">Fairino FR5 · Trajectory &amp; TCP</div>
-                            <div class="text-sm text-zinc-300 mt-1">Wide view · positioning on test geometry</div>
-                        </div>
-                        <div class="text-xs text-zinc-400 font-mono tracking-wider sm:text-right">
-                            PRE-SEED PROOF
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Square overhead / close framing -->
-                <div class="lg:col-span-2 demo-video-shell demo-video-shell--square relative max-w-md mx-auto lg:max-w-none w-full">
-                    <video
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        preload="none"
-                        poster="demo-square-poster.webp"
-                        aria-label="Fairino FR5 overhead view of tool positioning on test part — July 2026">
-                        <source src="demo-square.mp4" type="video/mp4">
-                    </video>
-
-                    <div class="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6 pointer-events-none">
-                        <div class="inline-flex items-center gap-x-2 px-3 py-1 rounded-full bg-black/55 border border-white/10 mb-3">
-                            <span class="demo-live-dot" aria-hidden="true"></span>
-                            <span class="text-[10px] font-mono tracking-[1.5px] text-yellow-500 uppercase">Live loop</span>
-                        </div>
-                        <div class="text-white font-semibold text-base md:text-lg tracking-tight">Close-up · Tool path</div>
-                        <div class="text-sm text-zinc-300 mt-1">Detail on test geometry — July 2026</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TRACTION -->
-    <section id="traction" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800">
-        <div class="max-w-2xl mb-12">
-            <span class="text-yellow-500 text-xs font-mono tracking-[3px]">EARLY TRACTION</span>
-            <h2 class="section-header mt-4">Building credibility through targeted technical conversations.</h2>
-            <p class="mt-3 text-lg text-zinc-400">We are in active technical discussions with leading players in advanced ultrasonics, robot control systems, and high-value industrial sectors. Our priority is to convert this interest into demonstrable prototypes and first paid Proofs of Concept.</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
-                <i class="fa-solid fa-microchip text-yellow-500 text-2xl mb-5"></i>
-                <div class="font-semibold mb-2">NDT Technology Partners</div>
-                <p class="text-sm text-zinc-400">Active discussions with providers of advanced ultrasonic systems (PAUT, TFM/ATFM) for integration into robotic workflows.</p>
-            </div>
-            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
-                <i class="fa-solid fa-robot text-yellow-500 text-2xl mb-5"></i>
-                <div class="font-semibold mb-2">Robotics &amp; Control</div>
-                <p class="text-sm text-zinc-400">Exploratory work on real-time robot control, multi-brand trajectory generation and low-level synchronization.</p>
-            </div>
-            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
-                <i class="fa-solid fa-rocket text-yellow-500 text-2xl mb-5"></i>
-                <div class="font-semibold mb-2">Aerospace &amp; Space</div>
-                <p class="text-sm text-zinc-400">Early technical interest from organizations seeking advanced, traceable inspection methods for complex critical components.</p>
-            </div>
-            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl">
-                <i class="fa-solid fa-industry text-yellow-500 text-2xl mb-5"></i>
-                <div class="font-semibold mb-2">Industrial &amp; Energy</div>
-                <p class="text-sm text-zinc-400">Ongoing outreach to companies operating high-value assets that require frequent, high-quality, documented inspections.</p>
-            </div>
-        </div>
-
-        <div class="mt-8 text-xs text-zinc-500 max-w-3xl">
-            All conversations remain at an early stage. No commercial agreements or binding commitments have been signed. Our focus is on building demonstrable technical proof before expanding commercial discussions.
-        </div>
-    </section>
-
-    <!-- FOUNDER -->
-    <section id="founder" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800 bg-zinc-900/40">
-        <div class="grid lg:grid-cols-12 gap-x-16 items-center">
-            <div class="lg:col-span-5 mb-10 lg:mb-0">
-                <span class="text-yellow-500 text-xs font-mono tracking-[3px]">LEADERSHIP</span>
-                <h2 class="section-header mt-4">Built by someone who has lived the problem on the shop floor.</h2>
-                <p class="mt-3 text-zinc-400">Robinspect is not a robotics idea applied to NDT from the outside. It comes from direct experience with the real constraints of advanced ultrasonic inspection in demanding industrial environments.</p>
-            </div>
-            
-            <div class="lg:col-span-7">
-                <div class="industrial-card p-10 rounded-3xl">
-                    <div class="flex flex-col md:flex-row gap-x-8">
-                        <div class="w-28 h-28 flex-shrink-0 rounded-2xl overflow-hidden border border-zinc-700 mb-8 md:mb-0 bg-zinc-800 shadow-lg">
-                            <picture>
-                                <source srcset="founder.webp" type="image/webp">
-                                <img src="founder.jpg" alt="Vincent Pretet, Founder &amp; CEO of ROBINSPECT Systems" class="w-full h-full object-cover object-top" width="400" height="400" loading="lazy" decoding="async">
-                            </picture>
-                        </div>
-                        <div>
-                            <div class="font-semibold text-3xl tracking-tight">Vincent Pretet</div>
-                            <div class="text-yellow-500 font-medium tracking-wider mt-1">FOUNDER &amp; CEO</div>
-                            
-                            <div class="mt-7 space-y-4 text-[15px] text-zinc-300">
-                                <div>• NDT Level 2 certified (UT &amp; ET) with hands-on experience in nuclear, aerospace and critical industrial environments.</div>
-                                <div>• Direct experience delivering 6-axis robotic inspection projects in highly regulated sectors.</div>
-                                <div>• Deep understanding of both advanced NDT physics and real-world customer constraints around quality, HSE and documentation.</div>
-                            </div>
-                            
-                            <div class="mt-6 inline-flex items-center text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-yellow-500/90">
-                                <span class="font-mono tracking-[1px]">BELGIUM</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ROADMAP -->
-    <section id="roadmap" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-800">
-        <div class="max-w-2xl mb-12">
-            <span class="text-yellow-500 text-xs font-mono tracking-[3px]">EXECUTION PLAN</span>
-            <h2 class="section-header mt-4">Clear, focused 24-month roadmap.</h2>
-        </div>
-
-        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-10 md:p-14">
-            <div class="grid md:grid-cols-4 gap-x-8 gap-y-10">
-                <div>
-                    <div class="text-yellow-500 font-mono text-sm mb-2">01 • 0–6 MONTHS</div>
-                    <div class="font-semibold text-xl mb-2">Proof of Concept</div>
-                    <div class="text-zinc-400 text-sm">First robot + UT demonstrations on representative geometries. Initial LOIs. Incubator support. Core team formation.</div>
-                </div>
-                <div>
-                    <div class="text-yellow-500 font-mono text-sm mb-2">02 • 6–12 MONTHS</div>
-                    <div class="font-semibold text-xl mb-2">Prototype Platform</div>
-                    <div class="text-zinc-400 text-sm">Robust, repeatable demo system. First paid PoCs. Core software layer. Early customer references.</div>
-                </div>
-                <div>
-                    <div class="text-yellow-500 font-mono text-sm mb-2">03 • 12–18 MONTHS</div>
-                    <div class="font-semibold text-xl mb-2">Industrial Pilots</div>
-                    <div class="text-zinc-400 text-sm">Customer-funded pilots. Documented deployments. First system sales. Product hardening.</div>
-                </div>
-                <div>
-                    <div class="text-yellow-500 font-mono text-sm mb-2">04 • 18–24 MONTHS</div>
-                    <div class="font-semibold text-xl mb-2">Preparation for Scale</div>
-                    <div class="text-zinc-400 text-sm">Productization. International expansion readiness (Europe + US). Team and process scaling.</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="max-w-3xl mx-auto px-8 py-20 text-center border-t border-zinc-800">
-        <h2 class="font-display text-5xl tracking-[-1.5px] font-semibold mb-5">Let’s discuss your inspection challenge.</h2>
-        <p class="text-xl text-zinc-400 mb-10">Whether you are an industrial end-user, technology partner, or investor evaluating the opportunity — I’m happy to talk.</p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-14">
-            <a href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20request%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20%2F%20sector%3A%20%0A" class="btn-primary inline-flex items-center justify-center px-12 py-4 rounded-2xl text-lg font-bold">Request a technical demo</a>
-            <a href="mailto:vpretet@robinspect-systems.com?subject=Hello%20from%20robinspect-systems.com&amp;body=Hi%20Vincent%2C%0A%0A" class="inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-zinc-700 hover:bg-zinc-900 text-lg font-medium transition-colors">Talk to Vincent</a>
-        </div>
-
-        <!-- LinkedIn — image + bouton cliquables -->
-        <div class="flex flex-col items-center gap-5 mb-10">
-            <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener noreferrer" class="group block w-full max-w-[520px] cursor-pointer rounded-2xl border border-zinc-800 hover:border-yellow-500/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950" aria-label="ROBINSPECT Systems on LinkedIn — open company page">
-                <picture>
-                    <source srcset="linkedin-noir.webp" type="image/webp">
-                    <img src="linkedin-banner.jpg" alt="ROBINSPECT Systems on LinkedIn" class="w-full h-auto rounded-2xl transition-opacity group-hover:opacity-90" loading="lazy" width="1200" height="450" decoding="async">
-                </picture>
-            </a>
-            <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-x-3 px-7 py-3.5 rounded-2xl border border-zinc-700 bg-zinc-900/80 text-zinc-100 hover:bg-[#0A66C2] hover:border-[#0A66C2] hover:text-white transition-colors font-medium">
-                <i class="fa-brands fa-linkedin text-2xl" aria-hidden="true"></i>
-                <span>Follow ROBINSPECT on LinkedIn</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-70" aria-hidden="true"></i>
-            </a>
-        </div>
-
+<section class="sec" id="founder">
+  <div class="wrap found">
+    <div>
+      <div class="mono">Leadership</div>
+      <h2 class="font-display display">Built by someone who has lived the problem on the shop floor.</h2>
+      <p class="muted" style="margin-top:1.3rem">Robinspect is not a robotics idea applied to NDT from the outside. It comes from direct experience with the real constraints of advanced ultrasonic inspection in demanding industrial environments.</p>
+    </div>
+    <div class="box">
+      <div class="frow">
+        <img src="/media/founder.webp" alt="Vincent Pretet, Founder and CEO of ROBINSPECT, NDT Level 2 UT and ET"/>
         <div>
-            <div class="font-medium text-xl">Vincent Pretet</div>
-            <div class="text-yellow-500 text-sm tracking-[1px] mt-0.5">FOUNDER &amp; CEO</div>
-            <div class="mt-5 text-sm text-zinc-400 space-y-1">
-                <div><a href="tel:+32498663424" class="hover:text-white transition-colors">+32 498 66 34 24</a></div>
-                <div><a href="mailto:vpretet@robinspect-systems.com" class="hover:text-white transition-colors">vpretet@robinspect-systems.com</a></div>
-                <div class="pt-1">
-                    <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-x-2 hover:text-white transition-colors">
-                        <i class="fa-brands fa-linkedin text-lg text-[#0A66C2]" aria-hidden="true"></i>
-                        linkedin.com/company/robinspect
-                    </a>
-                </div>
-            </div>
-            <div class="text-xs text-zinc-500 mt-6 tracking-wider">BELGIUM • EUROPE &amp; UNITED STATES</div>
+          <div class="font-display" style="font-size:2.2rem">Vincent Pretet</div>
+          <div class="mono" style="margin-top:.25rem">Founder &amp; CEO</div>
+          <ul style="margin:1.4rem 0 0;padding-left:1.1rem;line-height:1.6;font-size:.9rem"><li>NDT Level 2 certified (UT &amp; ET) with hands-on experience in nuclear, aerospace and critical industrial environments.</li><li>Direct experience delivering 6-axis robotic inspection projects in highly regulated sectors.</li><li>Deep understanding of both advanced NDT physics and real-world customer constraints around quality, HSE and documentation.</li></ul>
+          <div class="mono" style="display:inline-block;margin-top:1.3rem;border:1px solid var(--line);padding:.3rem .7rem">Belgium</div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    </main>
+<section class="sec" id="roadmap">
+  <div class="bgvid"><img class="bgimg" src="/media/bench-cinema.jpg" alt="6-axis cobot following a curved test part for robotic ultrasonic inspection" style="opacity:.2"/></div>
+  <div class="veil"></div>
+  <div class="wrap pad rel">
+    <div class="mono">Execution plan</div>
+    <h2 class="font-display display">A focused 24-month roadmap.</h2>
+    <div class="cols3 cols4" style="margin-top:3rem"><div class="card"><div class="mono">01 · 0–6 months</div><h3 class="font-display" style="font-size:1.8rem;margin:1.1rem 0 0">Proof of Concept</h3><p class="muted" style="font-size:.9rem;line-height:1.6">First robot + UT demonstrations on representative geometries. Initial LOIs. Incubator support. Core team formation.</p></div><div class="card"><div class="mono">02 · 6–12 months</div><h3 class="font-display" style="font-size:1.8rem;margin:1.1rem 0 0">Prototype platform</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Robust, repeatable demo system. First paid PoCs. Core software layer. Early customer references.</p></div><div class="card"><div class="mono">03 · 12–18 months</div><h3 class="font-display" style="font-size:1.8rem;margin:1.1rem 0 0">Industrial pilots</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Customer-funded pilots. Documented deployments. First system sales. Product hardening.</p></div><div class="card"><div class="mono">04 · 18–24 months</div><h3 class="font-display" style="font-size:1.8rem;margin:1.1rem 0 0">Preparation for scale</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Productization. International expansion readiness (Europe + US). Team and process scaling.</p></div></div>
+  </div>
+</section>
 
-    <footer class="border-t border-zinc-800 py-8 text-sm">
-        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row md:items-center justify-between gap-4 text-zinc-500">
-            <div>© 2026 ROBINSPECT Systems — All rights reserved.</div>
-            <nav aria-label="Footer navigation" class="flex items-center gap-x-5">
-                <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-x-2 hover:text-white transition-colors" aria-label="ROBINSPECT on LinkedIn">
-                    <i class="fa-brands fa-linkedin text-lg" aria-hidden="true"></i>
-                    <span>LinkedIn</span>
-                </a>
-                <span>Belgium • Europe &amp; United States focus</span>
-            </nav>
-        </div>
-    </footer>
+<section class="sec faq" id="faq">
+  <div class="wrap pad" style="max-width:56rem">
+    <div class="mono">FAQ</div>
+    <h2 class="font-display display">Robotic NDT, in plain terms.</h2>
+    <dl style="margin-top:2.4rem;border-top:1px solid var(--line)"><div class="q"><dt>What is robotic NDT inspection?</dt><dd>Robotic NDT (non-destructive testing) uses a 6-axis robot to move an ultrasonic probe along a part — welds, curved skins, complex geometries — with a repeatable path, stable orientation and full traceability. ROBINSPECT builds that inspection system, not a generic robot cell.</dd></div><div class="q"><dt>Can a robot perform ultrasonic testing (UT, PAUT, TFM)?</dt><dd>Yes, if trajectory, coupling and acquisition are designed together. ROBINSPECT integrates UT, PAUT and TFM/ATFM with robot position so the scan is synchronized — the same idea as a skilled inspector, without the variability of the gesture.</dd></div><div class="q"><dt>Which industries need automated NDT robotics?</dt><dd>Aerospace and space structures, energy and nuclear assets, heavy industry and any site where critical components are expensive to stop, hard to access, or must be documented for audit.</dd></div><div class="q"><dt>Are you locked to one robot or sensor brand?</dt><dd>No. The platform is vendor-agnostic: multi-robot, multi-sensor. The value is the inspection workflow — geometry, trajectory, acquisition and report — not a single hardware stack.</dd></div><div class="q"><dt>Where is ROBINSPECT based?</dt><dd>Belgium, with a focus on Europe and the United States. Technical discussions are already open with NDT, robotics and high-value industrial players.</dd></div></dl>
+  </div>
+</section>
 
-    <script>
-        (function () {
-            var nav = document.querySelector('nav');
-            if (nav) {
-                window.addEventListener('scroll', function () {
-                    if (window.scrollY > 20) nav.classList.add('shadow-2xl');
-                    else nav.classList.remove('shadow-2xl');
-                });
-            }
+<section class="sec" id="contact">
+  <div class="center">
+    <h2 class="font-display display">Let’s discuss your inspection challenge.</h2>
+    <p class="lead" style="margin-left:auto;margin-right:auto">Whether you are an industrial end-user, technology partner, or investor evaluating the opportunity — I’m happy to talk.</p>
+    <div class="ctas" style="justify-content:center">
+      <a class="btn btn-lg" href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20/%20sector%3A%20%0A">Request a technical demo</a>
+      <a class="btn btn-lg btn-ghost" href="mailto:vpretet@robinspect-systems.com?subject=Hello%20from%20robinspect-systems.com&amp;body=Hi%20Vincent%2C%0A%0A">Talk to Vincent</a>
+    </div>
+    <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener" style="display:block;max-width:32rem;margin:2.5rem auto 0;border:1px solid var(--line)">
+      <img src="/media/linkedin-noir.webp" alt="ROBINSPECT Systems company page on LinkedIn"/>
+    </a>
+    <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener" style="display:inline-flex;min-height:2.75rem;align-items:center;margin-top:.6rem;color:var(--muted)">Follow ROBINSPECT on LinkedIn</a>
+    <div style="margin-top:3rem">
+      <div class="font-display" style="font-size:1.8rem">Vincent Pretet</div>
+      <div class="mono">Founder &amp; CEO</div>
+      <div style="margin-top:1rem">
+        <a href="tel:+32498663424" style="display:inline-flex;min-height:2.75rem;align-items:center;color:var(--muted)">+32 498 66 34 24</a><br/>
+        <a href="mailto:vpretet@robinspect-systems.com" style="display:inline-flex;min-height:2.75rem;align-items:center;color:var(--muted)">vpretet@robinspect-systems.com</a>
+      </div>
+      <div class="mono" style="margin-top:1rem;color:var(--dim)">Belgium · Europe &amp; United States</div>
+    </div>
+  </div>
+</section>
+</main>
 
-            // Mobile menu
-            var btn = document.getElementById('mobile-menu-btn');
-            var menu = document.getElementById('mobile-menu');
-            var icon = document.getElementById('mobile-menu-icon');
-            var menuOpen = false;
-
-            function setMenuOpen(open) {
-                menuOpen = !!open;
-                if (!menu || !btn) return;
-                if (menuOpen) menu.classList.remove('hidden');
-                else menu.classList.add('hidden');
-                btn.setAttribute('aria-expanded', menuOpen ? 'true' : 'false');
-                btn.setAttribute('aria-label', menuOpen ? 'Close menu' : 'Open menu');
-                if (icon) {
-                    icon.className = menuOpen
-                        ? 'fa-solid fa-xmark text-lg'
-                        : 'fa-solid fa-bars text-lg';
-                }
-            }
-
-            if (btn && menu) {
-                btn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setMenuOpen(!menuOpen);
-                });
-                menu.querySelectorAll('a').forEach(function (link) {
-                    link.addEventListener('click', function () {
-                        setMenuOpen(false);
-                    });
-                });
-                window.addEventListener('resize', function () {
-                    if (window.innerWidth >= 768) setMenuOpen(false);
-                });
-            }
-
-            // Smooth scroll for in-page anchors
-            document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-                anchor.addEventListener('click', function (e) {
-                    var href = this.getAttribute('href');
-                    if (!href || href.length < 2) return;
-                    var target = document.querySelector(href);
-                    if (!target) return;
-                    e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                });
-            });
-
-            // Ambient demo videos: play only when visible
-            var videos = document.querySelectorAll('#demo video');
-            if (!videos.length) return;
-
-            var prefersReduced = false;
-            try {
-                prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            } catch (err) {}
-
-            videos.forEach(function (video) {
-                video.muted = true;
-                video.defaultMuted = true;
-                video.setAttribute('muted', '');
-                video.setAttribute('playsinline', '');
-
-                if (prefersReduced) {
-                    video.removeAttribute('autoplay');
-                    try { video.pause(); } catch (err) {}
-                    return;
-                }
-
-                function tryPlay() {
-                    var p = video.play();
-                    if (p && typeof p.then === 'function') {
-                        p.catch(function () {});
-                    }
-                }
-
-                if ('IntersectionObserver' in window) {
-                    var io = new IntersectionObserver(function (entries) {
-                        entries.forEach(function (entry) {
-                            if (entry.isIntersecting) {
-                                if (video.preload !== 'auto') {
-                                    video.preload = 'auto';
-                                    video.load();
-                                }
-                                tryPlay();
-                            } else {
-                                try { video.pause(); } catch (err) {}
-                            }
-                        });
-                    }, { threshold: 0.25 });
-                    io.observe(video);
-                } else {
-                    video.preload = 'auto';
-                    tryPlay();
-                }
-            });
-        })();
-    </script>
+<footer>
+  <div class="wrap ft">
+    <div>© 2026 ROBINSPECT Systems — All rights reserved.</div>
+    <div><a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a> · Belgium · Europe &amp; United States</div>
+  </div>
+</footer>
+<script>
+(function(){
+  var bar=document.getElementById('topbar');
+  var btn=document.getElementById('menuBtn');
+  window.addEventListener('scroll',function(){
+    if(window.scrollY>24) bar.classList.add('scrolled'); else bar.classList.remove('scrolled');
+  },{passive:true});
+  if(btn) btn.addEventListener('click',function(){ bar.classList.toggle('open'); });
+  document.querySelectorAll('#mobile a').forEach(function(a){ a.addEventListener('click',function(){ bar.classList.remove('open'); }); });
+  var reduce=false; try{ reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+  var vids=document.querySelectorAll('[data-ambient]');
+  if(reduce){ vids.forEach(function(v){ v.pause(); }); return; }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(ents){
+      ents.forEach(function(ent){
+        var v=ent.target;
+        if(ent.isIntersecting){ if(v.preload!=='auto'){ v.preload='auto'; v.load(); } v.play().catch(function(){}); }
+        else { try{ v.pause(); }catch(e){} }
+      });
+    },{threshold:0.25});
+    vids.forEach(function(v){ io.observe(v); });
+  }
+})();
+</script>
 </body>
 </html>
