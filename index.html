@@ -137,9 +137,52 @@ figcaption{position:absolute;inset:auto 0 0 0;padding:1.25rem;background:linear-
 footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:var(--dim)}
 .ft{display:flex;flex-direction:column;gap:.75rem}
 @media(min-width:768px){.ft{flex-direction:row;justify-content:space-between;align-items:center}}
+
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin:1.4rem 0 0;border:1px solid var(--line)}
+@media(min-width:800px){.metrics{grid-template-columns:repeat(4,1fr)}}
+.metric{background:var(--ink);padding:1.15rem 1.2rem}
+.metric b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:2.1rem;line-height:.95;color:var(--gold);margin-top:.35rem;letter-spacing:-.02em;text-transform:uppercase}
+.player{margin-top:1.6rem;border:1px solid var(--line);background:#000}
+#demo h2.display{font-size:2.35rem}
+@media(min-width:768px){#demo h2.display{font-size:3.5rem}}
+.player-layout{display:grid}
+@media(min-width:960px){.player-layout{grid-template-columns:1fr 17.5rem}}
+.player-stage{position:relative;background:#000;min-height:12rem}
+.player-stage video{width:100%;aspect-ratio:16/9;max-height:min(70vh,760px);object-fit:contain;background:#000;cursor:pointer}
+.player-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(to top,rgba(0,0,0,.35),transparent 42%);transition:opacity .2s}
+.player-overlay.hide{opacity:0;pointer-events:none}
+.play-big{width:4.25rem;height:4.25rem;border:1px solid var(--gold);background:rgba(7,7,7,.72);display:grid;place-items:center;color:var(--gold)}
+.player-bar{display:flex;flex-direction:column;gap:.55rem;padding:.8rem 1rem 1rem;background:#070707;border-top:1px solid var(--line)}
+.now{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.now strong{font-size:.92rem}
+.now .sub{color:var(--muted);font-size:.78rem}
+.scrub-wrap{position:relative;height:2.75rem}
+.scrub-track{position:absolute;left:0;right:0;top:50%;height:4px;background:#2a2720;transform:translateY(-50%);pointer-events:none}
+.scrub-fill{height:100%;width:0;background:var(--gold)}
+.scrub-ticks{position:absolute;inset:0;pointer-events:none}
+.scrub-tick{position:absolute;top:50%;width:2px;height:10px;background:rgba(244,241,234,.4);transform:translate(-50%,-50%)}
+.scrub-wrap input[type=range]{position:absolute;inset:0;width:100%;margin:0;opacity:0;cursor:pointer}
+.player-row{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.icon-btn{width:2.75rem;height:2.75rem;border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.icon-btn:hover{border-color:var(--gold);color:var(--gold)}
+.time-read{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:var(--muted);margin-left:.15rem}
+.speed{display:inline-flex;border:1px solid var(--line);height:2.75rem;margin-left:auto}
+.speed button{padding:0 .65rem;min-width:2.5rem;height:100%;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.speed button.on{background:var(--gold);color:var(--ink)}
+.chapters{display:flex;flex-direction:column;gap:1px;background:var(--line);border-top:1px solid var(--line);max-height:28rem;overflow:auto}
+@media(min-width:960px){.chapters{border-top:0;border-left:1px solid var(--line);max-height:none}}
+.chap{display:flex;gap:.75rem;align-items:flex-start;padding:.9rem 1rem;background:#0a0908;text-align:left;width:100%}
+.chap strong{display:block;font-size:.88rem}
+.chap .sub{display:block;color:var(--muted);font-size:.75rem;margin-top:.15rem;line-height:1.35}
+.chap .t{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.14em;color:var(--gold);min-width:2.8rem;padding-top:.15rem}
+.chap:hover{background:#141210}
+.chap.on{background:#16130e;box-shadow:inset 3px 0 0 var(--gold)}
+.loops-kicker{margin:3.2rem 0 0}
+
 </style>
 </head>
 <body>
+
 <header id="topbar">
   <div class="wrap hbar">
     <a class="brand" href="#hero" aria-label="ROBINSPECT">
@@ -209,12 +252,56 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
   </div>
 </section>
 
+
 <section class="sec" id="demo" style="background:var(--ink)">
   <div class="wrap pad">
-    <div class="mono">First demonstration</div>
-    <h2 class="font-display display">The robot<br/>in action.</h2>
-    <p class="lead">Early tests with the Fairino FR5 — first trajectory and tool positioning, then the probe in motion on a representative test part.</p>
-    <figure class="shot" style="margin-top:2.5rem">
+    <div class="mono">The system in detail</div>
+    <h2 class="font-display display">Inspection montage — 7 min 35</h2>
+    <p class="lead">The film that walks the whole project: hardware, real step durations, 3D trajectory, then the robot on the part. Pause, scrub, jump to chapters.</p>
+    <div class="player" data-presentation data-chapters='[{"t": 0, "title": "ROBINSPECT", "sub": "The system"}, {"t": 3, "title": "Hardware", "sub": "6-axis robot + NTE"}, {"t": 14, "title": "Acquisition", "sub": "12 minutes"}, {"t": 22, "title": "Processing", "sub": "5 minutes"}, {"t": 31, "title": "Analysis", "sub": "8 minutes"}, {"t": 38, "title": "Full cycle", "sub": "25 min vs 4 h manual · 10×"}, {"t": 105, "title": "Trajectory", "sub": "3D path · TrajTool"}, {"t": 364, "title": "Inspection", "sub": "Probe on part — Fairino FR5"}, {"t": 432, "title": "Close", "sub": "ROBINSPECT Systems"}]' tabindex="0">
+      <div class="player-layout">
+        <div>
+          <div class="player-stage">
+            <video playsinline preload="metadata" poster="/media/presentation-poster.jpg">
+              <source src="/media/presentation.mp4" type="video/mp4"/>
+            </video>
+            <button type="button" class="player-overlay" data-overlay aria-label="Play">
+              <span class="play-big"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+            </button>
+          </div>
+          <div class="player-bar">
+            <div class="player-row">
+              <div class="now">
+                <strong data-now-title>ROBINSPECT</strong>
+                <span class="sub" data-now-sub>The system</span>
+              </div>
+            </div>
+            <div class="scrub-wrap">
+              <div class="scrub-track"><div class="scrub-fill" data-fill></div></div>
+              <div class="scrub-ticks" data-ticks></div>
+              <input data-scrub type="range" min="0" max="1000" value="0" step="1" aria-label="Timeline"/>
+            </div>
+            <div class="player-row">
+              <button type="button" class="icon-btn" data-play data-play-label="Play" data-pause-label="Pause" aria-label="Play"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+              <span class="time-read"><span data-current>0:00</span> / <span data-duration>7:35</span></span>
+              <button type="button" class="icon-btn" data-fs aria-label="Fullscreen"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+              <div class="speed" data-speed role="group" aria-label="Speed">
+                <button type="button" data-rate="1" class="on">1×</button>
+                <button type="button" data-rate="1.5">1.5×</button>
+                <button type="button" data-rate="2">2×</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chapters" data-chapters></div>
+      </div>
+    </div>
+    <div class="metrics"><div class="metric"><div class="mono">Acquisition</div><b>12 min</b><div class="muted" style="font-size:.78rem;margin-top:.4rem">Ultrasonic scan</div></div><div class="metric"><div class="mono">Processing</div><b>5 min</b><div class="muted" style="font-size:.78rem;margin-top:.4rem">Reconstruction</div></div><div class="metric"><div class="mono">Analysis</div><b>8 min</b><div class="muted" style="font-size:.78rem;margin-top:.4rem">Data review</div></div><div class="metric"><div class="mono">Full cycle</div><b>25 min</b><div class="muted" style="font-size:.78rem;margin-top:.4rem">vs 4 h manual · 10×</div></div></div>
+    <div class="loops-kicker">
+      <div class="mono">Raw loops</div>
+      <h3 class="font-display" style="font-size:2rem;margin:.5rem 0 0">The live extracts, looping.</h3>
+    </div>
+<figure class="shot" style="margin-top:2.5rem">
       <video data-ambient muted loop playsinline preload="none" poster="/media/demo-sept-poster.webp">
         <source src="/media/demo-sept.mp4" type="video/mp4"/>
       </video>
@@ -355,5 +442,6 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
   }
 })();
 </script>
+<script src="/player.js"></script>
 </body>
 </html>
