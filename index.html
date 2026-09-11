@@ -181,29 +181,50 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 .chap.on{background:#1c1810;box-shadow:inset 3px 0 0 var(--gold)}
 @media(min-width:800px){.chap.on{box-shadow:inset 0 3px 0 var(--gold)}}
 .metrics-note{margin:.9rem 0 0;color:var(--muted);font-size:.82rem;line-height:1.55;max-width:46rem}
+.cell-open{position:relative;overflow:hidden;background:#000}
+.meet-flash{display:flex;align-items:center;justify-content:center;gap:.7rem;flex-wrap:nowrap;min-height:2.75rem;padding:.4rem 1rem;background:var(--gold);color:var(--ink);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;text-align:center}
+.meet-flash:hover{background:var(--gold-hot)}
+.meet-flash .sep{opacity:.45}
+.meet-flash .tix{display:inline-flex;align-items:center;min-height:1.7rem;padding:0 .55rem;border:1px solid var(--ink);font-weight:700;letter-spacing:.12em;flex:none}
+@media(max-width:699px){.meet-flash .hide-sm{display:none}}
+.hero-in{padding-top:8.25rem}
+@media(min-width:768px){.hero-in{padding-top:9.25rem}}
+#meet{background:var(--ink);scroll-margin-top:7.75rem}
+#meet h2.display{font-size:2.6rem}
+@media(min-width:768px){#meet h2.display{font-size:4.2rem}}
+.meet-grid{display:grid;gap:1px;background:var(--line);margin:1.6rem 0 0;border:1px solid var(--line)}
+@media(min-width:800px){.meet-grid{grid-template-columns:repeat(3,1fr)}}
+.meet-cell{background:var(--ink);padding:1.15rem 1.2rem}
+.meet-cell b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:1.7rem;line-height:.95;color:var(--gold);margin-top:.35rem;letter-spacing:-.02em;text-transform:uppercase}
+#meet .lead{max-width:42rem}
 .loops-kicker{margin:3.2rem 0 0}
 
 </style>
 </head>
 <body>
-
 <header id="topbar">
+  <a class="meet-flash" href="#meet">
+    <span>Live</span><span class="sep lg-only">·</span>
+    <span class="lg-only">Katowice · 28–29 Apr 2027 · stand 818</span>
+    <span class="sm-only">Expo · stand 818</span>
+    <span class="tix">Tickets</span>
+  </a>
   <div class="wrap hbar">
     <a class="brand" href="#hero" aria-label="ROBINSPECT">
       <img src="/media/fond-noir.webp" alt="ROBINSPECT Systems logo — robotic NDT inspection"/>
       <span class="font-display">ROBINSPECT</span>
     </a>
-    <nav class="desk"><a href="#challenge">Challenge</a><a href="#technology">Technology</a><a href="#demo">Demo</a><a href="#traction">Traction</a><a href="#founder">Founder</a><a href="#roadmap">Roadmap</a><a href="#faq">FAQ</a></nav>
+    <nav class="desk"><a href="#meet">Live</a><a href="#challenge">Challenge</a><a href="#technology">Technology</a><a href="#demo">Demo</a><a href="#traction">Traction</a><a href="#founder">Founder</a><a href="#roadmap">Roadmap</a><a href="#faq">FAQ</a></nav>
     <div class="actions">
       <div class="lang" role="group" aria-label="Language">
-        <a href="/" class="on">EN</a>
-        <a href="/fr" class="">FR</a>
+        <a href="/en" class="on">EN</a>
+        <a href="/" class="">FR</a>
       </div>
       <a class="btn desk-cta" href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20/%20sector%3A%20%0A">Book a demo</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
-  <div class="mobile wrap" id="mobile"><a href="#challenge">Challenge</a><a href="#technology">Technology</a><a href="#demo">Demo</a><a href="#traction">Traction</a><a href="#founder">Founder</a><a href="#roadmap">Roadmap</a><a href="#faq">FAQ</a><a class="btn" style="margin-top:.5rem" href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20/%20sector%3A%20%0A">Book a demo</a></div>
+  <div class="mobile wrap" id="mobile"><a href="#meet">Live</a><a href="#challenge">Challenge</a><a href="#technology">Technology</a><a href="#demo">Demo</a><a href="#traction">Traction</a><a href="#founder">Founder</a><a href="#roadmap">Roadmap</a><a href="#faq">FAQ</a><a class="btn" style="margin-top:.5rem" href="mailto:vpretet@robinspect-systems.com?subject=Technical%20demo%20request%20%E2%80%94%20ROBINSPECT&amp;body=Hi%20Vincent%2C%0A%0AI%27d%20like%20to%20book%20a%20technical%20demo.%0A%0ACompany%3A%20%0AUse%20case%20/%20sector%3A%20%0A">Book a demo</a></div>
 </header>
 
 <main>
@@ -225,6 +246,25 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
     <div class="geo">Belgium · Europe &amp; United States</div>
   </div>
   <div class="specs"><div class="wrap specs-g"><div>6-axis</div><div>Vendor-agnostic</div><div>UT / PAUT / TFM</div><div>Belgium + US</div></div></div>
+</section>
+
+
+<section class="sec" id="meet">
+  <div class="wrap pad">
+    <div class="mono">Where to meet us live</div>
+    <h2 class="font-display display">Katowice.<br/>Stand 818.</h2>
+    <p class="lead">ROBINSPECT exhibits at the Defence Manufacturing & Materials Expo on 28 & 29 April 2027 at the International Congress Centre (MCK), Katowice, Poland.</p>
+    <div class="meet-grid">
+      <div class="meet-cell"><div class="mono">Dates</div><b>28–29 Apr 2027</b></div>
+      <div class="meet-cell"><div class="mono">Venue</div><b>MCK Katowice</b></div>
+      <div class="meet-cell"><div class="mono">Stand</div><b>818</b></div>
+    </div>
+    <p class="muted" style="max-width:42rem;margin-top:1.6rem;line-height:1.6">A leading event for defence manufacturing, engineering, materials and supply-chain professionals — technologies and innovations for Europe’s defence industrial base. Visit us on stand 818. Complimentary tickets via official registration.</p>
+    <div class="ctas">
+      <a class="btn btn-lg" href="https://defencemanufacturingexpo.com/" target="_blank" rel="noopener">Get a complimentary ticket</a>
+      <a class="btn btn-lg btn-ghost" href="mailto:vpretet@robinspect-systems.com?subject=Meet%20at%20stand%20818%20%E2%80%94%20Defence%20Manufacturing%20Expo%20Katowice&body=Hi%20Vincent%2C%0A%0AI%20will%20be%20at%20the%20Defence%20Manufacturing%20%26%20Materials%20Expo%20(Katowice%2C%2028-29%20April%202027).%20Can%20we%20book%20a%20slot%20on%20stand%20818%3F%0A%0ACompany%3A%20%0A">Book a stand meeting</a>
+    </div>
+  </div>
 </section>
 
 <section class="sec" id="challenge">
@@ -255,6 +295,8 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
     <div class="cols3"><div class="card"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></div><h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0">Robotics &amp; trajectory</h3><p class="muted" style="font-size:.9rem;line-height:1.6">6-axis robots with intelligent surface following, automatic TCP calibration, and precise, repeatable paths even on complex curved or welded geometries.</p><div class="gold-xs">Multi-brand · Real-time control · Surface normal</div></div><div class="card"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M12 6c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M12 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M12 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg></div><h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0">Advanced NDT integration</h3><p class="muted" style="font-size:.9rem;line-height:1.6">UT, PAUT, TFM/ATFM with stable coupling and full synchronization between robot position and ultrasonic data acquisition. Hardware-agnostic by design.</p><div class="gold-xs">UT · PAUT · TFM · Future-proof</div></div><div class="card"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div><h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0">Software &amp; data layer</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Digital inspection workflows, real-time robot–NDT synchronization, automated reporting and complete traceability from geometry to final report.</p><div class="gold-xs">Traceability by design · Audit-ready</div></div></div>
   </div>
 </section>
+
+
 
 
 <section class="sec" id="demo" style="background:var(--ink)">
@@ -447,6 +489,6 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
   }
 })();
 </script>
-<script src="/player.js"></script>
+<script src="/site/player.js"></script>
 </body>
 </html>
