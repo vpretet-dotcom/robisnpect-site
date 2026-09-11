@@ -6,15 +6,15 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/"/>
   </url>
   <url>
-    <loc>https://robinspect-systems.com/fr</loc>
+    <loc>https://robinspect-systems.com/fr/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/"/>
   </url>
 </urlset>
