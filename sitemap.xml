@@ -33,4 +33,52 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/demo/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/demo/"/>
   </url>
+  <url>
+    <loc>https://robinspect-systems.com/weld/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/weld/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/soudure/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/weld/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/soudure/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/weld/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/soudure/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/weld/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/aerospace/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/aerospace/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/aero/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/aerospace/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/aero/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/aerospace/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/aero/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/aerospace/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/energy/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/energy/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/contraint/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/energy/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/contraint/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/energy/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/contraint/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/energy/"/>
+  </url>
 </urlset>
