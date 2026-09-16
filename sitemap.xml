@@ -17,4 +17,20 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/"/>
   </url>
+  <url>
+    <loc>https://robinspect-systems.com/demo/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/demo/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/demo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/demo/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/demo/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/demo/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/demo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/demo/"/>
+  </url>
 </urlset>
