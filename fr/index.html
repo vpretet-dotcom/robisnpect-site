@@ -132,9 +132,9 @@ figcaption{position:absolute;inset:auto 0 0 0;padding:1.25rem;background:linear-
 .found{display:grid;gap:2.5rem;padding:5rem 0}
 @media(min-width:1024px){.found{grid-template-columns:5fr 7fr;align-items:center}}
 .box{border:1px solid var(--line);background:var(--surface);padding:2rem}
-.frow{display:flex;flex-direction:column;gap:2rem}
-@media(min-width:768px){.frow{flex-direction:row}}
-.frow img{width:8rem;height:8rem;object-fit:cover;object-position:top}
+.frow{display:flex;flex-direction:column;gap:2rem;align-items:flex-start}
+@media(min-width:768px){.frow{flex-direction:row;align-items:flex-start}}
+.frow img{width:11rem;height:auto;flex-shrink:0}
 .faq dt{font-size:1.1rem;font-weight:600}.faq dd{margin:.7rem 0 0;color:var(--muted);font-size:.9rem;line-height:1.6}
 .faq .q{padding:1.6rem 0;border-bottom:1px solid var(--line)}
 .center{text-align:center;max-width:48rem;margin:0 auto;padding:5rem 1.25rem}
