@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="boot">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -205,9 +205,29 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 .meet-code p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.5;max-width:28rem}
 .loops-kicker{margin:3.2rem 0 0}
 
+#boot{position:fixed;inset:0;z-index:9999;background:#050505;color:#f4f1ea}
+html.boot,html.boot body{overflow:hidden;background:#050505}
 </style>
+<link rel="stylesheet" href="/boot.css"/>
 </head>
 <body>
+<div id="boot" role="status" aria-live="polite" aria-busy="true" aria-label="Chargement ROBINSPECT">
+  <div class="boot-glow" aria-hidden="true"></div>
+  <div class="boot-scene" id="bootScene"></div>
+  <div class="boot-ui">
+    <p class="boot-kicker">Système</p>
+    <div class="boot-word">ROBINSPECT</div>
+    <div class="boot-meta">
+      <div class="boot-row">
+        <span id="bootStatus">Initialisation</span>
+        <span id="bootPct">0.0</span>
+      </div>
+      <div class="boot-bar"><i id="bootFill"></i></div>
+      <button type="button" class="boot-skip" id="bootSkip">Passer</button>
+    </div>
+  </div>
+</div>
+
 <header id="topbar">
   <a class="meet-flash" href="#meet">
     <span>Live</span><span class="sep lg-only">·</span>
@@ -236,7 +256,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 <main>
 <section class="hero" id="hero">
   <div class="hero-media">
-    <video data-ambient autoplay muted loop playsinline preload="metadata" poster="/media/hero-cinema.jpg">
+    <video data-ambient muted loop playsinline preload="none" poster="/media/hero-cinema.jpg">
       <source src="/media/hero-bg.mp4" type="video/mp4"/>
     </video>
   </div>
@@ -351,7 +371,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
       <div class="player-layout">
         <div>
           <div class="player-stage">
-            <video playsinline preload="metadata" poster="/media/presentation-poster.jpg">
+            <video playsinline preload="none" poster="/media/presentation-poster.jpg">
               <source src="/media/presentation.mp4" type="video/mp4"/>
             </video>
             <button type="button" class="player-overlay" data-overlay aria-label="Lecture">
@@ -508,6 +528,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
     <div><a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a> · Belgique · Europe &amp; États-Unis</div>
   </div>
 </footer>
+<script src="/boot.js"></script>
 <script>
 (function(){
   var bar=document.getElementById('topbar');
@@ -517,18 +538,25 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
   },{passive:true});
   if(btn) btn.addEventListener('click',function(){ bar.classList.toggle('open'); });
   document.querySelectorAll('#mobile a').forEach(function(a){ a.addEventListener('click',function(){ bar.classList.remove('open'); }); });
-  var reduce=false; try{ reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
-  var vids=document.querySelectorAll('[data-ambient]');
-  if(reduce){ vids.forEach(function(v){ v.pause(); }); return; }
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(ents){
-      ents.forEach(function(ent){
-        var v=ent.target;
-        if(ent.isIntersecting){ if(v.preload!=='auto'){ v.preload='auto'; v.load(); } v.play().catch(function(){}); }
-        else { try{ v.pause(); }catch(e){} }
-      });
-    },{threshold:0.25});
-    vids.forEach(function(v){ io.observe(v); });
+  function startAmbient(){
+    var reduce=false; try{ reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+    var vids=document.querySelectorAll('[data-ambient]');
+    if(reduce){ vids.forEach(function(v){ v.pause(); }); return; }
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(ents){
+        ents.forEach(function(ent){
+          var v=ent.target;
+          if(ent.isIntersecting){ if(v.preload!=='auto'){ v.preload='auto'; v.load(); } v.play().catch(function(){}); }
+          else { try{ v.pause(); }catch(e){} }
+        });
+      },{threshold:0.25});
+      vids.forEach(function(v){ io.observe(v); });
+    }
+  }
+  if(document.documentElement.classList.contains('boot')){
+    window.addEventListener('robinspect:ready', startAmbient, {once:true});
+  } else {
+    startAmbient();
   }
 })();
 </script>
