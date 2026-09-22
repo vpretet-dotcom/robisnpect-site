@@ -12,9 +12,11 @@ jobs:
           fetch-depth: 0
       - name: Restore files from live-before-p0
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout live-before-p0 -- index.html fr/index.html player.js demo/index.html fr/demo/index.html
+          git fetch origin live-before-p0:refs/remotes/origin/live-before-p0
+          git checkout origin/live-before-p0 -- index.html fr/index.html player.js demo/index.html fr/demo/index.html
           git rm -f --ignore-unmatch watch/index.html fr/watch/index.html || true
           git status
           git add -A
