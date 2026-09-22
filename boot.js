@@ -13,6 +13,8 @@
     ? ["Initialisation", "Bras", "Trajectoire", "Sonde", "Système prêt"]
     : ["Initializing", "Arm", "Trajectory", "Probe", "System ready"];
 
+  var CDN = "https://robinspect-systems.com";
+  /* Local cinema jpg + light posters; heavy mp4s (>3MB) stay on CDN so localhost preload progresses */
   var ASSETS = [
     { url: "/media/fond-noir.webp", bytes: 17476 },
     { url: "/media/hero-cinema.jpg", bytes: 321966 },
@@ -26,12 +28,12 @@
     { url: "/media/demo-sept-poster.webp", bytes: 72832 },
     { url: "/media/demo-wide-poster.webp", bytes: 23210 },
     { url: "/media/demo-square-poster.webp", bytes: 31332 },
-    { url: "/media/hero-bg.mp4", bytes: 3848074 },
-    { url: "/media/probe-bg.mp4", bytes: 3292923 },
+    { url: CDN + "/media/hero-bg.mp4", bytes: 3848074 },
+    { url: CDN + "/media/probe-bg.mp4", bytes: 3292923 },
     { url: "/media/demo-sept.mp4", bytes: 1295002 },
     { url: "/media/demo-wide.mp4", bytes: 1128294 },
     { url: "/media/demo-square.mp4", bytes: 921383 },
-    { url: "/media/presentation.mp4", bytes: 10819792 },
+    { url: CDN + "/media/presentation.mp4", bytes: 10819792 },
   ];
 
   var saveData = false;
@@ -310,14 +312,60 @@
     return { pose: pose };
   }
 
-  var ctl = mountScene();
+  function mountSvgScene() {
+    return mountScene();
+  }
+
+  var ctl = { pose: function () {}, dispose: function () {} };
+  var sceneReady = false;
+
+  function startTicks() {
+    started = Date.now();
+    if (reduce) {
+      setProgress(0.5);
+      if (ctl.pose) ctl.pose(0.5);
+      setTimeout(reveal, MIN);
+    } else {
+      raf = requestAnimationFrame(tick);
+    }
+  }
+
+  function useController(c) {
+    if (sceneReady || done) {
+      if (c && c.dispose) try { c.dispose(); } catch (e) {}
+      return;
+    }
+    if (c && c.pose) ctl = c;
+    else ctl = mountSvgScene();
+    sceneReady = true;
+    startTicks();
+  }
+
+  /* Prefer Three.js vignette; SVG arm is the offline / no-WebGL fallback */
+  if (reduce) {
+    useController(mountSvgScene());
+  } else if (window.RobinspectBoot3D && typeof window.RobinspectBoot3D.tryMount === "function") {
+    window.RobinspectBoot3D.tryMount(scene, { reduce: reduce }, function (_err, c3) {
+      if (done) {
+        if (c3 && c3.dispose) c3.dispose();
+        return;
+      }
+      useController(c3);
+    });
+    /* Safety: if THREE CDN hangs, fall back after 1.2s */
+    setTimeout(function () {
+      if (!sceneReady && !done) useController(null);
+    }, 1200);
+  } else {
+    useController(mountSvgScene());
+  }
 
   function tick() {
     if (done) return;
     var t = (Date.now() - started) / MIN;
     var p = Math.min(1, t);
     setProgress(p);
-    ctl.pose(p);
+    if (ctl && ctl.pose) ctl.pose(p);
     if (t >= 1) {
       reveal();
       return;
@@ -330,6 +378,9 @@
     done = true;
     if (raf) cancelAnimationFrame(raf);
     setProgress(1);
+    if (ctl && ctl.dispose) {
+      try { ctl.dispose(); } catch (e) {}
+    }
     document.documentElement.classList.remove("boot");
     boot.classList.add("out");
     boot.setAttribute("aria-busy", "false");
@@ -345,7 +396,8 @@
       if ("caches" in window) {
         var cache = await caches.open(CACHE);
         if (await cache.match(asset.url)) return;
-        var res = await fetch(asset.url, { credentials: "same-origin" });
+        var cred = asset.url.indexOf("http") === 0 ? "omit" : "same-origin";
+        var res = await fetch(asset.url, { credentials: cred, mode: "cors" });
         if (res.ok) await cache.put(asset.url, res.clone());
       }
     } catch (e) {}
@@ -363,7 +415,5 @@
 
   if (skipEl) skipEl.addEventListener("click", reveal);
   setProgress(0);
-  if (reduce) setTimeout(reveal, MIN);
-  else raf = requestAnimationFrame(tick);
   runQueue();
 })();
