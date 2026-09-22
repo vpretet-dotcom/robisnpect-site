@@ -1,0 +1,26 @@
+name: Restore pre-P0 live site
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore files from live-before-p0
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout live-before-p0 -- index.html fr/index.html player.js demo/index.html fr/demo/index.html
+          git rm -f --ignore-unmatch watch/index.html fr/watch/index.html || true
+          git status
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Restore pre-P0 live site (revert main to live-before-p0 content)"
+            git push origin HEAD:main
+          fi
