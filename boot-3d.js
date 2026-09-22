@@ -1,1 +1,1 @@
-PLACEHOLDER_WILL_REPLACE
+@file:///workspace/site-proto/boot-3d.js
