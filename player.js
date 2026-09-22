@@ -113,46 +113,6 @@
     renderChapters();
     sync();
 
-    // Deep-link: ?t=seconds | #t=seconds | #chapter=N (0-based) | #chapter=slug
-    (function applyDeepLink() {
-      function seek(sec) {
-        if (!isFinite(sec) || sec < 0) return;
-        var go = function () {
-          video.currentTime = Math.min(sec, duration || sec);
-          sync();
-        };
-        if (video.readyState >= 1) go();
-        else video.addEventListener("loadedmetadata", go, { once: true });
-      }
-      try {
-        var params = new URLSearchParams(location.search || "");
-        var tParam = params.get("t");
-        if (tParam != null && tParam !== "") {
-          seek(Number(tParam));
-          return;
-        }
-        var hash = (location.hash || "").replace(/^#/, "");
-        if (hash.indexOf("t=") === 0) {
-          seek(Number(hash.slice(2)));
-          return;
-        }
-        if (hash.indexOf("chapter=") === 0) {
-          var key = hash.slice(8);
-          var idx = Number(key);
-          var ch = null;
-          if (isFinite(idx) && idx >= 0 && idx < chapters.length) ch = chapters[idx];
-          else {
-            for (var i = 0; i < chapters.length; i++) {
-              var slug = String(chapters[i].title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
-              if (slug === key.toLowerCase() || String(chapters[i].t) === key) { ch = chapters[i]; break; }
-            }
-          }
-          if (ch) seek(Number(ch.t));
-        }
-      } catch (e) {}
-    })();
-
-
     playBtn && playBtn.addEventListener("click", toggle);
     overlay && overlay.addEventListener("click", toggle);
     video.addEventListener("click", toggle);
