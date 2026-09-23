@@ -34,6 +34,22 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/demo/"/>
   </url>
   <url>
+    <loc>https://robinspect-systems.com/watch/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/watch/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/watch/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/watch/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/watch/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/watch/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/watch/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/watch/"/>
+  </url>
+  <url>
     <loc>https://robinspect-systems.com/weld/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
