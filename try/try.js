@@ -27,10 +27,10 @@
   /* ── i18n (from data-lang on #try-root) ─────────────────── */
   var I18N = {
     en: {
-      hintIdle: "Click the plate to place waypoints",
-      hintIdleTouch: "Tap the plate to place waypoints · two fingers to orbit",
-      hintReady: "Press Play to run the arm",
-      hintReadyTouch: "Tap Play to run the arm · two fingers to orbit",
+      hintIdle: "Click the plate · drag to orbit · Shift/right-drag to pan",
+      hintIdleTouch: "Tap the plate · 2 fingers orbit · 3 fingers pan",
+      hintReady: "Press Play to run the arm · Shift-drag or right-drag to pan",
+      hintReadyTouch: "Tap Play · 2 fingers orbit · 3 fingers pan",
       hintPlay: "Cobot executing",
       hintPause: "Paused",
       hintDone: "Trajectory complete",
@@ -50,10 +50,10 @@
       },
     },
     fr: {
-      hintIdle: "Cliquez la plaque pour poser un point",
-      hintIdleTouch: "Touchez la plaque pour poser un point · deux doigts pour orbiter",
-      hintReady: "Lecture pour lancer le bras",
-      hintReadyTouch: "Touchez Lecture · deux doigts pour orbiter",
+      hintIdle: "Cliquez la plaque · glisser pour orbiter · Maj/clic droit pour décaler",
+      hintIdleTouch: "Touchez la plaque · 2 doigts orbite · 3 doigts décaler",
+      hintReady: "Lecture pour lancer le bras · Maj-glisser ou clic droit pour décaler",
+      hintReadyTouch: "Touchez Lecture · 2 doigts orbite · 3 doigts décaler",
       hintPlay: "Le cobot exécute",
       hintPause: "En pause",
       hintDone: "Trajectoire terminée",
@@ -75,7 +75,7 @@
   };
 
 
-  /** Minimal orbit — mouse drag / two-finger touch (pinch zoom). */
+  /** Minimal orbit + pan — mouse / touch (pinch zoom, 3-finger pan). */
   function MiniOrbit(camera, dom, THREE, opts) {
     opts = opts || {};
     var target = new THREE.Vector3(0.12, 0.12, 0);
@@ -86,16 +86,23 @@
     var minPolar = 0.35,
       maxPolar = Math.PI / 2.15,
       minDist = 0.9,
-      maxDist = 3.8;
+      maxDist = 4.4;
+    var panMin = { x: -1.2, y: 0.02, z: -1.2 };
+    var panMax = { x: 1.2, y: 0.8, z: 1.2 };
     var enabled = true;
     var pointers = new Map();
-    var rotating = false;
+    var mode = "none"; /* none | rotate | pan */
     var pending = false;
+    var pendingPan = false;
     var lastX = 0,
       lastY = 0;
     var pinchStart = 0;
     var sphDelta = { theta: 0, phi: 0 };
     var scale = 1;
+    var panAccum = new THREE.Vector3();
+    var vPan = new THREE.Vector3();
+    var vRight = new THREE.Vector3();
+    var vUp = new THREE.Vector3();
 
     function isCoarse() {
       return !!(opts.isCoarse && opts.isCoarse());
@@ -104,37 +111,102 @@
       return !!(opts.plateOwns && opts.plateOwns());
     }
 
+    function clampTarget() {
+      target.x = Math.max(panMin.x, Math.min(panMax.x, target.x));
+      target.y = Math.max(panMin.y, Math.min(panMax.y, target.y));
+      target.z = Math.max(panMin.z, Math.min(panMax.z, target.z));
+    }
+
+    /** Screen dx/dy → world offset in camera right / screen-up plane. */
+    function accumulatePan(dx, dy) {
+      var h = Math.max(dom.clientHeight, 1);
+      offset.copy(camera.position).sub(target);
+      var dist = offset.length();
+      var fov = (camera.fov * Math.PI) / 180;
+      var half = dist * Math.tan(fov * 0.5);
+      var factor = (2 * half) / h;
+      /* camera local X (right) and local Y (up) from view matrix */
+      camera.updateMatrixWorld();
+      vRight.setFromMatrixColumn(camera.matrixWorld, 0);
+      vUp.setFromMatrixColumn(camera.matrixWorld, 1);
+      vPan.copy(vRight).multiplyScalar(-dx * factor);
+      panAccum.add(vPan);
+      vPan.copy(vUp).multiplyScalar(dy * factor);
+      panAccum.add(vPan);
+    }
+
+    function centroidN(n) {
+      var pts = Array.from(pointers.values());
+      var cx = 0,
+        cy = 0,
+        m = Math.min(n, pts.length);
+      for (var i = 0; i < m; i++) {
+        cx += pts[i].x;
+        cy += pts[i].y;
+      }
+      return { x: cx / m, y: cy / m, pts: pts };
+    }
+
     function onDown(e) {
       if (!enabled) return;
-      if (e.pointerType === "mouse" && e.button !== 0) return;
+      if (e.pointerType === "mouse" && e.button > 2) return;
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       try {
         dom.setPointerCapture(e.pointerId);
       } catch (err) {}
 
       if (isCoarse()) {
-        /* touch: orbit only with 2+ fingers */
         pending = false;
-        rotating = pointers.size >= 2 && !plateOwns();
-        if (pointers.size >= 2) {
-          var pts = Array.from(pointers.values());
-          lastX = (pts[0].x + pts[1].x) / 2;
-          lastY = (pts[0].y + pts[1].y) / 2;
-          pinchStart = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) || 1;
+        pendingPan = false;
+        mode = "none";
+        if (plateOwns()) return;
+        if (pointers.size >= 3) {
+          mode = "pan";
+          var c3 = centroidN(3);
+          lastX = c3.x;
+          lastY = c3.y;
+        } else if (pointers.size >= 2) {
+          mode = "rotate";
+          var c2 = centroidN(2);
+          lastX = c2.x;
+          lastY = c2.y;
+          pinchStart =
+            Math.hypot(c2.pts[0].x - c2.pts[1].x, c2.pts[0].y - c2.pts[1].y) || 1;
         }
         return;
       }
 
-      /* mouse / fine pointer: single-drag orbit if plate does not own */
+      /* mouse / fine pointer */
       if (plateOwns()) {
         pending = false;
-        rotating = false;
+        pendingPan = false;
+        mode = "none";
         return;
       }
-      pending = true;
-      rotating = false;
+
+      var wantPan =
+        e.button === 1 || e.button === 2 || (e.button === 0 && e.shiftKey);
       lastX = e.clientX;
       lastY = e.clientY;
+      if (wantPan && (e.button === 1 || e.button === 2)) {
+        /* middle / right: pan immediately */
+        mode = "pan";
+        pending = false;
+        pendingPan = false;
+      } else if (wantPan) {
+        /* Shift+left: wait for drag threshold */
+        mode = "none";
+        pending = true;
+        pendingPan = true;
+      } else if (e.button === 0) {
+        mode = "none";
+        pending = true;
+        pendingPan = false;
+      } else {
+        mode = "none";
+        pending = false;
+        pendingPan = false;
+      }
     }
 
     function onMove(e) {
@@ -142,25 +214,41 @@
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
       if (isCoarse()) {
-        if (pointers.size < 2 || plateOwns()) {
-          rotating = false;
+        if (plateOwns()) {
+          mode = "none";
           return;
         }
-        var pts = Array.from(pointers.values());
-        var mx = (pts[0].x + pts[1].x) / 2;
-        var my = (pts[0].y + pts[1].y) / 2;
-        var dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) || 1;
-        if (!rotating) {
-          rotating = true;
-          lastX = mx;
-          lastY = my;
+        if (pointers.size >= 3) {
+          var c3 = centroidN(3);
+          if (mode !== "pan") {
+            mode = "pan";
+            lastX = c3.x;
+            lastY = c3.y;
+            return;
+          }
+          accumulatePan(c3.x - lastX, c3.y - lastY);
+          lastX = c3.x;
+          lastY = c3.y;
+          return;
+        }
+        if (pointers.size < 2) {
+          mode = "none";
+          return;
+        }
+        var c2 = centroidN(2);
+        var dist =
+          Math.hypot(c2.pts[0].x - c2.pts[1].x, c2.pts[0].y - c2.pts[1].y) || 1;
+        if (mode !== "rotate") {
+          mode = "rotate";
+          lastX = c2.x;
+          lastY = c2.y;
           pinchStart = dist;
           return;
         }
-        var dx = mx - lastX;
-        var dy = my - lastY;
-        lastX = mx;
-        lastY = my;
+        var dx = c2.x - lastX;
+        var dy = c2.y - lastY;
+        lastX = c2.x;
+        lastY = c2.y;
         sphDelta.theta -= (2 * Math.PI * dx) / Math.max(dom.clientHeight, 1);
         sphDelta.phi -= (2 * Math.PI * dy) / Math.max(dom.clientHeight, 1);
         var ratio = dist / (pinchStart || 1);
@@ -173,27 +261,33 @@
 
       if (plateOwns()) {
         pending = false;
-        rotating = false;
+        pendingPan = false;
+        mode = "none";
         return;
       }
       if (pending) {
         var adx = e.clientX - lastX;
         var ady = e.clientY - lastY;
         if (Math.hypot(adx, ady) > 4) {
-          rotating = true;
+          mode = pendingPan ? "pan" : "rotate";
           pending = false;
+          pendingPan = false;
           lastX = e.clientX;
           lastY = e.clientY;
         }
         return;
       }
-      if (!rotating) return;
+      if (mode === "none") return;
       var mdx = e.clientX - lastX;
       var mdy = e.clientY - lastY;
       lastX = e.clientX;
       lastY = e.clientY;
-      sphDelta.theta -= (2 * Math.PI * mdx) / Math.max(dom.clientHeight, 1);
-      sphDelta.phi -= (2 * Math.PI * mdy) / Math.max(dom.clientHeight, 1);
+      if (mode === "pan") {
+        accumulatePan(mdx, mdy);
+      } else if (mode === "rotate") {
+        sphDelta.theta -= (2 * Math.PI * mdx) / Math.max(dom.clientHeight, 1);
+        sphDelta.phi -= (2 * Math.PI * mdy) / Math.max(dom.clientHeight, 1);
+      }
     }
 
     function onUp(e) {
@@ -201,15 +295,31 @@
       try {
         dom.releasePointerCapture(e.pointerId);
       } catch (err) {}
-      if (pointers.size < 2) {
-        rotating = false;
-        pinchStart = 0;
+      if (isCoarse()) {
+        if (pointers.size >= 3 && !plateOwns()) {
+          mode = "pan";
+          var c3 = centroidN(3);
+          lastX = c3.x;
+          lastY = c3.y;
+        } else if (pointers.size >= 2 && !plateOwns()) {
+          mode = "rotate";
+          var c2 = centroidN(2);
+          lastX = c2.x;
+          lastY = c2.y;
+          pinchStart =
+            Math.hypot(c2.pts[0].x - c2.pts[1].x, c2.pts[0].y - c2.pts[1].y) || 1;
+        } else {
+          mode = "none";
+          pinchStart = 0;
+          pending = false;
+          pendingPan = false;
+        }
+        return;
       }
       if (pointers.size === 0) {
         pending = false;
-        rotating = false;
-      } else if (pointers.size === 1 && isCoarse()) {
-        rotating = false;
+        pendingPan = false;
+        mode = "none";
       }
     }
 
@@ -219,11 +329,16 @@
       scale *= e.deltaY > 0 ? 1.08 : 0.92;
     }
 
+    function onContextMenu(e) {
+      e.preventDefault();
+    }
+
     dom.addEventListener("pointerdown", onDown);
     dom.addEventListener("pointermove", onMove);
     dom.addEventListener("pointerup", onUp);
     dom.addEventListener("pointercancel", onUp);
     dom.addEventListener("wheel", onWheel, { passive: false });
+    dom.addEventListener("contextmenu", onContextMenu);
 
     return {
       get enabled() {
@@ -232,13 +347,19 @@
       set enabled(v) {
         enabled = !!v;
         if (!enabled) {
-          rotating = false;
+          mode = "none";
           pending = false;
+          pendingPan = false;
           pointers.clear();
         }
       },
       target: target,
       update: function () {
+        if (panAccum.x || panAccum.y || panAccum.z) {
+          target.add(panAccum);
+          panAccum.set(0, 0, 0);
+          clampTarget();
+        }
         offset.copy(camera.position).sub(target);
         spherical.setFromVector3(offset);
         spherical.theta += sphDelta.theta;
