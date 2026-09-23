@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Tester l’idée · trajectoire cobot | ROBINSPECT</title>
+<meta name="description" content="Esquisse interactive : placez des points sur une plaque, le cobot 6 axes suit la trajectoire. Concept labo ROBINSPECT."/>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="canonical" href="https://robinspect-systems.com/fr/try/"/>
+<link rel="alternate" hreflang="en" href="https://robinspect-systems.com/try/"/>
+<link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/try/"/>
+<link rel="icon" href="/favicon.ico" sizes="any"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/try/try.css?v=20260923d"/>
+</head>
+<body>
+<header class="top">
+  <div class="wrap hbar">
+    <a class="brand" href="/fr/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
+    <div class="lang" role="group" aria-label="Langue">
+      <a href="/try/" hreflang="en">EN</a>
+      <a href="/fr/try/" class="on" hreflang="fr">FR</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap stage-wrap" id="try-root" data-lang="fr">
+  <div class="intro">
+    <nav class="crumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a><span>/</span><span>Tester</span></nav>
+    <div class="mono" style="margin-top:1rem">Tester · esquisse labo · trajectoire</div>
+    <h1 class="font-display">Tester l’idée.</h1>
+    <p class="lead">Placez des points numérotés sur la plaque. Lecture — le cobot 6 axes suit une trajectoire fluide, stylo baissé. Esquisse de planification de trajectoire, pas une démo produit.</p>
+  </div>
+
+  <div class="stage">
+    <div id="try-canvas" role="img" aria-label="Cobot interactif et plaque de dessin"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="chrome">
+      <div class="hud-top">
+        <div></div>
+        <div class="axes">
+          <div class="mono" style="margin-bottom:.15rem">Axes</div>
+          <div class="axes-row" id="try-axes"></div>
+        </div>
+      </div>
+      <div class="hud-bot">
+        <p class="hint" id="try-hint">Touchez la plaque pour poser un point</p>
+        <div class="prog" id="try-prog"><i id="try-prog-fill"></i></div>
+        <div class="panel">
+          <div class="presets" role="group" aria-label="Préréglages">
+            <button type="button" data-preset="star">Étoile</button>
+            <button type="button" data-preset="circle">Cercle</button>
+            <button type="button" data-preset="square">Carré</button>
+            <button type="button" data-preset="infinity">Infini</button>
+            <button type="button" data-preset="heart">Cœur</button>
+            <button type="button" data-preset="wave">Vague</button>
+            <span class="wp-count" id="try-wp-count">0</span>
+          </div>
+          <div class="controls">
+            <button type="button" class="btn" id="try-play"><span id="try-play-label">Lecture</span></button>
+            <button type="button" class="icon-btn" id="try-stop" aria-label="Stop" title="Stop">■</button>
+            <button type="button" class="icon-btn" id="try-undo" aria-label="Annuler" title="Annuler">↶</button>
+            <button type="button" class="icon-btn" id="try-clear" aria-label="Effacer" title="Effacer">✕</button>
+            <div class="speed">
+              <label for="try-speed">Vitesse</label>
+              <input id="try-speed" type="range" min="0.4" max="2.2" step="0.05" value="1" aria-label="Vitesse"/>
+              <span class="val" id="try-speed-val">1.0×</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">© 2026 ROBINSPECT Systems — Belgique · Europe &amp; États-Unis · Esquisse conceptuelle</footer>
+</div>
+<script src="/try/try.js?v=20260923d"></script>
+</body>
+</html>

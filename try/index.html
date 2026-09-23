@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Try the idea · cobot path sketch | ROBINSPECT</title>
+<meta name="description" content="Interactive sketch: place waypoints on a plate, watch a 6-axis cobot follow the path. Lab concept for ROBINSPECT path planning."/>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="canonical" href="https://robinspect-systems.com/try/"/>
+<link rel="alternate" hreflang="en" href="https://robinspect-systems.com/try/"/>
+<link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/try/"/>
+<link rel="icon" href="/favicon.ico" sizes="any"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/try/try.css?v=20260923d"/>
+</head>
+<body>
+<header class="top">
+  <div class="wrap hbar">
+    <a class="brand" href="/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
+    <div class="lang" role="group" aria-label="Language">
+      <a href="/try/" class="on" hreflang="en">EN</a>
+      <a href="/fr/try/" hreflang="fr">FR</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap stage-wrap" id="try-root" data-lang="en">
+  <div class="intro">
+    <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Try</span></nav>
+    <div class="mono" style="margin-top:1rem">Try · lab sketch · path idea</div>
+    <h1 class="font-display">Try the idea.</h1>
+    <p class="lead">Place numbered waypoints on the plate. Play — the 6-axis cobot follows a smooth path with pen-down ink. Concept sketch for path planning, not a product demo.</p>
+  </div>
+
+  <div class="stage">
+    <div id="try-canvas" role="img" aria-label="Interactive cobot and drawing plate"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="chrome">
+      <div class="hud-top">
+        <div></div>
+        <div class="axes">
+          <div class="mono" style="margin-bottom:.15rem">Axes</div>
+          <div class="axes-row" id="try-axes"></div>
+        </div>
+      </div>
+      <div class="hud-bot">
+        <p class="hint" id="try-hint">Click the plate to place waypoints</p>
+        <div class="prog" id="try-prog"><i id="try-prog-fill"></i></div>
+        <div class="panel">
+          <div class="presets" role="group" aria-label="Presets">
+            <button type="button" data-preset="star">Star</button>
+            <button type="button" data-preset="circle">Circle</button>
+            <button type="button" data-preset="square">Square</button>
+            <button type="button" data-preset="infinity">Infinity</button>
+            <button type="button" data-preset="heart">Heart</button>
+            <button type="button" data-preset="wave">Wave</button>
+            <span class="wp-count" id="try-wp-count">0</span>
+          </div>
+          <div class="controls">
+            <button type="button" class="btn" id="try-play"><span id="try-play-label">Play</span></button>
+            <button type="button" class="icon-btn" id="try-stop" aria-label="Stop" title="Stop">■</button>
+            <button type="button" class="icon-btn" id="try-undo" aria-label="Undo" title="Undo">↶</button>
+            <button type="button" class="icon-btn" id="try-clear" aria-label="Clear" title="Clear">✕</button>
+            <div class="speed">
+              <label for="try-speed">Speed</label>
+              <input id="try-speed" type="range" min="0.4" max="2.2" step="0.05" value="1" aria-label="Speed"/>
+              <span class="val" id="try-speed-val">1.0×</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">© 2026 ROBINSPECT Systems — Belgium · Europe &amp; United States · Concept sketch only</footer>
+</div>
+<script src="/try/try.js?v=20260923d"></script>
+</body>
+</html>
