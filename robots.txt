@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
 
+Disallow: /_team/
+Disallow: /_qa/
+Disallow: /_shots/
+Disallow: /mirror/
+Disallow: /preview/
+Disallow: /preview-shots/
+Disallow: /try/_v
+
 Sitemap: https://robinspect-systems.com/sitemap.xml
