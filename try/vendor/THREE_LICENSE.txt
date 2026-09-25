@@ -1,0 +1,5 @@
+Three.js r170 — MIT License
+https://github.com/mrdoob/three.js
+Copyright © 2010-2024 three.js authors
+Vendored locally under /try/vendor/three/ for the ROBINSPECT try prototype.
+No other third-party 3D assets are used; the robot and parts are procedural.

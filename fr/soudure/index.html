@@ -23,23 +23,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/inner.css"/>
+<link rel="stylesheet" href="/inner.css?v=20260925passo"/>
 </head>
 <body>
 <header>
   <div class="wrap hbar">
-    <a class="brand" href="../"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
-    <div class="lang" role="group">
-      <a href="../../weld/" class="" hreflang="en">EN</a>
-      <a href="./" class="on" hreflang="fr">FR</a>
+    <a class="brand" href="/fr/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
+    <nav class="desk" aria-label="Primary"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a></nav>
+    <div class="actions">
+      <div class="lang" role="group">
+        <a href="/weld/" hreflang="en">EN</a>
+        <a href="./" class="on" hreflang="fr">FR</a>
+      </div>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
+  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer une géométrie</a></div>
 </header>
 <main class="wrap page">
-  <nav class="crumb"><a href="../">Accueil</a><span>/</span><span>Soudures</span></nav>
+  <nav class="crumb"><a href="/fr/">Accueil</a><span>/</span><span>Soudures</span></nav>
   <div class="mono" style="margin-top:1.2rem">Cas d’usage · Soudures</div>
   <h1 class="font-display">Inspection robotisée<br/>des cordons.</h1>
-  <p class="lead">Un problème d’intégrateur, pas de robot : garder la sonde normale au cordon, coupler, enregistrer UT / PAUT / TFM sur une trajectoire rejouable. ROBINSPECT fait cette ingénierie — n’importe quelle marque de bras, n’importe quelle chaîne ultrasonore.</p>
+  <p class="lead">Nous intégrons l’inspection ultrasonore robotisée pour les soudures — votre robot, votre UT/PAUT/TFM : sonde normale, couplage, trajet rejouable. Aujourd’hui : démo labo filmée (UT contact). PAUT / TFM = stack / PoC. Ensuite : PoC.</p>
   <figure class="hero-img">
     <img src="/media/challenge-cinema.jpg" alt="Contrôle ultrasonore sur structure soudée complexe — le geste qu’un robot 6 axes peut répéter"/>
   </figure>
@@ -52,9 +57,9 @@
 <li>Scanner la pièce (des minutes, pas un labo de métrologie).</li>
 <li>Générer le chemin outil sur le cordon, en quelques secondes.</li>
 <li>Préparer la cellule une fois — ensuite la trajectoire se rejoue.</li>
-<li>Acquérir UT, PAUT ou TFM / ATFM, souvent moins d’une minute sur l’éprouvette filmée.</li>
+<li>Acquérir UT, PAUT ou TFM, souvent moins d’une minute sur l’éprouvette filmée.</li>
 </ul>
-<p>Les temps du site sont ceux de la pièce du montage 7 min. Un cycle industriel dépend de la longueur du cordon et de l’accès, typiquement autour de 30 minutes, sans roboticien ni expert CND sur la cellule.</p>
+<p>Une fois la cellule apprise, un cycle complet tourne typiquement autour de 30 minutes — selon longueur/accès (temps du site = éprouvette filmée). L’expertise CND niveau 2 reste derrière la cellule pour l’acquisition et l’interprétation.</p>
 <h2 class="font-display">Vendor-agnostic, exprès</h2>
 <p>La valeur est le workflow, pas une chaîne verrouillée. Multi-robots, multi-capteurs. Si vous avez déjà un appareil PAUT ou un bras 6 axes, on intègre autour.</p>
   </article>
@@ -63,10 +68,17 @@
 <a href="../contraint/"><div class="mono">Aussi</div><b>Milieu contraignant</b></a>
   </div>
   <div class="ctas">
-    <a class="btn btn-lg" href="mailto:vpretet@robinspect-systems.com?subject=Inspection%20soudures%20%E2%80%94%20ROBINSPECT">Parler soudures</a>
-    <a class="btn btn-lg btn-ghost" href="../">Retour ROBINSPECT</a>
+    <a class="btn btn-lg" href="../watch/">Voir la démo labo</a>
+    <a class="btn btn-lg btn-ghost" href="/fr/contact/#geometry">Envoyer une géométrie</a>
   </div>
+  <p class="cta-text" style="margin-top:.85rem;font-size:.85rem;color:var(--muted)"><a href="/fr/contact/" style="color:var(--gold)">Discuter d’un cas</a></p>
 </main>
-<footer><div class="wrap">© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe & États-Unis</div></footer>
+<footer><div class="wrap ft">
+  <div>© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe &amp; États-Unis</div>
+  <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Watch</a> · <a href="/fr/try/">Try</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">RDV</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+</div></footer>
+<script>
+(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();
+</script>
 </body>
 </html>

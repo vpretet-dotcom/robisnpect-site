@@ -23,23 +23,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/inner.css"/>
+<link rel="stylesheet" href="/inner.css?v=20260925passo"/>
 </head>
 <body>
 <header>
   <div class="wrap hbar">
-    <a class="brand" href="../"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
-    <div class="lang" role="group">
-      <a href="./" class="on" hreflang="en">EN</a>
-      <a href="../fr/contraint/" class="" hreflang="fr">FR</a>
+    <a class="brand" href="/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
+    <nav class="desk" aria-label="Primary"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a></nav>
+    <div class="actions">
+      <div class="lang" role="group">
+        <a href="./" class="on" hreflang="en">EN</a>
+        <a href="/fr/contraint/" hreflang="fr">FR</a>
+      </div>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
+  <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send a geometry</a></div>
 </header>
 <main class="wrap page">
-  <nav class="crumb"><a href="../">Home</a><span>/</span><span>Constrained environments</span></nav>
+  <nav class="crumb"><a href="/">Home</a><span>/</span><span>Constrained environments</span></nav>
   <div class="mono" style="margin-top:1.2rem">Use case · Constrained environments</div>
   <h1 class="font-display">Inspection where<br/>people should not linger.</h1>
-  <p class="lead">Confined, radiological, hot, or simply hard to access: the cost is HSE, not the coupon. A vendor-agnostic 6-axis cell puts the probe in the constraint and keeps the inspector in control of the data.</p>
+  <p class="lead">We integrate robotic ultrasonic inspection for constrained sites — your robot, your UT/PAUT/TFM: less time in the volume, a replayable path. Today: filmed lab demo (contact UT). PAUT / TFM = stack / PoC. Next: PoCs.</p>
   <figure class="hero-img">
     <img src="/media/energy-cinema.jpg" alt="Industrial energy piping hall — typical constrained environment for robotic NDT"/>
   </figure>
@@ -53,17 +58,24 @@
 <li>The same path next outage — traceable, auditable.</li>
 <li>No lock-in to one robot OEM or one ultrasonic brand.</li>
 </ul>
-<p>A full cycle on a typical part is on the order of 30 minutes once the cell is taught, without a roboticist standing there. Acquisition itself is short; preparation is the real work, and we design that too.</p>
+<p>Once the cell is taught, a full cycle is typically around 30 minutes — depends on length and access (times on this site = filmed coupon). NDT Level 2 stays behind the cell for acquisition and interpretation. Acquisition itself is short; preparation is the real work, and we design that too.</p>
   </article>
   <div class="more">
     <a href="../weld/"><div class="mono">Also</div><b>Weld inspection</b></a>
 <a href="../aerospace/"><div class="mono">Also</div><b>Curved / aerospace</b></a>
   </div>
   <div class="ctas">
-    <a class="btn btn-lg" href="mailto:vpretet@robinspect-systems.com?subject=Constrained%20environment%20NDT%20%E2%80%94%20ROBINSPECT">Talk constrained sites</a>
-    <a class="btn btn-lg btn-ghost" href="../">Back to ROBINSPECT</a>
+    <a class="btn btn-lg" href="../watch/">Watch the lab demo</a>
+    <a class="btn btn-lg btn-ghost" href="/contact/#geometry">Send a geometry</a>
   </div>
+  <p class="cta-text" style="margin-top:.85rem;font-size:.85rem;color:var(--muted)"><a href="/contact/" style="color:var(--gold)">Discuss a case</a></p>
 </main>
-<footer><div class="wrap">© 2026 ROBINSPECT Systems — Integrator · Belgium · Europe & United States</div></footer>
+<footer><div class="wrap ft">
+  <div>© 2026 ROBINSPECT Systems — Integrator · Belgium · Europe &amp; United States</div>
+  <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+</div></footer>
+<script>
+(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();
+</script>
 </body>
 </html>

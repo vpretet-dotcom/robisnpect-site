@@ -3,81 +3,198 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>Try the idea · cobot path sketch | ROBINSPECT</title>
-<meta name="description" content="Interactive sketch: place waypoints on a plate, watch a 6-axis cobot follow the path. Lab concept for ROBINSPECT path planning."/>
-<meta name="robots" content="noindex, nofollow"/>
+<title>Try the idea · robotic UT path | ROBINSPECT Systems</title>
+<meta name="description" content="Interactive concept sketch: hit Play, watch a cobot follow a UT path while a simulated C-scan paints coverage. Illustration only — not a product demo."/>
+<meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://robinspect-systems.com/try/"/>
 <link rel="alternate" hreflang="en" href="https://robinspect-systems.com/try/"/>
 <link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/try/"/>
+<link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/try/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="ROBINSPECT Systems"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://robinspect-systems.com/try/"/>
+<meta property="og:title" content="Try the idea · robotic UT path | ROBINSPECT Systems"/>
+<meta property="og:description" content="Interactive concept sketch: hit Play, watch a cobot follow a UT path while a simulated C-scan paints coverage. Illustration only — not a product demo."/>
+<meta property="og:image" content="https://robinspect-systems.com/og-image.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Try the idea · robotic UT path | ROBINSPECT Systems"/>
+<meta name="twitter:description" content="Interactive concept sketch: hit Play, watch a cobot follow a UT path while a simulated C-scan paints coverage. Illustration only — not a product demo."/>
+<meta name="twitter:image" content="https://robinspect-systems.com/og-image.jpg"/>
 <link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/try/try.css?v=20260923e"/>
+<link rel="stylesheet" href="/try/try.css?v=20260925passg"/>
+<script type="importmap">
+{"imports":{"three":"/try/vendor/three/three.module.js","three/addons/":"/try/vendor/three/addons/"}}
+</script>
 </head>
 <body>
 <header class="top">
   <div class="wrap hbar">
     <a class="brand" href="/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
-    <div class="lang" role="group" aria-label="Language">
-      <a href="/try/" class="on" hreflang="en">EN</a>
-      <a href="/fr/try/" hreflang="fr">FR</a>
+    <nav class="desk" aria-label="Primary"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/" class="on">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a></nav>
+    <div class="actions">
+      <div class="lang" role="group" aria-label="Language">
+        <a href="/try/" class="on" hreflang="en">EN</a>
+        <a href="/fr/try/" hreflang="fr">FR</a>
+      </div>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
+  <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/" class="on">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send a geometry</a></div>
 </header>
 
 <div class="wrap stage-wrap" id="try-root" data-lang="en">
   <div class="intro">
+    <div class="status-banner" role="status">
+      <span class="mono">Status</span>
+      <p>Interactive lab sketch · early access. Not a self-serve product — a real cell starts with a conversation.</p>
+      <p class="mono" style="margin-top:.55rem;letter-spacing:.08em;color:var(--gold,#c9a227)">SIM · Web ≠ TrajTool — illustration above Play, not the filmed cell.</p>
+    </div>
     <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Try</span></nav>
-    <div class="mono" style="margin-top:1rem">Try · lab sketch · path idea</div>
+    <div class="mono" style="margin-top:.55rem">Concept sketch · lab idea</div>
     <h1 class="font-display">Try the idea.</h1>
-    <p class="lead">Place numbered waypoints on the plate. Play — the 6-axis cobot follows a smooth path with pen-down ink. Concept sketch for path planning, not a product demo.</p>
+    <p class="value-line">Your part, your robot, your UT — we build the scan path.</p>
+    <p class="lead">Hit Play — the probe stays on the surface; the C-scan shows coverage.</p>
+    <p class="try-sec-ctas"><a href="/watch/">Watch the lab demo</a> · <a href="/contact/#geometry">Send a geometry</a> · <a href="/contact/">Discuss a case</a></p>
+  </div>
+
+  <div class="try-loader" id="try-loader" role="status" aria-live="polite" aria-busy="true">
+    <div class="try-loader-inner">
+      <div class="try-loader-brand font-display">ROBINSPECT</div>
+      <div class="try-loader-bar" aria-hidden="true"><i id="try-loader-fill"></i></div>
+      <p class="try-loader-msg mono" id="try-loader-msg">Loading the robot cell…</p>
+    </div>
   </div>
 
   <div class="stage">
-    <div id="try-canvas" role="img" aria-label="Interactive cobot and drawing plate"></div>
+    <div id="try-canvas" role="img" aria-label="Interactive cobot and inspection part"></div>
     <div class="vignette" aria-hidden="true"></div>
     <div class="chrome">
       <div class="hud-top">
-        <div></div>
-        <div class="axes">
-          <div class="mono" style="margin-bottom:.15rem">Axes</div>
+        <div class="hud-left">
+          <div class="ascan-box" id="try-ascan-wrap" aria-label="A-scan simulation">
+            <div class="mono ascan-lab">A-scan · SIM</div>
+            <canvas id="try-ascan" width="220" height="72"></canvas>
+            <div class="mono probe-lab" id="try-probe-lab">5 MHz · 0° · contact</div>
+          </div>
+          <div class="hud-sec" id="try-hud-sec">
+            <div class="tcp-readout mono" id="try-tcp">TCP —</div>
+            <div class="sim-badge mono">SIM</div>
+            <button type="button" class="ghost-chip" id="try-cscan-mode" title="Toggle C-scan mode">C-scan · Amp</button>
+          </div>
+        </div>
+        <div class="axes" id="try-axes-wrap">
+          <div class="mono" style="margin-bottom:.15rem">Joints</div>
           <div class="axes-row" id="try-axes"></div>
         </div>
       </div>
-      <div class="hud-bot">
-        <p class="hint" id="try-hint">Click the plate to place waypoints</p>
+      <button type="button" class="hud-chip on" id="try-hud-chip" aria-pressed="true" title="HUD">HUD</button>
+      <div class="cscan-legend mono" id="try-legend" aria-hidden="false">
+        <span class="leg sound"></span> sound
+        <span class="leg atten"></span> attenuated
+        <span class="leg ind"></span> indication
+      </div>
+      <div class="ind-label" id="try-ind-label" hidden>FBH / inclusion · SIM</div>
+      <div class="hud-mid">
+        <p class="hint" id="try-hint">Hit Play</p>
         <div class="prog" id="try-prog"><i id="try-prog-fill"></i></div>
-        <div class="panel">
-          <div class="presets" role="group" aria-label="Presets">
-            <button type="button" data-preset="star">Star</button>
-            <button type="button" data-preset="circle">Circle</button>
-            <button type="button" data-preset="square">Square</button>
-            <button type="button" data-preset="infinity">Infinity</button>
-            <button type="button" data-preset="heart">Heart</button>
-            <button type="button" data-preset="wave">Wave</button>
-            <span class="wp-count" id="try-wp-count">0</span>
-          </div>
-          <div class="controls">
-            <button type="button" class="btn" id="try-play"><span id="try-play-label">Play</span></button>
-            <button type="button" class="icon-btn" id="try-stop" aria-label="Stop" title="Stop">■</button>
-            <button type="button" class="icon-btn" id="try-undo" aria-label="Undo" title="Undo">↶</button>
-            <button type="button" class="icon-btn" id="try-clear" aria-label="Clear" title="Clear">✕</button>
-            <div class="speed">
-              <label for="try-speed">Speed</label>
-              <input id="try-speed" type="range" min="0.4" max="2.2" step="0.05" value="1" aria-label="Speed"/>
-              <span class="val" id="try-speed-val">1.0×</span>
-            </div>
-          </div>
+      </div>
+      <button type="button" class="play-overlay" id="try-play-overlay" aria-label="Play" hidden>
+        <span class="play-orb">Play</span>
+        <span class="play-sub mono">Hit Play — probe on surface · C-scan coverage</span>
+      </button>
+    </div>
+  </div>
+
+  <p class="try-state" id="try-state" aria-live="polite">
+    <span id="try-state-msg">Hit Play</span>
+    <a class="state-cta" id="try-state-cta" href="/contact/#geometry">Send a geometry</a>
+  </p>
+      <div class="end-bar" id="try-cta" hidden>
+        <p class="end-copy">Path held. Coverage painted. Next: your geometry — or watch the lab demo.</p>
+        <div class="end-actions">
+          <button type="button" class="btn-text" id="try-replay">Replay</button>
+          <a class="btn" id="try-cta-geo" href="/contact/#geometry">Send a geometry</a>
+          <a class="btn btn-ghost" id="try-cta-bring" href="/watch/">Watch the lab demo</a>
+          <button type="button" class="end-dismiss" id="try-cta-dismiss" aria-label="Dismiss">✕</button>
         </div>
+        <p class="end-text"><a href="/contact/">Discuss a case</a></p>
+      </div>
+    <div class="toolbar" id="try-toolbar">
+    <div class="tb-row tb-parts" role="group" aria-label="Demo part">
+      <span class="tb-parts-lab" id="try-parts-lab">Demo part</span>
+      <button type="button" data-part="aero" class="on">Aero</button>
+      <button type="button" data-part="plate">Plate</button>
+      <button type="button" data-part="pipe">Pipe</button>
+      <span class="wp-count" id="try-wp-count" hidden aria-hidden="true">0</span>
+      <span class="warn-pill" id="try-warn" hidden></span>
+
+    </div>
+    <div class="tb-row tb-modes" role="group" aria-label="Mode" hidden>
+      <button type="button" data-mode="view" class="on" title="View">View</button>
+      <button type="button" data-mode="draw" title="Draw">Draw</button>
+      <button type="button" data-mode="edit" title="Edit">Edit</button>
+      <span class="path-toggle" id="try-path-toggle" hidden>
+        <button type="button" data-path="raster" class="on" title="Raster (sparse / illustration)">▦</button>
+        <button type="button" data-path="freehand" title="Freehand (demo)">∿</button>
+      </span>
+      <button type="button" id="try-cine" data-cine="0" class="icon-btn cine-btn" title="Cinematic" aria-label="Cine">◎</button>
+    </div>
+    <div class="tb-row tb-controls">
+      <button type="button" class="btn" id="try-play"><span id="try-play-label">Play</span></button>
+      <button type="button" class="icon-btn" id="try-stop" aria-label="Stop" title="Stop">■</button>
+      <button type="button" class="icon-btn" id="try-clear" aria-label="Reset" title="Reset">✕</button>
+      <button type="button" class="btn-tools" id="try-tools-btn" aria-expanded="false">Tools</button>
+      <button type="button" class="speed-chip mob-only" id="try-speed-chip" aria-expanded="false" title="Speed">Speed</button>
+      <button type="button" class="icon-btn" id="try-undo" aria-label="Undo" title="Undo" hidden>↶</button>
+      <div class="speed">
+        <label for="try-speed">Speed</label>
+        <input id="try-speed" type="range" min="20" max="100" step="5" value="50" aria-label="TCP speed mm/s"/>
+        <span class="val" id="try-speed-val">50 mm/s</span>
       </div>
     </div>
   </div>
 
-  <footer class="foot">© 2026 ROBINSPECT Systems — Belgium · Europe &amp; United States · Concept sketch only</footer>
+  <div class="reach-badge" id="try-reach-badge" role="status" aria-live="polite" hidden></div>
+
+  <div class="tools-sheet" id="try-tools-sheet" hidden>
+    <div class="tools-sheet-panel" role="dialog" aria-label="Tools">
+      <div class="tools-sheet-head">
+        <span class="mono">Tools</span>
+        <button type="button" class="end-dismiss" id="try-tools-close" aria-label="Close">✕</button>
+      </div>
+      <p class="tools-hint mono" id="try-tools-hint">Draw / Edit live here. Play = sparse raster (illustration). Web path ≠ TrajTool.</p>
+      <div class="tools-grid">
+        <button type="button" class="tools-item" data-proxy="mode:view"><span class="ti">👁</span><span>View</span></button>
+        <button type="button" class="tools-item" data-proxy="mode:draw"><span class="ti">✎</span><span>Draw</span></button>
+        <button type="button" class="tools-item" data-proxy="mode:edit"><span class="ti">✥</span><span>Edit</span></button>
+        <button type="button" class="tools-item" data-proxy="path:raster"><span class="ti">▦</span><span>Raster (sparse / illustration)</span></button>
+        <button type="button" class="tools-item" data-proxy="path:freehand"><span class="ti">∿</span><span>Freehand (demo)</span></button>
+        <button type="button" class="tools-item" data-proxy="id:try-cine"><span class="ti">◎</span><span>Cine</span></button>
+        <button type="button" class="tools-item" data-proxy="id:try-undo"><span class="ti">↶</span><span>Undo</span></button>
+        <button type="button" class="tools-item" id="try-joints-toggle"><span class="ti">▤</span><span>Joints</span></button>
+        <button type="button" class="tools-item" id="try-move-part"><span class="ti">✥</span><span>Move part</span></button>
+      </div>
+      <div class="tools-speed">
+        <label for="try-speed-sheet">Speed</label>
+        <input id="try-speed-sheet" type="range" min="20" max="100" step="5" value="50"/>
+        <span class="val" id="try-speed-sheet-val">50 mm/s</span>
+      </div>
+    </div>
+  </div>
+    <footer class="foot">
+    <span>Simulation for illustration · not a self-serve product.</span>
+    <span class="traj-note">Web TCP path ≠ TrajTool.</span>
+    <span>© 2026 ROBINSPECT Systems</span>
+    <div class="ft-links" style="width:100%;margin-top:.55rem"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+  </footer>
 </div>
-<script src="/try/try.js?v=20260923e"></script>
+<script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>
+<script type="module" src="/try/try.js?v=20260924v8"></script>
 </body>
 </html>
