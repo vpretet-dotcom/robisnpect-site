@@ -39,6 +39,7 @@ header.top{position:fixed;inset:0 0 auto 0;z-index:50;padding-top:var(--safe-t);
 
 /* Page shell: fill viewport, stage eats remaining height */
 .stage-wrap{
+  position:relative;
   padding-top:calc(var(--header-h) + var(--safe-t));
   padding-bottom:var(--safe-b);
   min-height:100%;min-height:100dvh;
@@ -77,10 +78,10 @@ header.top{position:fixed;inset:0 0 auto 0;z-index:50;padding-top:var(--safe-t);
 .vignette{pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 35%,rgba(5,5,5,.55) 100%);z-index:2}
 .chrome{
   pointer-events:none;position:absolute;inset:0;z-index:3;
-  display:flex;flex-direction:column;justify-content:space-between;
-  padding:.5rem;padding-bottom:max(.5rem, calc(var(--safe-b) * 0.35));
+  display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;
+  padding:.5rem;gap:.4rem;
 }
-@media(min-width:768px){.chrome{padding:1.1rem}}
+@media(min-width:768px){.chrome{padding:.75rem}}
 
 .hud-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem}
 .axes{pointer-events:none;display:none;border:1px solid var(--line);background:rgba(7,7,7,.82);backdrop-filter:blur(10px);padding:.55rem .7rem}
@@ -92,11 +93,7 @@ header.top{position:fixed;inset:0 0 auto 0;z-index:50;padding-top:var(--safe-t);
 .axis .lab,.axis .val{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase}
 .axis .val{color:var(--muted)}
 
-.hud-bot{
-  display:flex;flex-direction:column;align-items:center;gap:.4rem;
-  /* keep panel clear of home indicator */
-  padding-bottom:max(0px, calc(var(--safe-b) * 0.65));
-}
+.hud-bot{display:none !important}
 .hint{pointer-events:none;border:1px solid var(--line);background:rgba(7,7,7,.82);backdrop-filter:blur(10px);
   padding:.35rem .7rem;font-size:.72rem;color:var(--muted);text-align:center;max-width:92%}
 @media(min-width:768px){.hint{font-size:.8rem;padding:.4rem .85rem}}
@@ -147,10 +144,8 @@ header.top{position:fixed;inset:0 0 auto 0;z-index:50;padding-top:var(--safe-t);
 .speed .val{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);width:2.6rem;text-align:right}
 
 @media(max-width:767px){
-  #try-play{flex:1 1 100%;width:100%;order:-1;min-height:48px;font-size:.9rem}
   .controls{gap:.45rem}
-  .icon-btn{flex:0 0 44px}
-  .speed{flex-basis:100%;margin-left:0;max-width:none;order:10}
+  .icon-btn{flex:0 0 40px}
   .hint{font-size:.68rem}
 }
 
@@ -158,3 +153,1385 @@ header.top{position:fixed;inset:0 0 auto 0;z-index:50;padding-top:var(--safe-t);
 @media(min-width:768px){.foot{padding:1.1rem 0;margin-top:.85rem}}
 
 body.is-canvas-drag{overflow:hidden;overscroll-behavior:none;touch-action:none}
+
+/* ── v2 HUD additions (same DA) ─────────────────────────── */
+.hud-left{display:flex;flex-direction:column;gap:.4rem;align-items:flex-start;max-width:min(14rem,42vw)}
+.ascan-box{
+  pointer-events:none;border:1px solid var(--line);background:rgba(7,7,7,.88);backdrop-filter:blur(10px);
+  padding:.35rem .45rem .3rem;display:none
+}
+@media(min-width:720px){.ascan-box{display:block}}
+.ascan-lab{font-size:.55rem;margin-bottom:.2rem;opacity:.9}
+#try-ascan{display:block;width:220px;max-width:100%;height:72px;background:#0a0908}
+.tcp-readout{
+  pointer-events:none;border:1px solid var(--line);background:rgba(7,7,7,.82);backdrop-filter:blur(10px);
+  padding:.28rem .55rem;font-size:.58rem;letter-spacing:.14em;color:var(--muted)
+}
+.sim-badge{
+  pointer-events:none;border:1px solid rgba(232,197,71,.35);background:rgba(232,197,71,.08);
+  padding:.22rem .5rem;font-size:.55rem;letter-spacing:.18em;color:var(--gold)
+}
+.parts,.modes{
+  display:flex;gap:.35rem;overflow-x:auto;align-items:center;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:.1rem
+}
+.parts::-webkit-scrollbar,.modes::-webkit-scrollbar{display:none}
+.parts button,.modes button{
+  flex:none;min-height:40px;min-width:44px;padding:.4rem .7rem;
+  border:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)
+}
+.parts button:hover:not(:disabled),.modes button:hover:not(:disabled),
+.parts button:focus-visible:not(:disabled),.modes button:focus-visible:not(:disabled){border-color:var(--gold);color:var(--fg)}
+.parts button.on,.modes button.on{border-color:var(--gold);color:var(--ink);background:var(--gold)}
+.modes button[data-cine="1"]{border-color:var(--gold);color:var(--gold)}
+.warn-pill{
+  flex:none;margin-left:.15rem;padding:.25rem .5rem;border:1px solid rgba(232,120,71,.55);
+  background:rgba(232,120,71,.12);color:#e8a87a;
+  font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase
+}
+.axis-fill.near-limit{background:#e87847}
+.axis-fill.at-limit{background:#c44}
+.axis-bar.warn{background:#2a1810}
+@media(max-width:767px){
+  .parts button,.modes button{min-height:44px;padding:.45rem .65rem}
+  .tcp-readout{font-size:.52rem}
+}
+
+
+
+/* ── v3 framing: toolbar BELOW canvas (never covers the scene) ── */
+.stage-wrap{
+  display:flex;flex-direction:column;
+  height:100%;height:100dvh;
+  overflow:hidden;
+}
+.intro{flex:none}
+.stage{
+  position:relative;flex:1 1 auto;
+  min-height:0;
+  border:1px solid var(--line);background:#050505;overflow:hidden;
+  touch-action:none;
+}
+@media(min-width:768px){
+  .stage{min-height:min(58dvh,640px)}
+}
+#try-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.chrome{
+  pointer-events:none;position:absolute;inset:0;z-index:3;
+  display:flex;flex-direction:column;justify-content:flex-start;
+  padding:.5rem;gap:.45rem;
+}
+@media(min-width:768px){.chrome{padding:.75rem}}
+.hud-mid{
+  position:absolute;top:.45rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.25rem;
+  z-index:5;pointer-events:none;max-width:min(28rem,70%);
+}
+.hint{
+  margin:0;max-width:100%;
+  font-size:.68rem;padding:.28rem .65rem;
+  background:rgba(7,7,7,.78);
+  transition:opacity .35s ease;
+}
+.prog{width:min(14rem,55vw);align-self:stretch}
+
+.toolbar{
+  flex:none;
+  margin-top:.45rem;
+  border:1px solid var(--line);
+  background:rgba(7,7,7,.96);
+  padding:.4rem .55rem;
+  display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .55rem;
+}
+@media(min-width:900px){
+  .toolbar{
+    display:grid;
+    grid-template-columns:auto auto 1fr;
+    align-items:center;
+    gap:.55rem 1rem;
+    padding:.5rem .75rem;
+  }
+}
+.toolbar .parts,.toolbar .modes{overflow-x:auto;margin:0}
+.toolbar .controls{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;margin:0}
+.toolbar .speed{margin-left:auto;max-width:12rem;min-width:8rem;flex:1}
+@media(max-width:767px){
+  .toolbar{padding:.45rem;gap:.4rem;padding-bottom:max(.45rem, var(--safe-b))}
+  /* width handled in v4 — do not force 100% */
+  .foot{display:none}
+  .intro .lead{-webkit-line-clamp:2}
+  .intro h1{font-size:1.45rem}
+}
+/* old .panel / .hud-bot no longer used as overlay */
+.hud-bot,.panel{display:none}
+
+
+/* ── v4 mobile experience (<=767px) — desktop Pass 3 untouched above ── */
+@media(max-width:767px){
+  .stage-wrap{
+    height:100%;height:100dvh;height:100svh;
+    overflow:hidden;
+  }
+  .intro{
+    padding:.35rem 0 .25rem !important;
+  }
+  .intro .mono{margin-top:.1rem !important;font-size:.52rem !important}
+  .intro h1{margin:.15rem 0 0 !important;font-size:1.35rem !important;line-height:.95}
+  .intro .lead{
+    margin:.25rem 0 0 !important;font-size:.72rem !important;line-height:1.35;
+    display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+  }
+  .stage{
+    flex:1 1 auto;
+    min-height:clamp(52svh, 64svh, 70svh) !important;
+    max-height:70svh;
+  }
+  .chrome{padding:.4rem;gap:.3rem}
+
+  /* HUD: compact, toggleable */
+  .hud-left{max-width:min(11rem,48vw);gap:.25rem}
+  .ascan-box{
+    display:none; /* shown when body.hud-on or .hud-compact */
+    padding:.22rem .3rem .18rem;
+  }
+  body.hud-on .ascan-box{display:block}
+  .ascan-lab{font-size:.48rem;margin-bottom:.1rem}
+  #try-ascan{width:120px;height:48px}
+  .tcp-readout{padding:.18rem .4rem;font-size:.48rem}
+  .sim-badge{padding:.16rem .4rem;font-size:.48rem}
+  .axes{
+    display:none;
+    padding:.3rem .4rem;
+  }
+  body.hud-on .axes{display:block}
+  .axes .mono{font-size:.48rem;margin-bottom:.1rem !important}
+  .axis{width:1.35rem}
+  .axis-bar{height:1.7rem}
+  .axis .lab,.axis .val{font-size:7px}
+  .axes-row{gap:.28rem;margin-top:.2rem}
+
+  /* hint: below chips, no overlap */
+  .hud-mid{
+    top:auto;bottom:.45rem;left:50%;transform:translateX(-50%);
+    max-width:min(92%,22rem);
+  }
+  body.hud-on .hud-mid{bottom:.45rem}
+  .hint{font-size:.62rem;padding:.22rem .55rem;line-height:1.25}
+
+  /* toolbar: max ~22% viewport — two slim rows */
+  .toolbar{
+    margin-top:.3rem;
+    padding:.3rem .4rem;
+    padding-bottom:max(.35rem, var(--safe-b));
+    gap:.3rem .4rem;
+    display:flex;flex-wrap:wrap;align-items:center;
+    max-height:22svh;
+    overflow:visible;
+  }
+  .toolbar .parts,
+  .toolbar .modes{
+    width:auto !important;flex:1 1 0;min-width:0;max-width:100%;
+    gap:0;border:1px solid var(--line);border-radius:0;
+    overflow:hidden;
+  }
+  .toolbar .row-modes{display:contents}
+  .toolbar .parts button,
+  .toolbar .modes button{
+    flex:1 1 0;min-height:40px;min-width:0;padding:.3rem .35rem;
+    border:0;border-right:1px solid var(--line);
+    font-size:9px;letter-spacing:.08em;
+  }
+  .toolbar .parts button:last-child,
+  .toolbar .modes button:last-child{border-right:0}
+  .toolbar .wp-count{display:none}
+  .toolbar .warn-pill{font-size:8px;padding:.15rem .35rem}
+  .toolbar .controls{
+    width:100%;
+    display:flex;flex-wrap:nowrap;align-items:center;gap:.35rem;
+    justify-content:space-between;
+  }
+  .toolbar #try-play{
+    flex:0 0 auto;width:48px;height:48px;min-height:48px;min-width:48px;
+    padding:0;border-radius:50%;font-size:.65rem;letter-spacing:.04em;
+    order:0;
+  }
+  .toolbar .icon-btn{width:40px;height:40px;min-width:40px;min-height:40px;flex:0 0 40px}
+  .toolbar .speed{
+    display:none; /* popover */
+    position:absolute;left:.4rem;right:.4rem;bottom:calc(100% + .35rem);
+    background:rgba(7,7,7,.96);border:1px solid var(--line);
+    padding:.45rem .6rem;max-width:none;margin:0;flex-basis:auto;order:0;
+    z-index:20;
+  }
+  .toolbar.speed-open .speed{display:flex}
+  .toolbar{position:relative}
+  .hud-chip,.speed-chip{
+    pointer-events:auto;
+    flex:none;min-height:40px;min-width:40px;padding:.3rem .5rem;
+    border:1px solid var(--line);
+    font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);
+    background:rgba(7,7,7,.9);
+  }
+  .hud-chip.on,.speed-chip.on{border-color:var(--gold);color:var(--gold)}
+  .chrome .hud-chip{
+    position:absolute;top:auto;bottom:.4rem;right:.4rem;left:auto;transform:none;z-index:6;
+  }
+  body.hud-on .chrome .hud-chip{transform:none}
+  .foot{display:none}
+}
+
+@media(min-width:768px){
+  .mob-only,.hud-chip,.speed-chip{display:none !important}
+  /* ensure desktop ascan/axes stay as Pass 3 */
+  .ascan-box{display:block}
+  @media(min-width:860px){.axes{display:block}}
+}
+
+/* ── v3 pitch / Laurent ─────────────────────────────────── */
+.value-line{
+  margin:.45rem 0 0;font-family:"Barlow Condensed",sans-serif;
+  font-size:1.15rem;letter-spacing:.01em;color:var(--gold);font-weight:600;
+}
+@media(min-width:768px){.value-line{font-size:1.45rem;margin-top:.55rem}}
+.intro .lead{margin-top:.35rem}
+.probe-lab{font-size:.52rem;margin-top:.25rem;opacity:.85;letter-spacing:.1em}
+.hud-sec{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center;margin-top:.25rem}
+.ghost-chip{
+  pointer-events:auto;border:1px solid var(--line);background:rgba(7,7,7,.82);
+  padding:.22rem .45rem;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)
+}
+.ghost-chip:hover{border-color:var(--gold);color:var(--gold)}
+.index-lab{font-size:.52rem;opacity:.7;margin-top:.15rem;text-align:center}
+
+.cscan-legend{
+  position:absolute;left:.5rem;bottom:.5rem;z-index:5;
+  display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;
+  padding:.28rem .5rem;border:1px solid var(--line);background:rgba(7,7,7,.82);
+  font-size:.55rem;letter-spacing:.1em;color:var(--muted);max-width:70%
+}
+.leg{display:inline-block;width:.55rem;height:.55rem;border-radius:1px;margin-right:.15rem}
+.leg.sound{background:#5a4820}
+.leg.atten{background:#a87830}
+.leg.ind{background:#f3d56a;box-shadow:0 0 6px rgba(243,213,106,.6)}
+
+.ind-label{
+  position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);z-index:6;
+  pointer-events:none;padding:.35rem .7rem;border:1px solid rgba(232,197,71,.55);
+  background:rgba(7,7,7,.88);color:var(--gold);font-size:.72rem;letter-spacing:.08em;
+  text-transform:uppercase;font-family:"IBM Plex Mono",monospace;
+  animation:indPulse 1.2s ease-in-out infinite
+}
+@keyframes indPulse{0%,100%{opacity:.85}50%{opacity:1}}
+
+.play-overlay{
+  position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.65rem;
+  background:rgba(5,5,5,.42);border:0;cursor:pointer;pointer-events:auto
+}
+.play-overlay[hidden]{display:none !important}
+.play-orb{
+  display:grid;place-items:center;width:5.5rem;height:5.5rem;border-radius:50%;
+  background:var(--gold);color:var(--ink);font-family:"Barlow Condensed",sans-serif;
+  font-size:1.55rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  box-shadow:0 0 0 1px rgba(232,197,71,.35),0 12px 40px rgba(0,0,0,.45)
+}
+.play-overlay:hover .play-orb{background:var(--gold-hot)}
+.play-sub{color:rgba(244,241,234,.85);font-size:.62rem;letter-spacing:.14em}
+
+.end-card{
+  position:absolute;left:50%;bottom:1rem;transform:translateX(-50%);z-index:9;
+  width:min(22rem,92%);padding:1rem;border:1px solid var(--line);
+  background:rgba(7,7,7,.94);backdrop-filter:blur(12px);
+  display:flex;flex-direction:column;gap:.55rem;align-items:stretch;text-align:center
+}
+.end-card[hidden]{display:none !important}
+.end-copy{margin:0;font-size:.88rem;line-height:1.4;color:var(--fg)}
+.end-card .btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+  background:var(--gold);color:var(--ink);font-weight:700;padding:.55rem 1rem;text-decoration:none}
+.end-card .btn-ghost{background:transparent;color:var(--fg);border:1px solid rgba(244,241,234,.28)}
+
+.foot{display:flex;flex-wrap:wrap;gap:.45rem .75rem;align-items:center;font-size:.75rem;color:var(--dim)}
+.foot a{color:var(--gold)}
+
+/* Mobile Laurent: hide joints, large A-scan; HUD sync */
+@media(max-width:767px){
+  .axes,#try-axes-wrap{display:none !important}
+  body.hud-on .axes,body.hud-on #try-axes-wrap{display:none !important}
+  body.hud-on .ascan-box{display:block !important}
+  #try-ascan{width:min(180px,70vw);height:64px}
+  .ascan-box{padding:.3rem}
+  .cscan-legend{font-size:.5rem;max-width:78%;bottom:.4rem}
+  .play-orb{width:4.8rem;height:4.8rem;font-size:1.35rem}
+  .value-line{font-size:1.05rem}
+  .hud-sec .tcp-readout,.hud-sec .sim-badge{font-size:.48rem}
+}
+
+/* Narrow desktop: keep HUD visible when hud-on; don't rely only on 720px media */
+@media(max-width:860px){
+  body.hud-on .ascan-box{display:block}
+  body.hud-on .axes{display:block}
+}
+@media(max-width:767px){
+  body.hud-on .axes{display:none !important}
+}
+
+/* Laurent HUD chip sync */
+@media (max-width: 767px) {
+  body:not(.hud-on) .hud-chip.on { /* chip must not look active if HUD hidden */ }
+  body:not(.hud-on) #try-hud-chip { border-color: var(--line); color: var(--muted); }
+  body:not(.hud-on) #try-hud-chip.on { border-color: var(--line); color: var(--muted); }
+}
+
+/* ── Toolbar v3b: two-level, no clip on mobile ───────── */
+.toolbar{
+  display:flex;flex-direction:column;gap:.4rem;
+  padding:.45rem .55rem .55rem;border-top:1px solid var(--line);
+  background:rgba(7,7,7,.92);
+}
+.tb-row{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem}
+.tb-parts button,.tb-modes button{
+  min-height:40px;min-width:40px;padding:.4rem .7rem;
+  font-size:.72rem;letter-spacing:.04em;
+}
+.tb-modes .path-toggle{display:inline-flex;gap:.25rem;margin-left:.15rem}
+.tb-modes .path-toggle[hidden]{display:none !important}
+.tb-modes .path-toggle button{min-width:40px;min-height:40px;font-size:1rem;padding:.35rem}
+.cine-btn{min-width:40px;min-height:40px;font-size:1.05rem}
+.tb-controls{gap:.4rem}
+.tb-controls .btn{min-height:44px;padding:.55rem 1.1rem}
+.tb-controls .icon-btn{min-width:40px;min-height:40px}
+@media(max-width:767px){
+  .toolbar{
+    gap:.3rem;padding:.35rem .4rem calc(.4rem + env(safe-area-inset-bottom));
+    flex-shrink:0;max-height:none;overflow:visible;
+  }
+  .stage-wrap{display:flex;flex-direction:column;min-height:100dvh}
+  .stage{flex:1 1 auto;min-height:0}
+  .tb-row{gap:.28rem;flex-wrap:nowrap}
+  .tb-parts{flex-wrap:nowrap}
+  .tb-parts button{
+    flex:1 1 0;min-width:0;font-size:.7rem;padding:.45rem .2rem;
+    white-space:nowrap;
+  }
+  .tb-modes{flex-wrap:nowrap}
+  .tb-modes button{
+    flex:1 1 0;min-width:0;font-size:.65rem;padding:.42rem .25rem;
+    white-space:nowrap;
+  }
+  .tb-modes .cine-btn{flex:0 0 40px;min-width:40px}
+  .tb-controls{flex-wrap:wrap}
+  .tb-controls .btn{flex:1 1 100%;min-height:44px;font-size:.85rem;padding:.5rem .6rem;border-radius:2px}
+  .tb-controls .icon-btn{flex:1 1 0;min-width:40px;min-height:40px}
+  .tb-controls .speed-chip{flex:1 1 0;min-height:40px}
+  .speed{display:none}
+  .toolbar.speed-open .speed{display:flex;width:100%;order:9;padding:.25rem 0}
+  .modes{display:none}
+  .wp-count,.warn-pill{display:none} /* free space on mobile */
+}
+
+.tb-parts button.on,.tb-modes button.on{
+  background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700
+}
+.tb-parts button,.tb-modes button{
+  border:1px solid var(--line);background:rgba(7,7,7,.7);color:var(--muted);
+  border-radius:2px;cursor:pointer
+}
+
+/* ── v3c: desktop toolbar = single row (no cropped second row) ── */
+@media(min-width:768px){
+  .toolbar{
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    gap:.45rem .65rem !important;
+    padding:.4rem .65rem !important;
+    max-height:none;
+    overflow:visible;
+  }
+  .tb-row{
+    display:contents; /* flatten into one toolbar row */
+  }
+  .tb-parts button,.tb-modes button{
+    min-height:36px;padding:.32rem .55rem;font-size:.68rem;
+  }
+  .tb-controls .btn{min-height:36px;padding:.4rem .9rem}
+  .tb-controls .icon-btn,.cine-btn{min-width:36px;min-height:36px}
+  .tb-controls .speed{margin-left:.25rem;max-width:11rem;min-width:7rem;display:flex;align-items:center;gap:.35rem}
+  .stage-wrap{overflow:visible}
+  /* Keep stage + single toolbar inside 800px viewport when scrolled to demo */
+  .stage{min-height:min(52dvh,520px);max-height:min(62dvh,560px)}
+}
+
+/* ── v3d: end bar (OUT of scene centre) + mobile tools sheet ── */
+.end-card{display:none !important} /* legacy centre card removed */
+
+.end-bar{
+  flex:none;
+  margin-top:.35rem;
+  border:1px solid var(--line);
+  background:rgba(7,7,7,.96);
+  padding:.45rem .65rem;
+  display:flex;flex-wrap:wrap;align-items:center;gap:.45rem .75rem;
+  pointer-events:auto;
+  z-index:12;
+  position:relative;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .35s ease, transform .35s ease;
+}
+.end-bar:not([hidden]){
+  opacity:1;transform:translateY(0);
+  animation:endIn .4s ease;
+}
+@keyframes endIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.end-bar[hidden]{display:none !important}
+.end-bar .end-copy{
+  margin:0;flex:1 1 12rem;font-size:.78rem;line-height:1.35;color:var(--fg);
+}
+.end-actions{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;margin-left:auto;
+}
+.end-bar .btn,.end-bar .btn-ghost,.end-bar .btn-text{
+  pointer-events:auto;cursor:pointer;
+  min-height:44px;padding:.45rem .85rem;
+  display:inline-flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:.72rem;letter-spacing:.04em;
+}
+.end-bar .btn{background:var(--gold);color:var(--ink);font-weight:700;border:1px solid var(--gold)}
+.end-bar .btn-ghost{background:transparent;color:var(--fg);border:1px solid rgba(244,241,234,.28)}
+.end-bar .btn-text{
+  background:transparent;border:0;color:var(--gold);
+  text-transform:uppercase;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.12em;
+}
+.end-dismiss{
+  pointer-events:auto;min-width:44px;min-height:44px;
+  border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;
+}
+
+.try-state{
+  display:none;margin:.3rem 0 0;padding:0 .15rem;
+  font-size:.68rem;letter-spacing:.06em;color:var(--muted);
+  font-family:"IBM Plex Mono",monospace;
+}
+
+.btn-tools{
+  display:none;min-height:48px;min-width:72px;padding:.45rem .7rem;
+  border:1px solid var(--line);background:rgba(7,7,7,.9);color:var(--gold);
+  font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.1em;
+  text-transform:uppercase;cursor:pointer;
+}
+
+.tools-sheet{
+  position:fixed;inset:0;z-index:40;
+  background:rgba(0,0,0,.55);
+  display:flex;align-items:flex-end;justify-content:center;
+  pointer-events:auto;
+}
+.tools-sheet[hidden]{display:none !important}
+.tools-sheet-panel{
+  width:100%;max-width:28rem;
+  background:#0a0a0a;border:1px solid var(--line);border-bottom:0;
+  border-radius:12px 12px 0 0;
+  padding:.65rem .75rem calc(.85rem + env(safe-area-inset-bottom));
+  max-height:78dvh;overflow:auto;
+  animation:sheetUp .28s ease;
+}
+@keyframes sheetUp{from{transform:translateY(40%)}to{transform:none}}
+.tools-sheet-head{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:.55rem;
+}
+.tools-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem;
+}
+.tools-item{
+  min-height:48px;display:flex;align-items:center;gap:.45rem;
+  padding:.45rem .55rem;border:1px solid var(--line);background:rgba(7,7,7,.9);
+  color:var(--fg);font-size:.78rem;text-align:left;cursor:pointer;border-radius:4px;
+}
+.tools-item .ti{width:1.25rem;text-align:center;opacity:.85}
+.tools-item:active,.tools-item.on{border-color:var(--gold);color:var(--gold)}
+.tools-speed{
+  margin-top:.65rem;display:flex;align-items:center;gap:.45rem;
+  padding:.45rem .35rem;border-top:1px solid var(--line);
+}
+.tools-speed label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tools-speed input{flex:1}
+.tools-speed .val{font-size:.62rem;color:var(--gold);min-width:4.5rem}
+
+/* Desktop: end bar slim under canvas; keep toolbar single row */
+@media(min-width:601px){
+  .end-bar{
+    max-width:100%;
+  }
+  .end-bar .end-copy{font-size:.75rem}
+  .try-state{display:none !important}
+  .btn-tools{display:none !important}
+  .tools-sheet{display:none !important}
+}
+
+/* ── Mobile clarity ≤600px ── */
+@media(max-width:600px){
+  .try-state{display:block}
+  .btn-tools{display:inline-flex;align-items:center;justify-content:center}
+
+  .toolbar{
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    gap:.35rem !important;
+    padding:.4rem !important;
+    max-height:none;
+  }
+  .tb-row{display:contents}
+  .tb-modes{display:none !important}
+  .tb-controls .icon-btn,
+  .tb-controls .speed,
+  .tb-controls .speed-chip{display:none !important}
+  .tb-parts{
+    display:flex !important;flex:1 1 auto;min-width:0;gap:0;
+    border:1px solid var(--line);border-radius:4px;overflow:hidden;
+  }
+  .tb-parts button{
+    flex:1 1 0;min-width:0;min-height:48px;padding:.35rem .2rem;
+    font-size:.72rem;border:0;border-right:1px solid var(--line);border-radius:0;
+  }
+  .tb-parts button:last-of-type{border-right:0}
+  .tb-parts .wp-count,.tb-parts .warn-pill{display:none !important}
+  .tb-controls{
+    display:contents;
+  }
+  .tb-controls #try-play{
+    flex:0 0 auto;min-width:88px;min-height:52px;padding:.55rem 1rem;
+    font-size:.9rem;font-weight:700;border-radius:4px;
+  }
+  .btn-tools{flex:0 0 auto;min-width:72px;min-height:52px}
+
+  /* HUD: A-scan only, compact top-left; no joints; no overlapping chips */
+  .axes,#try-axes-wrap{display:none !important}
+  .hud-sec .sim-badge,.hud-sec .tcp-readout,#try-cscan-mode{display:none !important}
+  .ascan-box{
+    display:block !important;
+    max-width:min(11.5rem,46vw);
+    padding:.2rem .28rem;
+  }
+  #try-ascan{width:140px;height:52px}
+  .ascan-lab,.probe-lab{font-size:.45rem}
+  .chrome .hud-chip{display:none !important}
+
+  /* legend single line above bottom edge; index above it — no overlap */
+  .cscan-legend{
+    left:.35rem;right:auto;bottom:.3rem;
+    max-width:calc(100% - .7rem);
+    flex-wrap:nowrap;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    font-size:.48rem;gap:.28rem;padding:.16rem .35rem;
+  }
+  .hud-mid{
+    top:auto;bottom:1.85rem;left:50%;transform:translateX(-50%);
+    max-width:min(92%,20rem);
+  }
+  .hint{font-size:.55rem;padding:.18rem .4rem}
+  body.is-playing .hint,
+  body.is-done .hint{display:none !important}
+  .index-lab{font-size:.48rem;margin-top:.1rem}
+  .prog{width:min(12rem,50vw)}
+
+  .end-bar{
+    flex-direction:column;align-items:stretch;gap:.35rem;
+    padding:.5rem .55rem;
+  }
+  .end-actions{margin-left:0;width:100%}
+  .end-actions .btn,.end-actions .btn-ghost{flex:1 1 auto}
+  .foot{display:none}
+}
+
+/* Narrow desktop / tablet: keep end-bar usable */
+@media(min-width:601px) and (max-width:900px){
+  .end-bar{gap:.35rem}
+  .end-actions .btn,.end-actions .btn-ghost{padding:.4rem .65rem;font-size:.68rem}
+}
+
+/* v3d2: kill mobile legend / index / hint overlap */
+@media(max-width:600px){
+  .hint{display:none !important} /* state line under canvas replaces it */
+  .hud-mid{
+    top:.3rem !important;bottom:auto !important;left:50%;transform:translateX(-50%);
+    max-width:min(90%,18rem);z-index:6;
+  }
+  .hud-mid .index-lab{display:none} /* avoid pile-up; overlap % lives in state/prog */
+  body.is-playing .hud-mid .prog,
+  body.is-done .hud-mid .prog{display:block}
+  .cscan-legend{
+    bottom:.28rem !important;left:.3rem !important;right:.3rem !important;
+    max-width:none !important;width:auto;
+    justify-content:flex-start;
+    z-index:5;
+  }
+  /* keep A-scan clear of SIM chip (already hidden) and legend */
+  .hud-left{max-width:min(12rem,48vw)}
+  .ascan-box{margin-bottom:0}
+}
+
+/* ── v3e: no overlapping HUD text; short viewport fit; mobile CTA/HUD ── */
+
+/* Status never stacks on prog/index — hide hint whenever scanning/done */
+body.is-playing .hint,
+body.is-done .hint,
+body.is-playing #try-hint,
+body.is-done #try-hint{display:none !important;opacity:0 !important}
+
+.hud-mid{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  gap:.2rem !important;
+  pointer-events:none;
+  max-width:min(22rem,70%);
+}
+.hud-mid .hint{
+  position:static !important;
+  margin:0;
+  order:1;
+}
+.hud-mid .prog{
+  order:2;
+  width:min(14rem,55vw);
+  height:3px;
+  background:rgba(244,241,234,.12);
+  border:0;
+  align-self:stretch;
+}
+.hud-mid .prog i,
+.hud-mid #try-prog-fill{
+  display:block;height:100%;width:0;background:var(--gold);
+}
+.hud-mid .index-lab{
+  order:3;
+  margin:0 !important;
+  font-size:.52rem;
+  letter-spacing:.08em;
+  opacity:.75;
+  white-space:nowrap;
+}
+
+/* Desktop also shows under-canvas state during play/done */
+.try-state{display:block;margin:.25rem 0 0;min-height:1.1em}
+@media(min-width:601px){
+  body.is-idle .try-state{opacity:.55}
+}
+
+/* Short desktop: fit stage+toolbar without page scroll */
+@media(min-width:768px){
+  .intro{padding:.35rem 0 .2rem !important}
+  .intro .mono{margin-top:.2rem !important;font-size:.55rem !important}
+  .intro h1{margin:.1rem 0 0 !important;font-size:clamp(1.5rem,2.4vw,2.1rem) !important;line-height:.95}
+  .intro .value-line{margin:.25rem 0 0 !important;font-size:clamp(1rem,1.6vw,1.25rem) !important}
+  .intro .lead{margin:.2rem 0 0 !important;font-size:.78rem !important;
+    display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden}
+  .stage-wrap{min-height:0}
+  .stage{
+    min-height:min(48dvh,420px) !important;
+    max-height:min(56dvh,480px) !important;
+  }
+}
+@media(min-width:768px) and (max-height:760px){
+  .intro .lead{display:none}
+  .intro .value-line{font-size:1rem !important}
+  .stage{min-height:min(46dvh,380px) !important;max-height:min(52dvh,420px) !important}
+  .foot{display:none}
+}
+@media(min-width:768px) and (max-height:680px){
+  .intro h1{font-size:1.35rem !important}
+  .intro .value-line{display:none}
+  .stage{min-height:min(50dvh,340px) !important;max-height:min(58dvh,380px) !important}
+}
+
+/* Mobile end-bar: sticky so CTAs stay reachable */
+@media(max-width:600px){
+  .end-bar{
+    position:sticky;
+    bottom:0;
+    z-index:15;
+    margin-top:.25rem;
+    box-shadow:0 -8px 24px rgba(0,0,0,.45);
+  }
+  /* Compact A-scan — don't cover the robot */
+  .ascan-box{
+    max-width:min(7.2rem,34vw) !important;
+    padding:.12rem .18rem !important;
+    background:rgba(7,7,7,.55) !important;
+    backdrop-filter:blur(6px);
+    opacity:.82;
+  }
+  #try-ascan{width:96px !important;height:36px !important}
+  .ascan-lab,.probe-lab{font-size:.4rem !important;margin:0 !important}
+  .hud-left{max-width:min(7.5rem,36vw) !important}
+  /* Idle: keep primary controls on first screen */
+  .stage{
+    min-height:clamp(38svh, 46svh, 52svh) !important;
+    max-height:52svh !important;
+  }
+  .intro{padding:.25rem 0 .15rem !important}
+  .intro .lead{-webkit-line-clamp:1}
+  .intro h1{font-size:1.25rem !important}
+  .intro .value-line{font-size:.95rem !important;margin-top:.15rem !important}
+}
+
+/* Landscape phone */
+@media(max-width:900px) and (max-height:430px) and (orientation:landscape){
+  .intro{display:none}
+  .foot{display:none}
+  .stage{min-height:62svh !important;max-height:70svh !important}
+  .ascan-box{display:none !important}
+  .try-state{font-size:.58rem}
+}
+
+/* ── v3f: mobile canvas fill, compact end-bar, HUD clear of robot ── */
+
+/* INDEX never overlays 3D geometry — lives in legend strip */
+.hud-mid .index-lab{display:none !important}
+.cscan-legend{
+  max-width:calc(100% - 1rem);
+}
+.cscan-legend .index-inline{
+  margin-left:.35rem;
+  padding-left:.45rem;
+  border-left:1px solid rgba(232,197,71,.25);
+  color:rgba(232,197,71,.85);
+  letter-spacing:.06em;
+  white-space:nowrap;
+}
+
+@media(max-width:600px){
+  /* Fill viewport: stage eats leftover height (no empty black under controls) */
+  .stage-wrap{
+    min-height:100dvh;height:100dvh;
+    overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .intro{
+    flex:0 0 auto;
+    padding:.15rem 0 .08rem !important;
+  }
+  .intro .mono{font-size:.5rem !important;margin-top:.05rem !important}
+  .intro h1{font-size:1.1rem !important;margin:.05rem 0 0 !important;line-height:.95}
+  .intro .value-line{font-size:.82rem !important;margin:.08rem 0 0 !important}
+  .intro .lead{display:none !important}
+  .stage{
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    /* Prefer a tall work cell — reclaim the old empty bottom band */
+    height:auto !important;
+  }
+  .try-state{
+    flex:0 0 auto;
+    margin:.15rem 0 0 !important;
+    min-height:0 !important;
+    font-size:.58rem;
+  }
+  .toolbar{
+    flex:0 0 auto !important;
+    margin-top:.2rem;
+  }
+  .foot{display:none !important}
+
+  /* Compact end-bar: message then tight CTA stack — no dead flex gap */
+  .end-bar{
+    flex:0 0 auto !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:.28rem !important;
+    padding:.4rem .5rem !important;
+    margin-top:.15rem !important;
+    position:sticky;
+    bottom:0;
+    z-index:15;
+  }
+  .end-bar .end-copy{
+    flex:0 0 auto !important;
+    flex-basis:auto !important;
+    margin:0 !important;
+    font-size:.68rem !important;
+    line-height:1.25 !important;
+  }
+  .end-actions{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:.28rem !important;
+    margin-left:0 !important;
+    width:100% !important;
+  }
+  .end-actions .btn,
+  .end-actions .btn-ghost,
+  .end-actions .btn-text{
+    width:100%;
+    min-height:36px !important;
+    padding:.32rem .55rem !important;
+    justify-content:center;
+  }
+  .end-actions .btn-text{min-height:28px !important;padding:.15rem !important}
+  /* dismiss out of document flow — don't add a 4th stacked slot */
+  .end-actions .end-dismiss{
+    position:absolute !important;
+    top:.25rem;right:.25rem;
+    width:32px;height:32px;min-width:32px;min-height:32px;
+  }
+  .end-bar:not([hidden]){
+    position:sticky !important;
+    bottom:0;
+  }
+  .end-dismiss{
+    position:absolute;
+    top:.3rem;right:.3rem;
+    min-width:36px;min-height:36px;
+  }
+
+  /* v3i: A-scan top-left — BR corner overlapped part/C-scan on 390/360 */
+  .hud-top{
+    position:static !important;
+  }
+  .hud-left{
+    position:absolute !important;
+    top:.18rem !important;
+    left:.18rem !important;
+    right:auto !important;
+    bottom:auto !important;
+    max-width:3.4rem !important; /* stay left of robot mask (~minX≥60px) */
+    z-index:6;
+    align-items:flex-start !important;
+  }
+  .ascan-box{
+    max-width:100% !important;
+    padding:.06rem .1rem !important;
+    background:rgba(7,7,7,.78) !important;
+    opacity:.94 !important;
+    backdrop-filter:blur(6px);
+  }
+  #try-ascan{width:52px !important;height:22px !important}
+  .ascan-lab,.probe-lab{font-size:.34rem !important;margin:0 !important;line-height:1.1}
+  .hud-left .probe-lab{display:none !important}
+  .hud-left .hud-sec{display:none !important}
+
+  /* Progress top-centre — clear of A-scan at TL */
+  .hud-mid{
+    top:.25rem !important;
+    bottom:auto !important;
+    left:50%;transform:translateX(-50%);
+    max-width:min(58%,12rem);
+  }
+  .cscan-legend{
+    bottom:.22rem !important;
+    left:.25rem !important;
+    right:auto !important;
+    max-width:calc(100% - .5rem) !important;
+    font-size:.42rem !important;
+    gap:.2rem !important;
+    padding:.12rem .28rem !important;
+  }
+  .cscan-legend .index-inline{
+    font-size:.42rem;
+    margin-left:.2rem;
+    padding-left:.3rem;
+  }
+}
+
+/* Desktop: index in legend only; leave stage clamps / try-state as before */
+@media(min-width:601px){
+  .cscan-legend{max-width:min(78%,28rem)}
+}
+
+/* ── v3h: portrait stage ~1:1.1 — content is the robot, not black void ── */
+@media(max-width:600px){
+  .stage-wrap{
+    min-height:100dvh;height:100dvh;
+    overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .stage{
+    flex:0 1 auto !important;
+    width:100% !important;
+    /* height ≈ 1.1 × width, but never blow past first-screen budget */
+    aspect-ratio:1 / 1.1 !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:min(58dvh, calc(100vw * 1.1)) !important;
+  }
+  .intro{
+    flex:0 0 auto;
+    padding:.15rem 0 .08rem !important;
+  }
+  .intro .lead{display:none !important}
+  .intro h1{font-size:1.1rem !important;margin:.05rem 0 0 !important}
+  .intro .value-line{font-size:.82rem !important;margin:.08rem 0 0 !important}
+}
+@media(max-width:900px) and (max-height:430px) and (orientation:landscape){
+  .stage{
+    aspect-ratio:auto !important;
+    flex:1 1 auto !important;
+    min-height:58svh !important;
+    max-height:68svh !important;
+  }
+}
+
+/* v3h: desktop stage — taller than v3g short clamp so 3/4 framing has room (no pillarbox) */
+@media(min-width:768px){
+  .stage{
+    min-height:min(54dvh,500px) !important;
+    max-height:min(68dvh,600px) !important;
+  }
+}
+
+
+/* ═══ v4 clarity staging ═══════════════════════════════════ */
+/* Idle: scene + toolbar Play only — no A-scan / joints / chips / orb */
+body.is-idle .ascan-box,
+body.is-idle .axes,
+body.is-idle #try-axes-wrap,
+body.is-idle .hud-sec,
+body.is-idle .chrome .hud-chip,
+body.is-idle .play-overlay,
+body.is-idle .prog,
+body.is-idle .hud-mid .hint,
+body.is-idle .cscan-legend {
+  display: none !important;
+}
+/* Playing / done: one large A-scan + legend; joints still off unless toggled */
+body.is-playing .ascan-box,
+body.is-done .ascan-box {
+  display: block !important;
+}
+body.is-playing .cscan-legend,
+body.is-done .cscan-legend {
+  display: flex !important;
+}
+body.is-playing .axes,
+body.is-done .axes,
+body.is-playing #try-axes-wrap,
+body.is-done #try-axes-wrap {
+  display: none !important;
+}
+body.joints-on.is-playing .axes,
+body.joints-on.is-done .axes,
+body.joints-on.is-playing #try-axes-wrap,
+body.joints-on.is-done #try-axes-wrap {
+  display: block !important;
+}
+body.is-playing .hud-sec,
+body.is-done .hud-sec {
+  display: none !important; /* no TCP / SIMULATION / C-SCAN AMP chips */
+}
+.play-overlay { display: none !important; }
+
+/* Larger readable A-scan during scan */
+@media(min-width:720px){
+  body.is-playing .ascan-box,
+  body.is-done .ascan-box {
+    max-width: min(18rem, 42vw);
+    padding: .45rem .55rem;
+  }
+  body.is-playing #try-ascan,
+  body.is-done #try-ascan { width: 280px !important; height: 96px !important; }
+  body.is-playing .ascan-lab,
+  body.is-done .ascan-lab { font-size: .62rem; margin-bottom: .25rem; }
+}
+@media(max-width:600px){
+  body.is-playing .hud-left,
+  body.is-done .hud-left {
+    top: .22rem !important; left: .22rem !important;
+    right: auto !important; bottom: auto !important;
+    max-width: min(11rem, 55vw) !important;
+  }
+  body.is-playing #try-ascan,
+  body.is-done #try-ascan { width: 150px !important; height: 56px !important; }
+  body.is-playing .ascan-box,
+  body.is-done .ascan-box { opacity: .95 !important; padding: .2rem .28rem !important; }
+  /* Keep lead visible on mobile — one short sentence */
+  .intro .lead { display: block !important; -webkit-line-clamp: 2; font-size: .78rem !important; }
+  .intro .value-line { display: block !important; font-size: .9rem !important; }
+}
+
+/* Discreet CTA in state line (visible during scan) */
+.try-state {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .75rem;
+  justify-content: space-between;
+}
+.state-cta {
+  pointer-events: auto;
+  font-size: .72rem;
+  letter-spacing: .04em;
+  color: rgba(232,197,71,.85);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.state-cta:hover { color: var(--gold-hot, #f3d56a); }
+body.is-idle .state-cta { opacity: .7; }
+
+/* Tools always available; modes hidden from main bar */
+.tb-modes[hidden] { display: none !important; }
+.btn-tools { display: inline-flex !important; }
+.tools-hint {
+  margin: 0 0 .55rem;
+  font-size: .62rem;
+  color: var(--muted);
+  letter-spacing: .04em;
+}
+
+/* Desktop stage taller — closer to live, less ultra-wide aspect for framing gate */
+@media(min-width:768px){
+  .stage{
+    min-height: min(62dvh, 620px) !important;
+    max-height: min(74dvh, 720px) !important;
+    flex: 1 1 auto;
+  }
+}
+
+
+/* ═══ v5 loader + move-part + C-scan legend ═════════════════ */
+.try-loader{
+  position:fixed;inset:0;z-index:90;
+  display:flex;align-items:center;justify-content:center;
+  background:#050505;
+  transition:opacity .4s ease, visibility .4s ease;
+}
+.try-loader.is-done{opacity:0;visibility:hidden;pointer-events:none}
+.try-loader[hidden]{display:none !important}
+.try-loader-inner{text-align:center;max-width:22rem;padding:1.5rem}
+.try-loader-brand{
+  font-size:1.6rem;letter-spacing:.12em;color:var(--gold,#e8c547);
+  margin-bottom:1.1rem;
+}
+.try-loader-bar{
+  height:2px;background:rgba(232,197,71,.18);border-radius:1px;overflow:hidden;
+  margin:0 auto 1rem;width:min(16rem,70vw);
+}
+.try-loader-bar > i{
+  display:block;height:100%;width:8%;
+  background:linear-gradient(90deg,#c4a040,#f3d56a);
+  box-shadow:0 0 12px rgba(243,213,106,.45);
+  transition:width .35s ease;
+}
+.try-loader-msg{
+  font-size:.72rem;letter-spacing:.08em;color:rgba(232,197,71,.78);
+  min-height:1.2em;
+}
+@media(prefers-reduced-motion:reduce){
+  .try-loader{transition:none}
+  .try-loader-bar > i{transition:none}
+}
+
+/* Legend: sound grey-blue / atten amber / ind red-orange */
+.leg.sound{background:#4a5568 !important;box-shadow:none}
+.leg.atten{background:#c48830 !important}
+.leg.ind{background:#f04828 !important;box-shadow:0 0 6px rgba(240,72,40,.55)}
+
+/* Move-part affordance */
+body.move-part #try-canvas{cursor:grab}
+body.move-part #try-canvas:active{cursor:grabbing}
+#try-move-part.on{
+  border-color:var(--gold,#e8c547);
+  color:var(--gold,#e8c547);
+}
+
+/* v5 phone: keep A-scan clear of arm top */
+@media(max-width:600px){
+  body.is-playing .hud-left,
+  body.is-done .hud-left{
+    top:.12rem !important; left:.12rem !important;
+    max-width:min(9.5rem,48vw) !important;
+  }
+  body.is-playing #try-ascan,
+  body.is-done #try-ascan{ width:128px !important; height:48px !important; }
+  body.is-playing .ascan-box,
+  body.is-done .ascan-box{
+    background:rgba(5,5,5,.72) !important;
+    opacity:.9 !important;
+  }
+}
+
+/* === v6 P1/P2 conversion === */
+/* P1.3 — CTA visible idle/mid/end on desktop AND mobile */
+@media (min-width: 601px) {
+  .try-state {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .35rem .75rem;
+    margin: .35rem 0 .15rem;
+    padding: .35rem .55rem;
+    border: 1px solid rgba(232, 197, 71, 0.22);
+    background: rgba(7, 7, 7, 0.92);
+    font-size: .72rem;
+    letter-spacing: .04em;
+    color: var(--muted);
+    font-family: "IBM Plex Mono", monospace;
+  }
+}
+.try-state {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .35rem .75rem;
+}
+.state-cta,
+#try-state-cta {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: .25rem .7rem;
+  border: 1px solid rgba(232, 197, 71, 0.55);
+  background: rgba(232, 197, 71, 0.12);
+  color: var(--gold) !important;
+  font-size: .72rem;
+  letter-spacing: .04em;
+  text-decoration: none !important;
+  white-space: nowrap;
+  border-radius: 2px;
+}
+.state-cta:hover,
+#try-state-cta:hover {
+  background: rgba(232, 197, 71, 0.22);
+  color: var(--gold-hot, #f3d56a) !important;
+}
+body.is-idle .state-cta,
+body.is-idle #try-state-cta { opacity: 1; }
+@media (max-width: 600px) {
+  .try-state {
+    display: flex !important;
+    margin: .2rem 0 .1rem !important;
+    padding: .35rem .45rem;
+    border: 1px solid rgba(232, 197, 71, 0.28);
+    background: rgba(7, 7, 7, 0.95);
+    font-size: .68rem !important;
+    gap: .4rem;
+  }
+  .state-cta,
+  #try-state-cta {
+    min-height: 40px;
+    padding: .35rem .65rem;
+    font-size: .7rem;
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+/* P1.6 — kill Index claims leftover */
+.index-lab,
+.index-inline,
+#try-index,
+#try-index-leg { display: none !important; }
+/* P1.4 — playing: A-scan·SIM + legend; joints stay Tools-only */
+body.is-playing .sim-badge,
+body.is-done .sim-badge {
+  display: inline-block !important;
+}
+body.is-playing .hud-sec .tcp-readout,
+body.is-done .hud-sec .tcp-readout,
+body.is-playing #try-cscan-mode,
+body.is-done #try-cscan-mode {
+  display: none !important;
+}
+body.is-playing .hud-sec,
+body.is-done .hud-sec {
+  display: flex !important;
+  gap: .35rem;
+  align-items: center;
+}
+/* P1.3 — end bar under stage, never cover C-scan */
+.end-bar {
+  position: relative !important;
+  inset: auto !important;
+  margin-top: .35rem !important;
+  max-height: none;
+}
+@media (max-width: 600px) {
+  .end-bar {
+    position: relative !important;
+    bottom: auto !important;
+    max-height: none;
+  }
+}
+
+/* === v6p2 Laurent P1 + Pascal pipe Gate A === */
+
+/* Kill idle ghosting of state/CTA (was opacity .55 on desktop) */
+body.is-idle .try-state { opacity: 1 !important; }
+
+/* Desktop idle CTA = mobile-like gold chip weight */
+.state-cta,
+#try-state-cta {
+  pointer-events: auto;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: .5rem 1.1rem;
+  border: 1px solid var(--gold) !important;
+  background: var(--gold) !important;
+  color: var(--ink) !important;
+  font-size: .8rem !important;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-decoration: none !important;
+  white-space: nowrap;
+  border-radius: 2px;
+  opacity: 1 !important;
+  box-shadow: 0 0 0 1px rgba(232,197,71,.25);
+}
+.state-cta:hover,
+#try-state-cta:hover {
+  background: var(--gold-hot, #f3d56a) !important;
+  color: var(--ink) !important;
+  border-color: var(--gold-hot, #f3d56a) !important;
+}
+@media (min-width: 601px) {
+  .try-state {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem .85rem;
+    margin: .4rem 0 .2rem !important;
+    padding: .4rem .6rem !important;
+    border: 1px solid rgba(232, 197, 71, 0.28) !important;
+    background: rgba(7, 7, 7, 0.94) !important;
+    opacity: 1 !important;
+  }
+  #try-state-msg {
+    font-size: .72rem;
+    color: var(--muted);
+  }
+  .state-cta,
+  #try-state-cta {
+    min-height: 42px;
+    padding: .45rem 1.05rem;
+    font-size: .8rem !important;
+  }
+}
+@media (max-width: 600px) {
+  .state-cta,
+  #try-state-cta {
+    min-height: 44px;
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+/* Demo part label — separates presets from commercial CTA */
+.tb-parts-lab {
+  flex: none;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .58rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 0 .45rem 0 .15rem;
+  white-space: nowrap;
+  align-self: center;
+}
+@media (max-width: 600px) {
+  .tb-parts-lab {
+    display: none; /* space: aria-label still on group */
+  }
+}
+
+/* Hide waypoint lab digit on main toolbar (idle/play/done). Tools/draw keeps modes sheet only. */
+.wp-count,
+#try-wp-count {
+  display: none !important;
+}
+
+/* Desktop Tools sheet must open when Tools is shown (Stéphane Raster/Freehand) */
+@media (min-width: 601px) {
+  .tools-sheet:not([hidden]) {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  .tools-sheet:not([hidden]) .tools-sheet-panel {
+    max-width: 32rem;
+    border-radius: 8px;
+    border-bottom: 1px solid var(--line);
+    max-height: 70dvh;
+    animation: none;
+  }
+}
+
+
+
+/* P4.2 — live UNREACH badge during Move part (not modal, not % alone) */
+.reach-badge {
+  display: none;
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 35;
+  padding: .45rem .85rem;
+  border: 1px solid rgba(232, 120, 71, 0.75);
+  background: rgba(20, 10, 6, 0.94);
+  color: #f0a878;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.reach-badge.on { display: inline-flex; }
+.reach-badge.warn {
+  border-color: var(--gold, #e8c547);
+  color: var(--gold, #e8c547);
+  background: rgba(20, 16, 4, 0.95);
+}
+body.move-part .reach-badge.on { display: inline-flex; }
+.traj-note {
+  color: var(--dim);
+  font-size: .62rem;
+  letter-spacing: .04em;
+}
+@media (max-width: 600px) {
+  .reach-badge {
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+    font-size: .58rem;
+    padding: .4rem .65rem;
+  }
+}
+
+
+/* Pass G — status banner + secondary CTAs (DA lockée) */
+.status-banner{margin:.85rem 0 0;padding:.75rem .9rem;border:1px solid var(--line);border-left:3px solid var(--gold);background:rgba(232,197,71,.06)}
+.status-banner .mono{display:block;margin:0 0 .35rem;font-size:.58rem}
+.status-banner p{margin:0;font-size:.85rem;line-height:1.45;color:var(--muted);max-width:42rem}
+.try-sec-ctas{margin:.75rem 0 0;font-size:.85rem;color:var(--muted);line-height:1.5}
+.try-sec-ctas a{color:var(--gold)}
+.end-text{margin:.55rem 0 0;font-size:.8rem;color:var(--muted)}
+.end-text a{color:var(--gold)}
+@media(max-width:767px){
+  .status-banner{padding:.65rem .75rem;margin-top:.65rem}
+  .status-banner p{font-size:.8rem}
+}
+
+/* Pass K nav */
+
+.desk{display:none;gap:1.1rem;font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+@media(min-width:900px){.desk{display:flex}.menu-btn{display:none}}
+.desk a:hover,.desk a.on{color:var(--gold)}
+.actions{display:flex;align-items:center;gap:.65rem}
+.menu-btn{display:inline-flex;min-height:2.75rem;min-width:2.75rem;align-items:center;justify-content:center;border:1px solid var(--line);font-size:1.1rem}
+.mobile{display:none;flex-direction:column;gap:.35rem;padding:0 0 1rem;border-bottom:1px solid var(--line)}
+.mobile.open{display:flex}
+.mobile a{padding:.55rem 0;color:var(--muted);font-size:.9rem}
+.mobile a.on,.mobile a:hover{color:var(--gold)}
+.ft{display:flex;flex-direction:column;gap:.75rem}
+.ft-doors{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem;margin-top:.35rem}
+.ft-doors .btn{min-height:2.5rem;padding:.5rem 1rem;font-size:.7rem}
+.ft-text{color:var(--gold);font-size:.85rem;font-weight:600}
+.ft-links{width:100%;font-size:.8rem;color:var(--dim);margin-top:.5rem}
+.ft-links a{color:var(--muted)}.ft-links a:hover{color:var(--gold)}
+

@@ -23,23 +23,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/inner.css"/>
+<link rel="stylesheet" href="/inner.css?v=20260925passo"/>
 </head>
 <body>
 <header>
   <div class="wrap hbar">
-    <a class="brand" href="../"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
-    <div class="lang" role="group">
-      <a href="./" class="on" hreflang="en">EN</a>
-      <a href="../fr/soudure/" class="" hreflang="fr">FR</a>
+    <a class="brand" href="/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
+    <nav class="desk" aria-label="Primary"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a></nav>
+    <div class="actions">
+      <div class="lang" role="group">
+        <a href="./" class="on" hreflang="en">EN</a>
+        <a href="/fr/soudure/" hreflang="fr">FR</a>
+      </div>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
+  <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send a geometry</a></div>
 </header>
 <main class="wrap page">
-  <nav class="crumb"><a href="../">Home</a><span>/</span><span>Weld inspection</span></nav>
+  <nav class="crumb"><a href="/">Home</a><span>/</span><span>Weld inspection</span></nav>
   <div class="mono" style="margin-top:1.2rem">Use case · Welds</div>
   <h1 class="font-display">Robotic inspection<br/>of welds.</h1>
-  <p class="lead">An integrator problem, not a robot problem: keep the probe normal to the weld, couple it, and record UT / PAUT / TFM on a path you can replay. ROBINSPECT engineers that cell — any robot brand, any ultrasonic stack.</p>
+  <p class="lead">We integrate robotic ultrasonic inspection for welds — your robot, your UT/PAUT/TFM: keep the probe normal, couple it, record on a path you can replay. Today: filmed lab demo (contact UT). PAUT / TFM = stack / PoC. Next: PoCs.</p>
   <figure class="hero-img">
     <img src="/media/challenge-cinema.jpg" alt="Ultrasonic inspection on a complex welded industrial structure — the job a 6-axis robot can repeat"/>
   </figure>
@@ -52,9 +57,9 @@
 <li>Scan the part (minutes, not a metrology lab).</li>
 <li>Generate a tool path on the weld, a few seconds.</li>
 <li>Set up the cell once — then the path is replayable.</li>
-<li>Acquire UT, PAUT or TFM / ATFM along that path, typically under a minute on the filmed coupon.</li>
+<li>Acquire UT, PAUT or TFM along that path, typically under a minute on the filmed coupon.</li>
 </ul>
-<p>Times on this site are measured on the part in the 7‑minute montage. Real cycle time depends on weld length and access. A full industrial cycle is on the order of 30 minutes, without a roboticist or NDT expert standing on the cell.</p>
+<p>Once the cell is taught, a full cycle is typically around 30 minutes — depends on length and access (times on this site = filmed coupon). NDT Level 2 stays behind the cell for acquisition and interpretation.</p>
 <h2 class="font-display">Vendor-agnostic on purpose</h2>
 <p>The value is the workflow, not a locked hardware stack. Multi-robot, multi-sensor. If you already have a PAUT instrument or a 6-axis arm, we integrate around it.</p>
   </article>
@@ -63,10 +68,17 @@
 <a href="../energy/"><div class="mono">Also</div><b>Constrained sites</b></a>
   </div>
   <div class="ctas">
-    <a class="btn btn-lg" href="mailto:vpretet@robinspect-systems.com?subject=Weld%20inspection%20%E2%80%94%20ROBINSPECT">Talk weld inspection</a>
-    <a class="btn btn-lg btn-ghost" href="../">Back to ROBINSPECT</a>
+    <a class="btn btn-lg" href="../watch/">Watch the lab demo</a>
+    <a class="btn btn-lg btn-ghost" href="/contact/#geometry">Send a geometry</a>
   </div>
+  <p class="cta-text" style="margin-top:.85rem;font-size:.85rem;color:var(--muted)"><a href="/contact/" style="color:var(--gold)">Discuss a case</a></p>
 </main>
-<footer><div class="wrap">© 2026 ROBINSPECT Systems — Integrator · Belgium · Europe & United States</div></footer>
+<footer><div class="wrap ft">
+  <div>© 2026 ROBINSPECT Systems — Integrator · Belgium · Europe &amp; United States</div>
+  <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+</div></footer>
+<script>
+(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();
+</script>
 </body>
 </html>

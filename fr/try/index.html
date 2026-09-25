@@ -3,81 +3,200 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>Tester l’idée · trajectoire cobot | ROBINSPECT</title>
-<meta name="description" content="Esquisse interactive : placez des points sur une plaque, le cobot 6 axes suit la trajectoire. Concept labo ROBINSPECT."/>
-<meta name="robots" content="noindex, nofollow"/>
+<title>Tester l’idée · trajectoire UT robotisée | ROBINSPECT Systems</title>
+<meta name="description" content="Esquisse conceptuelle : appuyez sur Lecture, suivez un cobot sur un chemin UT pendant qu’un C-scan simulé peint la couverture. Illustration — pas une démo produit."/>
+<meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://robinspect-systems.com/fr/try/"/>
 <link rel="alternate" hreflang="en" href="https://robinspect-systems.com/try/"/>
 <link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/try/"/>
+<link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/try/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="ROBINSPECT Systems"/>
+<meta property="og:locale" content="fr_BE"/>
+<meta property="og:url" content="https://robinspect-systems.com/fr/try/"/>
+<meta property="og:title" content="Tester l’idée · trajectoire UT robotisée | ROBINSPECT Systems"/>
+<meta property="og:description" content="Esquisse conceptuelle : appuyez sur Lecture, suivez un cobot sur un chemin UT pendant qu’un C-scan simulé peint la couverture. Illustration — pas une démo produit."/>
+<meta property="og:image" content="https://robinspect-systems.com/og-image.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Tester l’idée · trajectoire UT robotisée | ROBINSPECT Systems"/>
+<meta name="twitter:description" content="Esquisse conceptuelle : appuyez sur Lecture, suivez un cobot sur un chemin UT pendant qu’un C-scan simulé peint la couverture. Illustration — pas une démo produit."/>
+<meta name="twitter:image" content="https://robinspect-systems.com/og-image.jpg"/>
 <link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/try/try.css?v=20260923e"/>
+<link rel="stylesheet" href="/try/try.css?v=20260925passg"/>
+<script type="importmap">
+{"imports":{"three":"/try/vendor/three/three.module.js","three/addons/":"/try/vendor/three/addons/"}}
+</script>
 </head>
 <body>
 <header class="top">
   <div class="wrap hbar">
     <a class="brand" href="/fr/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
-    <div class="lang" role="group" aria-label="Langue">
-      <a href="/try/" hreflang="en">EN</a>
-      <a href="/fr/try/" class="on" hreflang="fr">FR</a>
+    <nav class="desk" aria-label="Primary"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/" class="on">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a></nav>
+    <div class="actions">
+      <div class="lang" role="group" aria-label="Langue">
+        <a href="/try/" hreflang="en">EN</a>
+        <a href="/fr/try/" class="on" hreflang="fr">FR</a>
+      </div>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
+  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/" class="on">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer une géométrie</a></div>
 </header>
 
 <div class="wrap stage-wrap" id="try-root" data-lang="fr">
   <div class="intro">
-    <nav class="crumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a><span>/</span><span>Tester</span></nav>
-    <div class="mono" style="margin-top:1rem">Tester · esquisse labo · trajectoire</div>
+    <div class="status-banner" role="status">
+      <span class="mono">Statut</span>
+      <p>Esquisse labo interactive · early access. Pas un produit self-serve — une vraie cellule commence par une discussion.</p>
+      <p class="mono" style="margin-top:.55rem;letter-spacing:.08em;color:var(--gold,#c9a227)">SIM · Web ≠ TrajTool — illustration au-dessus de Play, pas la cellule filmée.</p>
+    </div>
+    <nav class="crumb" aria-label="Breadcrumb"><a href="/fr/">Accueil</a><span>/</span><span>Tester</span></nav>
+    <div class="mono" style="margin-top:.55rem">Esquisse concept · idée labo</div>
     <h1 class="font-display">Tester l’idée.</h1>
-    <p class="lead">Placez des points numérotés sur la plaque. Lecture — le cobot 6 axes suit une trajectoire fluide, stylo baissé. Esquisse de planification de trajectoire, pas une démo produit.</p>
+    <p class="value-line">Votre pièce, votre robot, votre UT — on construit la trajectoire.</p>
+    <p class="lead">Appuyez sur Lecture — la sonde reste sur la surface ; le C-scan montre la couverture.</p>
+    <p class="try-sec-ctas"><a href="/fr/watch/">Voir la démo labo</a> · <a href="/fr/contact/#geometry">Envoyer une géométrie</a> · <a href="/fr/contact/">Discuter d’un cas</a></p>
+  </div>
+
+  <div class="try-loader" id="try-loader" role="status" aria-live="polite" aria-busy="true">
+    <div class="try-loader-inner">
+      <div class="try-loader-brand font-display">ROBINSPECT</div>
+      <div class="try-loader-bar" aria-hidden="true"><i id="try-loader-fill"></i></div>
+      <p class="try-loader-msg mono" id="try-loader-msg">Chargement de la cellule robot…</p>
+    </div>
   </div>
 
   <div class="stage">
-    <div id="try-canvas" role="img" aria-label="Cobot interactif et plaque de dessin"></div>
+    <div id="try-canvas" role="img" aria-label="Interactive cobot and inspection part"></div>
     <div class="vignette" aria-hidden="true"></div>
     <div class="chrome">
       <div class="hud-top">
-        <div></div>
-        <div class="axes">
+        <div class="hud-left">
+          <div class="ascan-box" id="try-ascan-wrap" aria-label="A-scan simulation">
+            <div class="mono ascan-lab">A-scan · SIM</div>
+            <canvas id="try-ascan" width="220" height="72"></canvas>
+            <div class="mono probe-lab" id="try-probe-lab">5 MHz · 0° · contact</div>
+          </div>
+          <div class="hud-sec" id="try-hud-sec">
+            <div class="tcp-readout mono" id="try-tcp">TCP —</div>
+            <div class="sim-badge mono">SIM</div>
+            <button type="button" class="ghost-chip" id="try-cscan-mode" title="Toggle C-scan mode">C-scan · Amp</button>
+          </div>
+        </div>
+        <div class="axes" id="try-axes-wrap">
           <div class="mono" style="margin-bottom:.15rem">Axes</div>
           <div class="axes-row" id="try-axes"></div>
         </div>
       </div>
-      <div class="hud-bot">
-        <p class="hint" id="try-hint">Touchez la plaque pour poser un point</p>
+      <button type="button" class="hud-chip on" id="try-hud-chip" aria-pressed="true" title="HUD">HUD</button>
+      <div class="cscan-legend mono" id="try-legend" aria-hidden="false">
+        <span class="leg sound"></span> sain
+        <span class="leg atten"></span> atténué
+        <span class="leg ind"></span> indication
+      </div>
+      <div class="ind-label" id="try-ind-label" hidden>FBH / inclusion · SIM</div>
+      <div class="hud-mid">
+        <p class="hint" id="try-hint">Appuyez sur Lecture</p>
         <div class="prog" id="try-prog"><i id="try-prog-fill"></i></div>
-        <div class="panel">
-          <div class="presets" role="group" aria-label="Préréglages">
-            <button type="button" data-preset="star">Étoile</button>
-            <button type="button" data-preset="circle">Cercle</button>
-            <button type="button" data-preset="square">Carré</button>
-            <button type="button" data-preset="infinity">Infini</button>
-            <button type="button" data-preset="heart">Cœur</button>
-            <button type="button" data-preset="wave">Vague</button>
-            <span class="wp-count" id="try-wp-count">0</span>
-          </div>
-          <div class="controls">
-            <button type="button" class="btn" id="try-play"><span id="try-play-label">Lecture</span></button>
-            <button type="button" class="icon-btn" id="try-stop" aria-label="Stop" title="Stop">■</button>
-            <button type="button" class="icon-btn" id="try-undo" aria-label="Annuler" title="Annuler">↶</button>
-            <button type="button" class="icon-btn" id="try-clear" aria-label="Effacer" title="Effacer">✕</button>
-            <div class="speed">
-              <label for="try-speed">Vitesse</label>
-              <input id="try-speed" type="range" min="0.4" max="2.2" step="0.05" value="1" aria-label="Vitesse"/>
-              <span class="val" id="try-speed-val">1.0×</span>
-            </div>
-          </div>
+      </div>
+      <button type="button" class="play-overlay" id="try-play-overlay" aria-label="Lecture" hidden>
+        <span class="play-orb">Lecture</span>
+        <span class="play-sub mono">Lecture — sonde sur la surface · couverture C-scan</span>
+      </button>
+    </div>
+  </div>
+
+  <p class="try-state" id="try-state" aria-live="polite">
+    <span id="try-state-msg">Appuyez sur Lecture</span>
+    <a class="state-cta" id="try-state-cta" href="/fr/contact/#geometry">Envoyer une géométrie</a>
+  </p>
+      <div class="end-bar" id="try-cta" hidden>
+        <p class="end-copy">Trajectoire tenue. Couverture peinte. Ensuite : votre géométrie — ou la démo labo.</p>
+        <div class="end-actions">
+          <button type="button" class="btn-text" id="try-replay">Rejouer</button>
+          <a class="btn" id="try-cta-geo" href="/fr/contact/#geometry">Envoyer une géométrie</a>
+          <a class="btn btn-ghost" id="try-cta-bring" href="/fr/watch/">Voir la démo labo</a>
+          <button type="button" class="end-dismiss" id="try-cta-dismiss" aria-label="Fermer">✕</button>
         </div>
+        <p class="end-text"><a href="/fr/contact/">Discuter d’un cas</a></p>
+      </div>
+    <div class="toolbar" id="try-toolbar">
+    <div class="tb-row tb-parts" role="group" aria-label="Pièce démo">
+      <span class="tb-parts-lab" id="try-parts-lab">Pièce démo</span>
+      <button type="button" data-part="aero" class="on">Aéro</button>
+      <button type="button" data-part="plate">Plaque</button>
+      <button type="button" data-part="pipe">Tube</button>
+      <span class="wp-count" id="try-wp-count" hidden aria-hidden="true">0</span>
+      <span class="warn-pill" id="try-warn" hidden></span>
+
+    </div>
+    <div class="tb-row tb-modes" role="group" aria-label="Mode" hidden>
+      <button type="button" data-mode="view" class="on" title="View">Voir</button>
+      <button type="button" data-mode="draw" title="Draw">Tracer</button>
+      <button type="button" data-mode="edit" title="Edit">Éditer</button>
+      <span class="path-toggle" id="try-path-toggle" hidden>
+        <button type="button" data-path="raster" class="on" title="Raster (épars / illustration)">▦</button>
+        <button type="button" data-path="freehand" title="Libre (démo)">∿</button>
+      </span>
+      <button type="button" id="try-cine" data-cine="0" class="icon-btn cine-btn" title="Cinematic" aria-label="Cine">◎</button>
+    </div>
+    <div class="tb-row tb-controls">
+      <button type="button" class="btn" id="try-play"><span id="try-play-label">Lecture</span></button>
+      <button type="button" class="icon-btn" id="try-stop" aria-label="Stop" title="Stop">■</button>
+      <button type="button" class="icon-btn" id="try-undo" aria-label="Undo" title="Annuler">↶</button>
+      <button type="button" class="icon-btn" id="try-clear" aria-label="Reset" title="Réinitialiser">✕</button>
+      <button type="button" class="btn-tools" id="try-tools-btn" aria-expanded="false">Outils</button>
+      <button type="button" class="speed-chip mob-only" id="try-speed-chip" aria-expanded="false" title="Speed">Vit.</button>
+      <div class="speed">
+        <label for="try-speed">Vitesse</label>
+        <input id="try-speed" type="range" min="20" max="100" step="5" value="50" aria-label="TCP speed mm/s"/>
+        <span class="val" id="try-speed-val">50 mm/s</span>
       </div>
     </div>
   </div>
 
-  <footer class="foot">© 2026 ROBINSPECT Systems — Belgique · Europe &amp; États-Unis · Esquisse conceptuelle</footer>
+  <div class="reach-badge" id="try-reach-badge" role="status" aria-live="polite" hidden></div>
+
+  <div class="tools-sheet" id="try-tools-sheet" hidden>
+    <div class="tools-sheet-panel" role="dialog" aria-label="Outils">
+      <div class="tools-sheet-head">
+        <span class="mono">Outils</span>
+        <button type="button" class="end-dismiss" id="try-tools-close" aria-label="Fermer">✕</button>
+      </div>
+      <p class="tools-hint mono" id="try-tools-hint">Tracer / Éditer ici. Lecture = raster épars (illustration). Chemin web ≠ TrajTool.</p>
+      <div class="tools-grid">
+        <button type="button" class="tools-item" data-proxy="mode:view"><span class="ti">👁</span><span>Voir</span></button>
+        <button type="button" class="tools-item" data-proxy="mode:draw"><span class="ti">✎</span><span>Tracer</span></button>
+        <button type="button" class="tools-item" data-proxy="mode:edit"><span class="ti">✥</span><span>Éditer</span></button>
+        <button type="button" class="tools-item" data-proxy="path:raster"><span class="ti">▦</span><span>Raster (épars / illustration)</span></button>
+        <button type="button" class="tools-item" data-proxy="path:freehand"><span class="ti">∿</span><span>Libre (démo)</span></button>
+        <button type="button" class="tools-item" data-proxy="id:try-cine"><span class="ti">◎</span><span>Ciné</span></button>
+        <button type="button" class="tools-item" data-proxy="id:try-stop"><span class="ti">■</span><span>Stop</span></button>
+        <button type="button" class="tools-item" data-proxy="id:try-undo"><span class="ti">↶</span><span>Annuler</span></button>
+        <button type="button" class="tools-item" data-proxy="id:try-clear"><span class="ti">✕</span><span>Reset</span></button>
+        <button type="button" class="tools-item" data-proxy="id:try-hud-chip"><span class="ti">▤</span><span>HUD</span></button>
+        <button type="button" class="tools-item" id="try-move-part"><span class="ti">✥</span><span>Déplacer la pièce</span></button>
+      </div>
+      <div class="tools-speed">
+        <label for="try-speed-sheet">Vitesse</label>
+        <input id="try-speed-sheet" type="range" min="20" max="100" step="5" value="50"/>
+        <span class="val" id="try-speed-sheet-val">50 mm/s</span>
+      </div>
+    </div>
+  </div>
+    <footer class="foot">
+    <span>Simulation illustrative · pas un produit self-serve.</span>
+    <span class="traj-note">Trajectoire web ≠ TrajTool.</span>
+    <span>© 2026 ROBINSPECT Systems</span>
+    <div class="ft-links" style="width:100%;margin-top:.55rem"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Watch</a> · <a href="/fr/try/">Try</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">RDV</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+  </footer>
 </div>
-<script src="/try/try.js?v=20260923e"></script>
+<script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>
+<script type="module" src="/try/try.js?v=20260924v8"></script>
 </body>
 </html>
