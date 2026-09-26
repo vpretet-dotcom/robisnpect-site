@@ -53,6 +53,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 .desk a:hover,.desk a.on{color:var(--gold)}.desk a.on{border-bottom:1px solid var(--gold);padding-bottom:.15rem}.mobile a.on{color:var(--gold)}
 .actions{display:flex;align-items:center;gap:.65rem}
 .menu-btn{display:inline-flex;min-height:2.75rem;min-width:2.75rem;align-items:center;justify-content:center;border:1px solid var(--line);font-size:1.1rem}
+@media(min-width:900px){.menu-btn{display:none}}
 .mobile{display:none;flex-direction:column;gap:.35rem;padding:0 0 1rem;border-bottom:1px solid var(--line)}
 .mobile.open{display:flex}
 .mobile a{padding:.55rem 0;color:var(--muted);font-size:.9rem}
