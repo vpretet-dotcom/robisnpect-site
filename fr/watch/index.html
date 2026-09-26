@@ -90,6 +90,7 @@ h1{margin:.7rem 0 0;font-size:2.4rem;line-height:1}
 .steps li{padding:1rem 0;border-bottom:1px solid var(--line)}
 .steps b{color:var(--fg)}
 .ctas{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+.note{font-size:.8rem;color:var(--dim)}
 footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:var(--dim)}
 
 .desk{display:none;gap:1.1rem;font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
@@ -129,7 +130,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
       <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
-  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/" class="on">Démo</a><a href="/fr/try/">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer votre pièce</a></div>
+  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/" class="on">Démo</a><a href="/fr/try/">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer votre pièce</a><span class="note">Fichier CAO ou pièce physique, les deux marchent.</span></span></div>
 </header>
 <main class="wrap page">
   <nav class="crumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a><span>/</span><span>Démo</span></nav>
@@ -182,7 +183,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
     <p>Les temps sont ceux de la pièce en vidéo. Une fois la cellule programmée, un cycle complet tourne environ 30 minutes, mesurées sur l’éprouvette filmée uniquement — pas un SLA universel. Un inspecteur niveau 2 signe toujours l’acquisition et l’interprétation. L’acquisition elle-même dure moins d’une minute&#8239;; le scan 3D environ 30 secondes&#8239;; la trajectoire quelques secondes.</p>
   </article>
   <div class="ctas">
-    <a class="btn btn-lg" href="/fr/contact/#geometry">Envoyer votre pièce</a>
+    <span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn btn-lg" href="/fr/contact/#geometry">Envoyer votre pièce</a><span class="note">Fichier CAO ou pièce physique, les deux marchent.</span></span>
     <a class="btn btn-lg btn-ghost" href="/fr/contact/#discuss">Discuter d’un cas</a>
   </div>
 </main>

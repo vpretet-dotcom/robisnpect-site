@@ -128,7 +128,7 @@ figcaption{position:absolute;inset:auto 0 0 0;padding:1.25rem;background:linear-
 .row:last-child{border:0}
 @media(min-width:768px){.row{grid-template-columns:220px 1fr;align-items:start}}
 .row h3{display:flex;align-items:center;gap:.7rem;margin:0;font-size:1rem}
-.note{margin-top:2rem;font-size:.75rem;color:var(--dim);max-width:48rem}
+.note{font-size:.8rem;color:var(--dim)}
 .found{display:grid;gap:2.5rem;padding:5rem 0}
 @media(min-width:1024px){.found{grid-template-columns:5fr 7fr;align-items:center}}
 .box{border:1px solid var(--line);background:var(--surface);padding:2rem}
@@ -291,11 +291,11 @@ html.boot,html.boot body{overflow:hidden;background:#050505}
     <nav class="desk" aria-label="Primary"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a></nav>
     <div class="actions">
       <div class="lang" role="group" aria-label="Language"><a href="./" class="on" hreflang="en">EN</a><a href="fr/" hreflang="fr">FR</a></div>
-      <a class="btn desk-cta" href="/contact/#geometry">Send your part geometry</a>
+      <a class="btn desk-cta" href="/contact/#geometry">Send us your part</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
-  <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send your part geometry</a></div>
+  <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send us your part</a><span class="note">CAD file or the physical part, either works.</span></span></div>
 </header>
 
 <main>
@@ -312,7 +312,7 @@ html.boot,html.boot body{overflow:hidden;background:#050505}
     <p class="lead">We integrate robotic ultrasonic inspection — your robot, your UT/PAUT/TFM — for welds, curves and constrained sites. Today: filmed lab demo. Next: PoCs.</p>
         <div class="ctas">
       <a class="btn btn-lg" href="/watch/">Watch the lab demo</a>
-      <a class="btn btn-lg btn-ghost" href="/contact/#geometry">Send your part geometry</a>
+      <span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn btn-lg btn-ghost" href="/contact/#geometry">Send us your part</a><span class="note">CAD file or the physical part, either works.</span></span>
     </div>
     <p class="cta-text" style="margin-top:.85rem;font-size:.85rem;color:var(--muted)"><a href="/contact/#discuss" style="color:var(--gold)">Discuss a case</a></p>
     <div class="geo">Belgium · Europe &amp; United States</div>
@@ -349,11 +349,11 @@ html.boot,html.boot body{overflow:hidden;background:#050505}
 
 <section class="sec" id="cta">
   <div class="center">
-    <h2 class="font-display display">Watch the lab demo — or send a geometry.</h2>
+    <h2 class="font-display display">Watch the lab demo — or send us your part.</h2>
     <p class="lead" style="margin-left:auto;margin-right:auto">Filmed proof on a test coupon. Then we define what a cell would require for your part.</p>
     <div class="ctas" style="justify-content:center">
       <a class="btn btn-lg" href="/watch/">Watch the lab demo</a>
-      <a class="btn btn-lg btn-ghost" href="/contact/#geometry">Send your part geometry</a>
+      <span style="display:inline-flex;flex-direction:column;align-items:center;gap:.35rem"><a class="btn btn-lg btn-ghost" href="/contact/#geometry">Send us your part</a><span class="note">CAD file or the physical part, either works.</span></span>
     </div>
     <p class="cta-text" style="margin-top:.85rem;font-size:.85rem;color:var(--muted);text-align:center"><a href="/contact/#discuss" style="color:var(--gold)">Discuss a case</a></p>
   </div>
