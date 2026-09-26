@@ -8,7 +8,7 @@ import { smoothstep, easeInOutCubic, lerp, invLerp } from './util.js';
 
 export const TIMING = {
   scan: 19,
-  a3: { approach0: 0.55, approach1: 2.35, descend1: 2.95, lift: 0.5 },
+  a3: { reveal0: 0.4, reveal1: 1.75, approach0: 1.3, approach1: 3.05, descend1: 3.65, lift: 0.5 },
   a4: { retract: 2.1 },
 };
 
@@ -163,6 +163,7 @@ export function createWorld(stage, tier) {
     markers,
     discovery,
     discoveryT,
+    contactT: TIMING.a3.descend1,
     tAtS,
     glow,
     poseScan,

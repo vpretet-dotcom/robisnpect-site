@@ -318,7 +318,7 @@ function start(M, stage, world, tierName) {
     updatePins(p, i);
     updateLog(p, i);
     if (i === 2) {
-      const scanning = story.t > 2.2 && story.t < world.scanDuration - 0.2;
+      const scanning = story.t > world.contactT - 0.75 && story.t < world.scanDuration - 0.2;
       root.classList.toggle('ascan-on', scanning);
       if (scanning) {
         const smp = p.probe ? world.fieldAt(p.probe[0], p.probe[1]) : null;

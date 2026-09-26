@@ -70,7 +70,9 @@ export const REVEAL_Y = {
     if (uArmRevealOn > 0.5 && fxFrontY < 0.0) discard;
   `,
   fragEmissive: `
-    totalEmissiveRadiance += vec3(1.0, 0.66, 0.16) * 3.0 * uArmRevealOn * (1.0 - smoothstep(0.0, 0.02, abs(fxFrontY)));
+    // A horizontal face sits at one height, so the whole face would flash as the line passes it.
+    float fxUp = abs(inverseTransformDirection(normal, viewMatrix).y);
+    totalEmissiveRadiance += vec3(1.0, 0.66, 0.16) * 3.0 * uArmRevealOn * (1.0 - 0.8 * fxUp) * (1.0 - smoothstep(0.0, 0.02, abs(fxFrontY)));
   `,
 };
 

@@ -106,9 +106,10 @@ export const ACTS = [
       const w = ctx.world;
       const total = w.traj.total;
       const pose = w.poseScan(t);
+      const A = TIMING.a3;
       p.armVisible = true;
-      p.armReveal = lerp(-0.05, 2.45, easeOutCubic(invLerp(0, 1.5, t)));
-      p.armRevealOn = t < 1.5 ? 1 : 0;
+      p.armReveal = lerp(-0.05, 2.45, easeInOutSine(invLerp(A.reveal0, A.reveal1, t)));
+      p.armRevealOn = t < A.reveal1 ? 1 : 0;
       p.q = pose.q;
       p.contact = pose.contact;
       p.led = pose.contact;
@@ -127,7 +128,7 @@ export const ACTS = [
       const w = ctx.world;
       const [d1, d2] = w.discoveryT;
       const m = ctx.mobile;
-      if (t < 3.3) return shot(0.05, 1.02, -0.6, 0.92, 0.2, m ? 1.18 : 1.28, { omega: 2.0 });
+      if (t < w.contactT + 0.35) return shot(0.05, 1.02, -0.6, 0.92, 0.2, m ? 1.18 : 1.28, { omega: 2.0 });
       if (t < d2 - 0.9) {
         w.probeWorld(_t);
         _t.lerp(CENTER, 0.45);

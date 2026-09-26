@@ -87,13 +87,16 @@ export function createArm() {
     rubber: patchMaterial(new THREE.MeshStandardMaterial({ color: 0x0d0d0d, roughness: 0.82, metalness: 0 }), REVEAL_Y, 'arm-rubber'),
     face: patchMaterial(new THREE.MeshStandardMaterial({ color: 0x77716a, roughness: 0.42, metalness: 0.2 }), REVEAL_Y, 'arm-face'),
   };
-  const led = new THREE.MeshBasicMaterial({ color: new THREE.Color(0xe8c547).multiplyScalar(0.25), toneMapped: false });
+  const led = patchMaterial(new THREE.MeshBasicMaterial({ color: new THREE.Color(0xe8c547).multiplyScalar(0.25), toneMapped: false }), REVEAL_Y, 'arm-led');
+  // The shadow pass must discard the same fragments as the reveal, or the arm's shadow lands before the arm.
+  const depth = patchMaterial(new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking }), REVEAL_Y, 'arm-depth');
 
   const add = (parent, geo, mat, x = 0, y = 0, z = 0) => {
     const m = new THREE.Mesh(geo, mat);
     m.position.set(x, y, z);
     m.castShadow = true;
     m.receiveShadow = true;
+    m.customDepthMaterial = depth;
     parent.add(m);
     return m;
   };
