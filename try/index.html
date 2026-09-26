@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>Try the idea · robotic UT path | ROBINSPECT Systems</title>
-<meta name="description" content="Interactive concept sketch: hit Play, watch a cobot follow a UT path while a simulated C-scan paints coverage. Illustration only — not a product demo."/>
+<title>Try the idea · from CAD to report | ROBINSPECT Systems</title>
+<meta name="description" content="Illustrative simulation: a composite panel goes from CAD geometry to a computed scan trajectory, a contact UT scan and a report preview, without hand-programming the robot."/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://robinspect-systems.com/try/"/>
 <link rel="alternate" hreflang="en" href="https://robinspect-systems.com/try/"/>
@@ -14,28 +14,33 @@
 <meta property="og:site_name" content="ROBINSPECT Systems"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="https://robinspect-systems.com/try/"/>
-<meta property="og:title" content="Try the idea · robotic UT path | ROBINSPECT Systems"/>
-<meta property="og:description" content="Interactive concept sketch: hit Play, watch a cobot follow a UT path while a simulated C-scan paints coverage. Illustration only — not a product demo."/>
-<meta property="og:image" content="https://robinspect-systems.com/og-image.jpg"/>
+<meta property="og:title" content="Try the idea · from CAD to report | ROBINSPECT Systems"/>
+<meta property="og:description" content="Illustrative simulation: CAD geometry, computed trajectory, contact UT scan, report preview. No hand-programming of the robot."/>
+<meta property="og:image" content="https://robinspect-systems.com/try/og-try.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Try the idea · robotic UT path | ROBINSPECT Systems"/>
-<meta name="twitter:description" content="Interactive concept sketch: hit Play, watch a cobot follow a UT path while a simulated C-scan paints coverage. Illustration only — not a product demo."/>
-<meta name="twitter:image" content="https://robinspect-systems.com/og-image.jpg"/>
+<meta name="twitter:title" content="Try the idea · from CAD to report | ROBINSPECT Systems"/>
+<meta name="twitter:description" content="Illustrative simulation: CAD geometry, computed trajectory, contact UT scan, report preview. No hand-programming of the robot."/>
+<meta name="twitter:image" content="https://robinspect-systems.com/try/og-try.jpg"/>
 <link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/try/try.css?v=20260925passg"/>
-<script type="importmap">
-{"imports":{"three":"/try/vendor/three/three.module.js","three/addons/":"/try/vendor/three/addons/"}}
-</script>
+<link rel="stylesheet" href="/inner.css?v=20260925passo"/>
+<link rel="stylesheet" href="/try/try.css?v=20260926cad"/>
 <style id="dev-note-css">:root{--dev-h:1.7rem}body{padding-top:var(--dev-h)}html{scroll-padding-top:var(--dev-h)}.dev-note{height:var(--dev-h);display:flex;align-items:center;justify-content:center;padding:0 1rem;background:#0b0a08;border-bottom:1px solid var(--line,#24211c);color:var(--gold,#e8c547);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dev-note .s{display:none}@media(max-width:720px){.dev-note{letter-spacing:.05em}.dev-note .l{display:none}.dev-note .s{display:inline}}</style>
-<style id="dev-note-try">body{padding-top:0}.stage-wrap{padding-top:calc(var(--header-h) + var(--safe-t,0px) + var(--dev-h))}@media(min-width:768px){.stage{min-height:calc(min(62dvh,620px) - var(--dev-h))!important;max-height:calc(min(74dvh,720px) - var(--dev-h))!important}}</style>
+<script>document.documentElement.classList.add('js');</script>
+<script nomodule>document.documentElement.classList.add('no-module');</script>
+<script type="importmap">
+{"imports":{"three":"/try/vendor/three/three.module.min.js","three/addons/":"/try/vendor/three/addons/"}}
+</script>
+<link rel="modulepreload" href="/try/js/main.js?v=20260926cad"/>
 </head>
-<body>
-<header class="top">
+<body class="try-page">
+<header>
 <div class="dev-note" role="note"><span class="l">This site is under development. Some content may not yet be accurate or final.</span><span class="s">Site under development · some content not final yet</span></div>
   <div class="wrap hbar">
     <a class="brand" href="/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
@@ -51,153 +56,158 @@
   <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/" class="on">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send a geometry</a></div>
 </header>
 
-<div class="wrap stage-wrap" id="try-root" data-lang="en">
-  <div class="intro">
-    <div class="status-banner" role="status">
+<main>
+<section class="xp act-1" id="xp" aria-label="From CAD to report: illustrative simulation">
+  <div class="xp-stage" id="xp-stage" tabindex="0" aria-label="3D simulation. Drag to rotate the part. Space to pause, arrow keys to change step.">
+    <div class="xp-canvas" id="xp-canvas" role="img" aria-label="A curved composite fuselage panel on its fixture. A brand-agnostic robot arm scans it with a contact UT probe and a C-scan map appears on the part."></div>
+
+    <div class="xp-fallback" id="xp-fallback">
+      <img class="xp-poster" src="/try/poster.webp" alt="Still of the simulation: the composite panel with its C-scan map and two located indications, next to a brand-agnostic arm." width="1600" height="900" loading="lazy" decoding="async"/>
+    </div>
+
+    <div class="xp-shade" aria-hidden="true"></div>
+
+    <div class="xp-ui wrap">
+      <div class="xp-top">
+        <div class="xp-cap" id="xp-cap" aria-live="polite">
+          <div class="xp-cap-k mono"><span id="xp-cap-num">01</span><span class="xp-cap-of">/ 04</span><span class="xp-cap-name" id="xp-cap-name">The part</span></div>
+          <p class="xp-cap-t" id="xp-cap-text">A curved composite fuselage panel with stringers and a window cutout, as it comes from CAD. Drag to turn it.</p>
+          <span class="xp-status mono" id="xp-cap-status" data-kind="input">Input · CAD or 3D scan</span>
+        </div>
+        <p class="xp-badge mono">Illustrative simulation · not real data</p>
+      </div>
+
+      <div class="xp-mid">
+      <ol class="xp-log mono" id="xp-log" aria-hidden="true">
+        <li>Reading the CAD surface</li>
+        <li>Computing surface normals</li>
+        <li>Passes along the curvature</li>
+        <li>Cutout: the probe lifts over it</li>
+        <li>Trajectory ready</li>
+      </ol>
+
+      <div class="xp-hero" id="xp-hero">
+        <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Try</span></nav>
+        <div class="mono xp-hero-k">Try · illustrative simulation</div>
+        <h1 class="font-display">From CAD<br/>to report.</h1>
+        <p class="lead">A composite panel goes from its geometry to a computed trajectory, a contact UT scan and a report, without hand-programming the robot.</p>
+      </div>
+
+      <div class="xp-ascan" id="xp-ascan" aria-hidden="true">
+        <div class="xp-ascan-h mono"><span>A-scan · simulated</span><span>Contact UT</span></div>
+        <canvas id="xp-ascan-c"></canvas>
+      </div>
+      <div class="xp-toast mono" id="xp-toast" role="status" aria-live="polite"></div>
+
+      <div class="xp-fallback-card" id="xp-fallback-card">
+        <p class="xp-fallback-note" id="xp-fallback-note">Your browser can't display the 3D scene, so here is a still of the result.</p>
+        <ol class="xp-fallback-steps">
+          <li><b>01</b> The part: a curved composite panel, from CAD.</li>
+          <li><b>02</b> The trajectory: computed from the surface.</li>
+          <li><b>03</b> The scan: contact UT along the path.</li>
+          <li><b>04</b> The result: indications located, report preview.</li>
+        </ol>
+        <a class="btn btn-lg" href="/contact/">Send us your geometry</a>
+      </div>
+      <p class="xp-hint mono" id="xp-hint">Drag to rotate</p>
+      </div>
+
+      <aside class="xp-report" id="xp-report" aria-labelledby="xp-report-title">
+        <div class="xp-report-head"><span class="mono">Report · preview</span><span class="xp-status mono" data-kind="direction">Direction</span></div>
+        <h2 class="font-display" id="xp-report-title">Curved composite panel</h2>
+        <p class="xp-report-sub mono">Illustrative simulation · not real data</p>
+        <div class="xp-report-body">
+          <canvas class="xp-thumb" id="xp-thumb" role="img" aria-label="Simulated C-scan map of the panel, zone grid A to F and 1 to 4, two indications circled."></canvas>
+          <div class="xp-report-data">
+            <dl class="xp-report-dl">
+              <div><dt>Method</dt><dd>Contact UT, pulse-echo</dd></div>
+              <div><dt>Coverage</dt><dd>Planned area, cutout excluded</dd></div>
+              <div><dt>Indications</dt><dd>2, for review</dd></div>
+            </dl>
+            <ol class="xp-report-list">
+              <li><b>01</b><span>Zone <em data-zone="0">E3</em> · in a bay, above threshold</span></li>
+              <li><b>02</b><span>Zone <em data-zone="1">B2</em> · along a stringer foot</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="xp-report-note">The final call stays with a qualified UT inspector.</p>
+        <a class="btn btn-lg xp-cta" href="/contact/">Send us your geometry</a>
+      </aside>
+    </div>
+
+    <div class="xp-bar">
+        <div class="wrap xp-bar-in">
+          <ol class="xp-steps" id="xp-steps" aria-label="Steps">
+            <li><button type="button" data-act="0"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">01</span><span class="xp-step-t">Part</span></button></li>
+            <li><button type="button" data-act="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">02</span><span class="xp-step-t">Trajectory</span></button></li>
+            <li><button type="button" data-act="2"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">03</span><span class="xp-step-t">Scan</span></button></li>
+            <li><button type="button" data-act="3"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">04</span><span class="xp-step-t">Report</span></button></li>
+          </ol>
+          <div class="xp-ctrl">
+            <button type="button" class="xp-recenter mono" id="xp-recenter" hidden>Recenter</button>
+            <button type="button" class="xp-play" id="xp-play" aria-label="Pause" data-state="playing">
+              <svg class="i-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+              <svg class="i-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="i-replay" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg>
+              <span class="xp-play-label">Pause</span>
+            </button>
+          </div>
+        </div>
+    </div>
+
+    <div class="xp-pins" aria-hidden="true"><span class="xp-pin"><b>01</b></span><span class="xp-pin"><b>02</b></span></div>
+
+    <div class="xp-load" id="xp-load" role="status" aria-live="polite">
+      <div class="xp-load-in">
+        <p class="xp-load-k">Try · simulation</p>
+        <div class="xp-load-word font-display">ROBINSPECT</div>
+        <div class="xp-load-row"><span id="xp-load-msg">Loading</span><span id="xp-load-pct">00</span></div>
+        <div class="xp-load-bar"><i id="xp-load-fill"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec xp-after" id="how">
+  <div class="wrap pad">
+    <div class="mono">How to read it</div>
+    <h2 class="font-display display">Four acts, one workflow.</h2>
+    <p class="lead">The wow is the chain: the geometry drives the trajectory, the trajectory drives the robot, and the scan lands on the part as a map, with no one teaching the robot point by point.</p>
+    <div class="xp-cards">
+      <article class="xp-card"><div class="mono">01 · The part</div><h3>Your geometry is the input</h3><p>A curved, stiffened composite panel with a cutout. In a real project the input is your CAD file or a 3D scan of the part.</p><span class="xp-status mono" data-kind="input">Input · CAD or 3D scan</span></article>
+      <article class="xp-card"><div class="mono">02 · The trajectory</div><h3>Computed, not taught</h3><p>The scan path is computed from the surface: it follows the curvature, keeps the probe normal to the skin and lifts over the cutout.</p><span class="xp-status mono" data-kind="lab">Shown in the lab demo</span></article>
+      <article class="xp-card"><div class="mono">03 · The scan</div><h3>Contact UT on the path</h3><p>A brand-agnostic arm carries a contact UT probe along the path. Painting the C-scan onto the part is an illustration.</p><span class="xp-status mono" data-kind="lab">Contact UT · shown in the lab demo</span></article>
+      <article class="xp-card"><div class="mono">04 · The result</div><h3>A map, then a report</h3><p>Indications are located on the part and summarized for the inspector's review. Automated reporting is a direction, not a live product.</p><span class="xp-status mono" data-kind="direction">Direction</span></article>
+    </div>
+    <div class="xp-honest">
       <span class="mono">Status</span>
-      <p>Interactive lab sketch · early access. Not a self-serve product — a real cell starts with a conversation.</p>
-      <p class="mono" style="margin-top:.55rem;letter-spacing:.08em;color:var(--gold,#c9a227)">SIM · Web ≠ TrajTool — illustration above Play, not the filmed cell.</p>
-    </div>
-    <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Try</span></nav>
-    <div class="mono" style="margin-top:.55rem">Concept sketch · lab idea</div>
-    <h1 class="font-display">Try the idea.</h1>
-    <p class="value-line">Your part, your robot, your UT — we build the scan path.</p>
-    <p class="lead">Hit Play — the probe stays on the surface; the C-scan shows coverage.</p>
-    <p class="try-sec-ctas"><a href="/watch/">Watch the lab demo</a> · <a href="/contact/#geometry">Send a geometry</a> · <a href="/contact/">Discuss a case</a></p>
-  </div>
-
-  <div class="try-loader" id="try-loader" role="status" aria-live="polite" aria-busy="true">
-    <div class="try-loader-inner">
-      <div class="try-loader-brand font-display">ROBINSPECT</div>
-      <div class="try-loader-bar" aria-hidden="true"><i id="try-loader-fill"></i></div>
-      <p class="try-loader-msg mono" id="try-loader-msg">Loading the robot cell…</p>
+      <p><b>Illustrative simulation, not real data.</b> The part, the trajectory, the C-scan and the report on this page are generated in your browser. What is demonstrated today is contact UT, in a <a href="/watch/">filmed lab demo</a>: about 30 minutes for the full cycle, measured on the filmed part only. PAUT and TFM are at proof-of-concept stage and are not shown here. Everything else on this page is direction.</p>
     </div>
   </div>
+</section>
+</main>
 
-  <div class="stage">
-    <div id="try-canvas" role="img" aria-label="Interactive cobot and inspection part"></div>
-    <div class="vignette" aria-hidden="true"></div>
-    <div class="chrome">
-      <div class="hud-top">
-        <div class="hud-left">
-          <div class="ascan-box" id="try-ascan-wrap" aria-label="A-scan simulation">
-            <div class="mono ascan-lab">A-scan · SIM</div>
-            <canvas id="try-ascan" width="220" height="72"></canvas>
-            <div class="mono probe-lab" id="try-probe-lab">5 MHz · 0° · contact</div>
-          </div>
-          <div class="hud-sec" id="try-hud-sec">
-            <div class="tcp-readout mono" id="try-tcp">TCP —</div>
-            <div class="sim-badge mono">SIM</div>
-            <button type="button" class="ghost-chip" id="try-cscan-mode" title="Toggle C-scan mode">C-scan · Amp</button>
-          </div>
-        </div>
-        <div class="axes" id="try-axes-wrap">
-          <div class="mono" style="margin-bottom:.15rem">Joints</div>
-          <div class="axes-row" id="try-axes"></div>
-        </div>
-      </div>
-      <button type="button" class="hud-chip on" id="try-hud-chip" aria-pressed="true" title="HUD">HUD</button>
-      <div class="cscan-legend mono" id="try-legend" aria-hidden="false">
-        <span class="leg sound"></span> sound
-        <span class="leg atten"></span> attenuated
-        <span class="leg ind"></span> indication
-      </div>
-      <div class="ind-label" id="try-ind-label" hidden>FBH / inclusion · SIM</div>
-      <div class="hud-mid">
-        <p class="hint" id="try-hint">Hit Play</p>
-        <div class="prog" id="try-prog"><i id="try-prog-fill"></i></div>
-      </div>
-      <button type="button" class="play-overlay" id="try-play-overlay" aria-label="Play" hidden>
-        <span class="play-orb">Play</span>
-        <span class="play-sub mono">Hit Play — probe on surface · C-scan coverage</span>
-      </button>
-    </div>
-  </div>
+<footer><div class="wrap ft">
+  <div>© 2026 ROBINSPECT Systems — Integrator · Belgium · Europe &amp; United States</div>
+  <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+</div></footer>
 
-  <p class="try-state" id="try-state" aria-live="polite">
-    <span id="try-state-msg">Hit Play</span>
-    <a class="state-cta" id="try-state-cta" href="/contact/#geometry">Send a geometry</a>
-  </p>
-      <div class="end-bar" id="try-cta" hidden>
-        <p class="end-copy">Path held. Coverage painted. Next: your geometry — or watch the lab demo.</p>
-        <div class="end-actions">
-          <button type="button" class="btn-text" id="try-replay">Replay</button>
-          <a class="btn" id="try-cta-geo" href="/contact/#geometry">Send a geometry</a>
-          <a class="btn btn-ghost" id="try-cta-bring" href="/watch/">Watch the lab demo</a>
-          <button type="button" class="end-dismiss" id="try-cta-dismiss" aria-label="Dismiss">✕</button>
-        </div>
-        <p class="end-text"><a href="/contact/">Discuss a case</a></p>
-      </div>
-    <div class="toolbar" id="try-toolbar">
-    <div class="tb-row tb-parts" role="group" aria-label="Demo part">
-      <span class="tb-parts-lab" id="try-parts-lab">Demo part</span>
-      <button type="button" data-part="aero" class="on">Aero</button>
-      <button type="button" data-part="plate">Plate</button>
-      <button type="button" data-part="pipe">Pipe</button>
-      <span class="wp-count" id="try-wp-count" hidden aria-hidden="true">0</span>
-      <span class="warn-pill" id="try-warn" hidden></span>
-
-    </div>
-    <div class="tb-row tb-modes" role="group" aria-label="Mode" hidden>
-      <button type="button" data-mode="view" class="on" title="View">View</button>
-      <button type="button" data-mode="draw" title="Draw">Draw</button>
-      <button type="button" data-mode="edit" title="Edit">Edit</button>
-      <span class="path-toggle" id="try-path-toggle" hidden>
-        <button type="button" data-path="raster" class="on" title="Raster (sparse / illustration)">▦</button>
-        <button type="button" data-path="freehand" title="Freehand (demo)">∿</button>
-      </span>
-      <button type="button" id="try-cine" data-cine="0" class="icon-btn cine-btn" title="Cinematic" aria-label="Cine">◎</button>
-    </div>
-    <div class="tb-row tb-controls">
-      <button type="button" class="btn" id="try-play"><span id="try-play-label">Play</span></button>
-      <button type="button" class="icon-btn" id="try-stop" aria-label="Stop" title="Stop">■</button>
-      <button type="button" class="icon-btn" id="try-clear" aria-label="Reset" title="Reset">✕</button>
-      <button type="button" class="btn-tools" id="try-tools-btn" aria-expanded="false">Tools</button>
-      <button type="button" class="speed-chip mob-only" id="try-speed-chip" aria-expanded="false" title="Speed">Speed</button>
-      <button type="button" class="icon-btn" id="try-undo" aria-label="Undo" title="Undo" hidden>↶</button>
-      <div class="speed">
-        <label for="try-speed">Speed</label>
-        <input id="try-speed" type="range" min="20" max="100" step="5" value="50" aria-label="TCP speed mm/s"/>
-        <span class="val" id="try-speed-val">50 mm/s</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="reach-badge" id="try-reach-badge" role="status" aria-live="polite" hidden></div>
-
-  <div class="tools-sheet" id="try-tools-sheet" hidden>
-    <div class="tools-sheet-panel" role="dialog" aria-label="Tools">
-      <div class="tools-sheet-head">
-        <span class="mono">Tools</span>
-        <button type="button" class="end-dismiss" id="try-tools-close" aria-label="Close">✕</button>
-      </div>
-      <p class="tools-hint mono" id="try-tools-hint">Draw / Edit live here. Play = sparse raster (illustration). Web path ≠ TrajTool.</p>
-      <div class="tools-grid">
-        <button type="button" class="tools-item" data-proxy="mode:view"><span class="ti">👁</span><span>View</span></button>
-        <button type="button" class="tools-item" data-proxy="mode:draw"><span class="ti">✎</span><span>Draw</span></button>
-        <button type="button" class="tools-item" data-proxy="mode:edit"><span class="ti">✥</span><span>Edit</span></button>
-        <button type="button" class="tools-item" data-proxy="path:raster"><span class="ti">▦</span><span>Raster (sparse / illustration)</span></button>
-        <button type="button" class="tools-item" data-proxy="path:freehand"><span class="ti">∿</span><span>Freehand (demo)</span></button>
-        <button type="button" class="tools-item" data-proxy="id:try-cine"><span class="ti">◎</span><span>Cine</span></button>
-        <button type="button" class="tools-item" data-proxy="id:try-undo"><span class="ti">↶</span><span>Undo</span></button>
-        <button type="button" class="tools-item" id="try-joints-toggle"><span class="ti">▤</span><span>Joints</span></button>
-        <button type="button" class="tools-item" id="try-move-part"><span class="ti">✥</span><span>Move part</span></button>
-      </div>
-      <div class="tools-speed">
-        <label for="try-speed-sheet">Speed</label>
-        <input id="try-speed-sheet" type="range" min="20" max="100" step="5" value="50"/>
-        <span class="val" id="try-speed-sheet-val">50 mm/s</span>
-      </div>
-    </div>
-  </div>
-    <footer class="foot">
-    <span>Simulation for illustration · not a self-serve product.</span>
-    <span class="traj-note">Web TCP path ≠ TrajTool.</span>
-    <span>© 2026 ROBINSPECT Systems</span>
-    <div class="ft-links" style="width:100%;margin-top:.55rem"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
-  </footer>
-</div>
+<script type="application/json" id="xp-copy">{
+  "acts": [
+    {"n": "01", "name": "The part", "text": "A curved composite fuselage panel with stringers and a window cutout, as it comes from CAD. Drag to turn it.", "status": "Input · CAD or 3D scan", "kind": "input"},
+    {"n": "02", "name": "The trajectory", "text": "The scan path is computed from the surface: passes follow the curvature, the probe stays normal to the skin and lifts over the cutout.", "status": "Shown in the lab demo", "kind": "lab"},
+    {"n": "03", "name": "The scan", "text": "A brand-agnostic arm carries the contact UT probe along the path. The C-scan paints onto the part as it goes.", "status": "Contact UT · shown in the lab demo", "kind": "lab"},
+    {"n": "04", "name": "The result", "text": "Two indications located on the part, and a report preview ready for the inspector.", "status": "Direction · not a live product yet", "kind": "direction"}
+  ],
+  "load": ["Loading the engine", "Building the geometry", "Computing the trajectory", "Compiling shaders", "Ready"],
+  "ui": {"play": "Play", "pause": "Pause", "replay": "Replay", "indication": "Indication", "zone": "zone"},
+  "fallback": {
+    "nowebgl": "Your browser can't display the 3D scene, so here is a still of the result.",
+    "slow": "This device renders the 3D scene too slowly, so here is a still of the result.",
+    "error": "The 3D scene couldn't start here, so here is a still of the result."
+  }
+}</script>
 <script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>
-<script type="module" src="/try/try.js?v=20260924v8"></script>
+<script type="module" src="/try/js/main.js?v=20260926cad"></script>
 </body>
 </html>
