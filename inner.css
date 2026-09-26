@@ -91,7 +91,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 .split{display:grid}
 @media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}
 .photo{position:relative;min-height:48vh;overflow:hidden}
-@media(min-width:1024px){.photo{min-height:72vh}}
+@media(min-width:1024px){.photo{min-height:0}}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .pad{padding:2.5rem 1.25rem}
 @media(min-width:768px){.pad{padding:4rem 2.5rem}}
