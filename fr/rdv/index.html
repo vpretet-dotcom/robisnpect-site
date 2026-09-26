@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/inner.css?v=20260925meet"/>
+<link rel="stylesheet" href="/inner.css?v=20260926audit"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ROBINSPECT Systems","item":"https://robinspect-systems.com/fr/"},{"@type":"ListItem","position":2,"name":"Où nous rencontrer","item":"https://robinspect-systems.com/fr/rdv/"}]},{"@type":"CollectionPage","name":"Où nous rencontrer","url":"https://robinspect-systems.com/fr/rdv/","inLanguage":"fr","description":"Salons et lieux pour croiser l’équipe ROBINSPECT Systems.","isPartOf":{"@type":"WebSite","name":"ROBINSPECT Systems","url":"https://robinspect-systems.com/"},"about":{"@type":"Organization","name":"ROBINSPECT Systems"}},{"@type":"ExhibitionEvent","@id":"https://robinspect-systems.com/fr/rdv/#dme","name":"Defence Manufacturing & Materials Expo 2027","alternateName":"DME 2027","description":"ROBINSPECT Systems expose au stand 818. Billets visiteurs gratuits avec le code d’inscription DMEPOCR100.","startDate":"2027-04-28","endDate":"2027-04-29","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","url":"https://robinspect-systems.com/fr/rdv/#dme","image":"https://robinspect-systems.com/media/challenge-cinema.jpg","location":{"@type":"Place","name":"International Congress Centre (MCK)","address":{"@type":"PostalAddress","addressLocality":"Katowice","addressCountry":"PL"}},"performer":{"@type":"Organization","name":"ROBINSPECT Systems","url":"https://robinspect-systems.com/"},"offers":{"@type":"Offer","name":"Billet visiteur gratuit","price":"0","priceCurrency":"EUR","url":"https://defencemanufacturingexpo.com/registration","availability":"https://schema.org/InStock","identifier":"DMEPOCR100"}}]}</script>
 <style id="dev-note-css">:root{--dev-h:1.7rem}body{padding-top:var(--dev-h)}html{scroll-padding-top:var(--dev-h)}.dev-note{height:var(--dev-h);display:flex;align-items:center;justify-content:center;padding:0 1rem;background:#0b0a08;border-bottom:1px solid var(--line,#24211c);color:var(--gold,#e8c547);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dev-note .s{display:none}@media(max-width:720px){.dev-note{letter-spacing:.05em}.dev-note .l{display:none}.dev-note .s{display:inline}}</style>
 </head>
@@ -36,20 +36,21 @@
 <div class="dev-note" role="note"><span class="l">Site en cours de développement. Certains contenus ne sont pas encore exacts ni définitifs.</span><span class="s">Site en développement · contenus pas encore définitifs</span></div>
   <div class="wrap hbar">
     <a class="brand" href="/fr/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
-    <nav class="desk" aria-label="Primary"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a></nav>
+    <nav class="desk" aria-label="Navigation principale"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Démo</a><a href="/fr/try/">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a></nav>
     <div class="actions">
       <div class="lang" role="group">
               <a href="../../meet/" hreflang="en">EN</a>
               <a href="./" class="on" hreflang="fr">FR</a>
             </div>
+      <a class="btn desk-cta" href="/fr/contact/#geometry">Envoyer votre pièce</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
-  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/" class="on">Nous rencontrer</a><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer une géométrie</a></div>
+  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Démo</a><a href="/fr/try/">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/" class="on">Nous rencontrer</a><span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer votre pièce</a><span class="note">Fichier CAO ou pièce physique, les deux marchent.</span></span></div>
 </header>
 
 <main class="wrap page">
-  <nav class="crumb"><a href="../">Accueil</a><span>/</span><span>Nous rencontrer</span></nav>
+  <nav class="crumb"><a href="/fr/">Accueil</a><span>/</span><span>Nous rencontrer</span></nav>
 
   <div class="mono">Événements · en présentiel</div>
   <h1 class="font-display">Où nous rencontrer.</h1>
@@ -58,14 +59,14 @@
   <div class="event-list">
     <article class="event-card" id="dme">
       <div class="mono">À venir · DME 2027</div>
-      <h2>Defence Manufacturing<br/>&amp; Materials Expo.</h2>
+      <h2>Defence Manufacturing<br/>&amp; Materials Expo</h2>
       <p class="muted" style="max-width:36rem;margin:1rem 0 0;line-height:1.6">ROBINSPECT au stand 818 — International Congress Centre (MCK), Katowice, Pologne, 28 et 29 avril 2027.</p>
       <div class="meet-grid">
         <div class="meet-cell"><div class="mono">Dates</div><b>28–29 avr. 2027</b></div>
         <div class="meet-cell"><div class="mono">Lieu</div><b>MCK Katowice</b></div>
         <div class="meet-cell"><div class="mono">Stand</div><b>818</b></div>
       </div>
-      <p class="muted" style="max-width:42rem;margin-top:1.4rem;line-height:1.6">Salon de référence pour la fabrication, l’ingénierie, les matériaux et la supply chain défense — technologies et innovations pour la base industrielle européenne. Venez nous voir au stand 818.</p>
+      <p class="muted" style="max-width:42rem;margin-top:1.4rem;line-height:1.6">Salon de référence pour la fabrication, l’ingénierie, les matériaux et la chaîne d’approvisionnement de défense — technologies et innovations pour la base industrielle européenne. Venez nous voir au stand 818.</p>
       <div class="meet-code">
         <div>
           <div class="mono">Code d’inscription</div>
@@ -81,14 +82,14 @@
   </div>
 
   <section class="event-next" aria-labelledby="next-shows">
-    <div class="mono">Suite</div>
+    <div class="mono">Prochains salons</div>
     <h2 id="next-shows" class="font-display">Prochains salons</h2>
-    <p class="muted" style="margin:0;line-height:1.6">D’autres dates dès qu’elles sont verrouillées — demande via <a href="/fr/contact/">Contact</a>.</p>
+    <p class="muted" style="margin:0;line-height:1.6">D’autres dates dès qu’elles sont confirmées — demande via <a href="/fr/contact/">Contact</a>.</p>
   </section>
 </main>
 <footer><div class="wrap ft">
-  <div>© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe &amp; États-Unis</div>
-  <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Watch</a> · <a href="/fr/try/">Try</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">RDV</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+  <div>© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe et États-Unis</div>
+  <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Démo</a> · <a href="/fr/try/">Simulateur</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">Nous rencontrer</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Cas d’usage · <a href="/fr/soudure/">Soudure</a> · <a href="/fr/aero/">Géométrie courbe</a> · <a href="/fr/contraint/">Milieu contraint</a></div>
 </div></footer>
 <script>
 (function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();

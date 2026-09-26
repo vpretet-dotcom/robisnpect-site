@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Inspection CND robotisée des soudures | PAUT / UT | ROBINSPECT Systems</title>
-<meta name="description" content="ROBINSPECT intègre des robots 6 axes vendor-agnostic avec UT, PAUT et TFM pour inspecter un cordon de façon répétable — trajectoire, couplage et acquisition dans le même workflow."/>
+<title>Inspection CND robotisée des soudures | UT au contact | ROBINSPECT Systems</title>
+<meta name="description" content="ROBINSPECT Systems intègre des robots 6 axes multimarque pour inspecter un cordon de façon répétable — trajectoire, couplage et UT au contact sur la démo filmée. PAUT et TFM à valider en PoC."/>
 <meta name="robots" content="index, follow, max-image-preview:large"/>
 <link rel="canonical" href="https://robinspect-systems.com/fr/soudure/"/>
 <link rel="alternate" hreflang="en" href="https://robinspect-systems.com/weld/"/>
@@ -14,8 +14,8 @@
 <meta property="og:site_name" content="ROBINSPECT Systems"/>
 <meta property="og:locale" content="fr_BE"/>
 <meta property="og:url" content="https://robinspect-systems.com/fr/soudure/"/>
-<meta property="og:title" content="Inspection CND robotisée des soudures | PAUT / UT | ROBINSPECT Systems"/>
-<meta property="og:description" content="ROBINSPECT intègre des robots 6 axes vendor-agnostic avec UT, PAUT et TFM pour inspecter un cordon de façon répétable — trajectoire, couplage et acquisition dans le même workflow."/>
+<meta property="og:title" content="Inspection CND robotisée des soudures | UT au contact | ROBINSPECT Systems"/>
+<meta property="og:description" content="ROBINSPECT Systems intègre des robots 6 axes multimarque pour inspecter un cordon de façon répétable — trajectoire, couplage et UT au contact sur la démo filmée. PAUT et TFM à valider en PoC."/>
 <meta property="og:image" content="https://robinspect-systems.com/media/challenge-cinema.jpg"/>
 <link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/inner.css?v=20260925passo"/>
+<link rel="stylesheet" href="/inner.css?v=20260926audit"/>
 <style id="dev-note-css">:root{--dev-h:1.7rem}body{padding-top:var(--dev-h)}html{scroll-padding-top:var(--dev-h)}.dev-note{height:var(--dev-h);display:flex;align-items:center;justify-content:center;padding:0 1rem;background:#0b0a08;border-bottom:1px solid var(--line,#24211c);color:var(--gold,#e8c547);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dev-note .s{display:none}@media(max-width:720px){.dev-note{letter-spacing:.05em}.dev-note .l{display:none}.dev-note .s{display:inline}}</style>
 </head>
 <body>
@@ -31,53 +31,54 @@
 <div class="dev-note" role="note"><span class="l">Site en cours de développement. Certains contenus ne sont pas encore exacts ni définitifs.</span><span class="s">Site en développement · contenus pas encore définitifs</span></div>
   <div class="wrap hbar">
     <a class="brand" href="/fr/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
-    <nav class="desk" aria-label="Primary"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a></nav>
+    <nav class="desk" aria-label="Navigation principale"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Démo</a><a href="/fr/try/">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a></nav>
     <div class="actions">
       <div class="lang" role="group">
         <a href="/weld/" hreflang="en">EN</a>
         <a href="./" class="on" hreflang="fr">FR</a>
       </div>
+      <a class="btn desk-cta" href="/fr/contact/#geometry">Envoyer votre pièce</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
-  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer une géométrie</a></div>
+  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Démo</a><a href="/fr/try/">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer votre pièce</a><span class="note">Fichier CAO ou pièce physique, les deux marchent.</span></span></div>
 </header>
 <main class="wrap page">
-  <nav class="crumb"><a href="/fr/">Accueil</a><span>/</span><span>Soudures</span></nav>
-  <div class="mono" style="margin-top:1.2rem">Cas d’usage · Soudures</div>
+  <nav class="crumb"><a href="/fr/">Accueil</a><span>/</span><span>Soudure</span></nav>
+  <div class="mono" style="margin-top:1.2rem">Cas d’usage · Soudure</div>
   <h1 class="font-display">Inspection robotisée<br/>des cordons.</h1>
-  <p class="lead">Nous intégrons l’inspection ultrasonore robotisée pour les soudures — votre robot, votre UT/PAUT/TFM : sonde normale, couplage, trajet rejouable. Aujourd’hui : démo labo filmée (UT contact). PAUT / TFM = stack / PoC. Ensuite : PoC.</p>
+  <p class="lead">Nous intégrons l’inspection ultrasonore robotisée pour les soudures — votre robot, votre UT/PAUT/TFM&nbsp;: sonde à la normale de la surface, couplage, trajet rejouable. Aujourd’hui&nbsp;: démo labo filmée (UT au contact). PAUT et TFM&nbsp;: intégrables, à valider en PoC. Ensuite&nbsp;: PoC.</p>
   <figure class="hero-img">
     <img src="/media/challenge-cinema.jpg" alt="Contrôle ultrasonore sur structure soudée complexe — le geste qu’un robot 6 axes peut répéter"/>
   </figure>
   <article class="copy">
     <h2 class="font-display">De quoi parle cette page</h2>
-<p>L’inspection manuelle d’un cordon dépend encore du geste. Sur les longues soudures, piquages et joints courbes, l’orientation et le couplage dérivent. La qualité change d’équipe. Le rapport est souvent déconnecté de la position réelle de la sonde.</p>
-<p>ROBINSPECT est un <b>intégrateur CND robotisé</b> : on ne vend pas un robot. On conçoit l’ingénierie d’inspection — géométrie 3D, trajectoire sur le cordon, normale, couplage, acquisition PAUT / TFM synchronisée.</p>
-<h2 class="font-display">Le workflow</h2>
+<p>L’inspection manuelle d’un cordon dépend encore du geste. Sur les longues soudures, piquages et joints courbes, l’orientation et le couplage dérivent. La qualité varie d’une équipe à l’autre. Le rapport est souvent déconnecté de la position réelle de la sonde.</p>
+<p>ROBINSPECT est un <b>intégrateur CND robotisé</b>&nbsp;: on ne vend pas un robot. On conçoit l’ingénierie d’inspection — géométrie 3D, trajectoire sur le cordon, sonde à la normale de la surface, couplage, acquisition UT synchronisée (PAUT et TFM en PoC).</p>
+<h2 class="font-display">Le processus</h2>
 <ul>
 <li>Scanner la pièce (des minutes, pas un labo de métrologie).</li>
 <li>Générer le chemin outil sur le cordon, en quelques secondes.</li>
 <li>Préparer la cellule une fois — ensuite la trajectoire se rejoue.</li>
 <li>Acquérir UT, PAUT ou TFM, souvent moins d’une minute sur l’éprouvette filmée.</li>
 </ul>
-<p>Une fois la cellule apprise, un cycle complet tourne typiquement autour de 30 minutes — selon longueur/accès (temps du site = éprouvette filmée). L’expertise CND niveau 2 reste derrière la cellule pour l’acquisition et l’interprétation.</p>
-<h2 class="font-display">Vendor-agnostic, exprès</h2>
-<p>La valeur est le workflow, pas une chaîne verrouillée. Multi-robots, multi-capteurs. Si vous avez déjà un appareil PAUT ou un bras 6 axes, on intègre autour.</p>
+<p>Une fois la cellule programmée, un cycle complet tourne environ 30 minutes, mesurées sur l’éprouvette filmée uniquement — pas un SLA universel. Un inspecteur niveau 2 signe toujours l’acquisition et l’interprétation.</p>
+<h2 class="font-display">Indépendant des marques, exprès</h2>
+<p>La valeur est le processus, pas une chaîne verrouillée. Multi-robots, multi-capteurs. Si vous avez déjà un appareil PAUT ou un bras 6 axes, on intègre autour.</p>
   </article>
   <div class="more">
     <a href="../aero/"><div class="mono">Aussi</div><b>Géométrie courbe / aéro</b></a>
-<a href="../contraint/"><div class="mono">Aussi</div><b>Milieu contraignant</b></a>
+<a href="../contraint/"><div class="mono">Aussi</div><b>Milieu contraint</b></a>
   </div>
   <div class="ctas">
     <a class="btn btn-lg" href="../watch/">Voir la démo labo</a>
-    <a class="btn btn-lg btn-ghost" href="/fr/contact/#geometry">Envoyer une géométrie</a>
+    <span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn btn-lg btn-ghost" href="/fr/contact/#geometry">Envoyer votre pièce</a><span class="note">Fichier CAO ou pièce physique, les deux marchent.</span></span>
   </div>
-  <p class="cta-text" style="margin-top:.85rem;font-size:.85rem;color:var(--muted)"><a href="/fr/contact/" style="color:var(--gold)">Discuter d’un cas</a></p>
+  <p class="cta-text" style="margin-top:.85rem;font-size:.85rem;color:var(--muted)"><a href="/fr/contact/#discuss" style="color:var(--gold)">Discuter d’un cas</a></p>
 </main>
 <footer><div class="wrap ft">
-  <div>© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe &amp; États-Unis</div>
-  <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Watch</a> · <a href="/fr/try/">Try</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">RDV</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+  <div>© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe et États-Unis</div>
+  <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Démo</a> · <a href="/fr/try/">Simulateur</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">Nous rencontrer</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Cas d’usage · <a href="/fr/soudure/">Soudure</a> · <a href="/fr/aero/">Géométrie courbe</a> · <a href="/fr/contraint/">Milieu contraint</a></div>
 </div></footer>
 <script>
 (function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();

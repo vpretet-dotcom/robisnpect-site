@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/inner.css?v=20260925passo"/>
+<link rel="stylesheet" href="/inner.css?v=20260926audit"/>
 <style id="dev-note-css">:root{--dev-h:1.7rem}body{padding-top:var(--dev-h)}html{scroll-padding-top:var(--dev-h)}.dev-note{height:var(--dev-h);display:flex;align-items:center;justify-content:center;padding:0 1rem;background:#0b0a08;border-bottom:1px solid var(--line,#24211c);color:var(--gold,#e8c547);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dev-note .s{display:none}@media(max-width:720px){.dev-note{letter-spacing:.05em}.dev-note .l{display:none}.dev-note .s{display:inline}}</style>
 </head>
 <body>
@@ -31,16 +31,17 @@
 <div class="dev-note" role="note"><span class="l">Site en cours de développement. Certains contenus ne sont pas encore exacts ni définitifs.</span><span class="s">Site en développement · contenus pas encore définitifs</span></div>
   <div class="wrap hbar">
     <a class="brand" href="/fr/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
-    <nav class="desk" aria-label="Primary"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/" class="on">Contact</a></nav>
+    <nav class="desk" aria-label="Navigation principale"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Démo</a><a href="/fr/try/">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/" class="on">Contact</a></nav>
     <div class="actions">
       <div class="lang" role="group">
               <a href="../../contact/" hreflang="en">EN</a>
               <a href="./" class="on" hreflang="fr">FR</a>
             </div>
+      <a class="btn desk-cta" href="#geometry">Envoyer votre pièce</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
-  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/" class="on">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><a class="btn" style="margin-top:.5rem" href="#geometry">Envoyer une géométrie</a></div>
+  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Démo</a><a href="/fr/try/">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/" class="on">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn" style="margin-top:.5rem" href="#geometry">Envoyer votre pièce</a><span class="note">Fichier CAO ou pièce physique, les deux marchent.</span></span></div>
 </header>
 
 <main>
@@ -48,45 +49,45 @@
   <nav class="crumb"><a href="/fr/">Accueil</a><span>/</span><span>Contact</span></nav>
   <div class="mono" style="margin-top:1.2rem">Contact</div>
   <h1 class="font-display">Quatre portes d’entrée.</h1>
-  <p class="lead" style="max-width:40rem">Pour intégrateurs CND et responsables qualité — cadrage industriel / PoC. Choisissez la porte qui correspond à où vous en êtes ; on répond en conversation technique, pas en usine à formulaires.</p>
+  <p class="lead" style="max-width:40rem">Pour intégrateurs CND et responsables qualité — cadrage industriel / PoC. Choisissez la porte qui correspond à votre situation&#8239;; on répond en conversation technique.</p>
 
   <div class="door-grid" style="display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:2.2rem">
     <article class="door" id="watch" style="background:var(--bg);padding:1.35rem 1.25rem">
-      <div class="mono">01 · Watch</div>
+      <div class="mono">01 · Démo</div>
       <h2 class="font-display" style="font-size:1.35rem;margin:.45rem 0 0">Voir la démo labo</h2>
-      <p class="muted" style="margin-top:.7rem;font-size:.92rem">Chemin UT contact filmé sur éprouvette — scan 3D → TrajTool → sync UT sur hardware réel. Voyez la cellule avant de parler scope.</p>
+      <p class="muted" style="margin-top:.7rem;font-size:.92rem">Chemin UT au contact filmé sur éprouvette — scan 3D → TrajTool → sync UT sur matériel réel. Voyez la cellule avant de parler périmètre.</p>
       <p style="margin-top:1rem"><a class="btn" href="/fr/watch/">Voir la démo labo</a></p>
     </article>
     <article class="door" id="geometry" style="background:var(--bg);padding:1.35rem 1.25rem">
       <div class="mono">02 · Géométrie</div>
-      <h2 class="font-display" style="font-size:1.35rem;margin:.45rem 0 0">Envoyer une géométrie</h2>
-      <p class="muted" style="margin-top:.7rem;font-size:.92rem">CAD / scan / photos de votre pièce et contraintes d’accès. On répond sur ce qu’une cellule live demanderait sur cette forme — pas une brochure générique.</p>
-      <p style="margin-top:1rem"><a class="btn btn-ghost" href="#direct">Continuer vers Direct</a></p>
+      <h2 class="font-display" style="font-size:1.35rem;margin:.45rem 0 0">Envoyer votre pièce</h2>
+      <p class="muted" style="margin-top:.7rem;font-size:.92rem">CAO / scan / photos de votre pièce et contraintes d’accès. On répond sur ce qu’une cellule demanderait pour cette pièce — pas une brochure générique.</p>
+      <p style="margin-top:1rem"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn btn-ghost" href="mailto:vpretet@robinspect-systems.com?subject=Envoyer%20votre%20pi%C3%A8ce%20%5Bdirect%5D%5Bfrom%3Dfr%2Fcontact%5D">Envoyer votre pièce</a><span class="note">Fichier CAO ou pièce physique, les deux marchent.</span></span></p>
     </article>
     <article class="door" id="discuss" style="background:var(--bg);padding:1.35rem 1.25rem">
-      <div class="mono">03 · Discuss</div>
+      <div class="mono">03 · Discuter</div>
       <h2 class="font-display" style="font-size:1.35rem;margin:.45rem 0 0">Discuter d’un cas</h2>
-      <p class="muted" style="margin-top:.7rem;font-size:.92rem">Déjà en plein problème (soudure, courbe, site contraint) ? Échange technique court sur faisabilité et prochaine étape — PoC ou cellule labo.</p>
-      <p style="margin-top:1rem"><a class="btn btn-ghost" href="#direct">Continuer vers Direct</a></p>
+      <p class="muted" style="margin-top:.7rem;font-size:.92rem">Un problème en cours (soudure, courbe, site contraint)&#8239;? Échange technique court sur faisabilité et prochaine étape — PoC ou cellule labo.</p>
+      <p style="margin-top:1rem"><a class="btn btn-ghost" href="mailto:vpretet@robinspect-systems.com?subject=Discuter%20d%27un%20cas%20%5Bdirect%5D%5Bfrom%3Dfr%2Fcontact%5D">Discuter d’un cas</a></p>
     </article>
     <article class="door" id="bring" style="background:var(--bg);padding:1.35rem 1.25rem">
       <div class="mono">04 · Labo</div>
-      <h2 class="font-display" style="font-size:1.35rem;margin:.45rem 0 0">Apporter une pièce</h2>
-      <p class="muted" style="margin-top:.7rem;font-size:.92rem">Quand un fichier ne suffit pas : apportez (ou envoyez) une pièce représentative et on cadre une cellule labo sur géométrie réelle.</p>
-      <p style="margin-top:1rem"><a class="btn btn-ghost" href="#direct">Continuer vers Direct</a></p>
+      <h2 class="font-display" style="font-size:1.35rem;margin:.45rem 0 0">Envoi de géométrie</h2>
+      <p class="muted" style="margin-top:.7rem;font-size:.92rem">Quand un fichier ne suffit pas&nbsp;: apportez (ou envoyez) une pièce représentative et on cadre une cellule labo sur géométrie réelle.</p>
+      <p style="margin-top:1rem"><a class="btn btn-ghost" href="mailto:vpretet@robinspect-systems.com?subject=Envoi%20de%20g%C3%A9om%C3%A9trie%20%5Bdirect%5D%5Bfrom%3Dfr%2Fcontact%5D">Envoi de géométrie</a></p>
     </article>
   </div>
 
   <div id="direct" style="margin-top:2.8rem;max-width:36rem">
     <div class="mono">Direct</div>
     <div class="font-display" style="font-size:1.8rem;margin-top:.4rem">Vincent Pretet</div>
-    <div class="mono">Fondateur &amp; CEO</div>
+    <div class="mono">Fondateur et CEO</div>
     <div style="margin-top:1rem">
       <a href="tel:+32498663424" style="display:inline-flex;min-height:2.75rem;align-items:center;color:var(--muted)">+32 498 66 34 24</a><br/>
-      <a href="mailto:vpretet@robinspect-systems.com?subject=%5Bdirect%5D%5Bfrom%3Dfr%2Fcontact%5D" style="display:inline-flex;min-height:2.75rem;align-items:center;color:var(--muted)">vpretet@robinspect-systems.com</a>
+      <a href="mailto:vpretet@robinspect-systems.com?subject=Direct%20%5Bdirect%5D%5Bfrom%3Dfr%2Fcontact%5D" style="display:inline-flex;min-height:2.75rem;align-items:center;color:var(--muted)">vpretet@robinspect-systems.com</a>
     </div>
-    <div class="mono" style="margin-top:1rem;color:var(--dim)">Belgique · Europe &amp; États-Unis</div>
-    <p style="margin-top:1.4rem;font-size:.9rem"><a href="/fr/try/" style="color:var(--gold)">Tester l’idée</a> · esquisse interactive (pas un produit self-serve)</p>
+    <div class="mono" style="margin-top:1rem;color:var(--dim)">Belgique · Europe et États-Unis</div>
+    <p style="margin-top:1.4rem;font-size:.9rem"><a href="/fr/try/" style="color:var(--gold)">Tester l’idée</a> · esquisse interactive (pas un produit en libre accès)</p>
   </div>
 
   <a href="https://www.linkedin.com/company/robinspect/" target="_blank" rel="noopener" style="display:block;max-width:32rem;margin:2.5rem 0 0;border:1px solid var(--line)">
@@ -96,8 +97,8 @@
   </div>
 </main>
 <footer><div class="wrap ft">
-  <div>© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe &amp; États-Unis</div>
-  <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Watch</a> · <a href="/fr/try/">Try</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">RDV</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+  <div>© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe et États-Unis</div>
+  <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Démo</a> · <a href="/fr/try/">Simulateur</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">Nous rencontrer</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Cas d’usage · <a href="/fr/soudure/">Soudure</a> · <a href="/fr/aero/">Géométrie courbe</a> · <a href="/fr/contraint/">Milieu contraint</a></div>
 </div></footer>
 <script>
 (function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();

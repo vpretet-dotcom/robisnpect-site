@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="ROBINSPECT Systems"/>
 <meta property="og:url" content="https://robinspect-systems.com/watch/"/>
 <meta property="og:title" content="Robotic NDT inspection montage | 3D scan to contact UT | ROBINSPECT Systems"/>
-<meta property="og:description" content="7 min 35: 3D scan, trajectory, robot setup, path check, contact UT acquisition. PAUT/TFM = stack/PoC."/>
+<meta property="og:description" content="7 min 35: 3D scan, trajectory, robot setup, path check, contact UT acquisition. PAUT and TFM: can be integrated, still to validate in a PoC."/>
 <meta property="og:image" content="https://robinspect-systems.com/media/presentation-poster.jpg"/>
 <meta property="og:video" content="https://robinspect-systems.com/media/presentation.mp4"/>
 <meta name="twitter:card" content="summary_large_image"/>
@@ -48,12 +48,12 @@ header{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(7,7,7,.85);bac
 .btn:hover{background:var(--gold-hot)}
 .btn-lg{min-height:3rem;padding:.75rem 1.5rem;font-size:.875rem}
 .btn-ghost{background:transparent;color:var(--fg);border:1px solid rgba(244,241,234,.25)}
-.crumb{display:flex;gap:.5rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin:0}
+.crumb{display:flex;gap:.5rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin:0 0 1.2rem}
 .crumb a{color:var(--gold)}
-h1{margin:.7rem 0 0;font-size:2.4rem;line-height:.9}
+h1{margin:.7rem 0 0;font-size:2.4rem;line-height:1}
 @media(min-width:768px){h1{font-size:3.6rem}}
 .lead{max-width:40rem;margin:1.1rem 0 0;color:rgba(244,241,234,.8);line-height:1.6}
-.page{padding:7rem 0 4rem}
+.page{padding-block:7rem 4rem}
 .player{margin-top:1.6rem;border:1px solid var(--line);background:#000}
 .player-stage{position:relative;background:#000;aspect-ratio:16/9;width:100%}
 .player-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;cursor:pointer}
@@ -89,6 +89,7 @@ h1{margin:.7rem 0 0;font-size:2.4rem;line-height:.9}
 .steps li{padding:1rem 0;border-bottom:1px solid var(--line)}
 .steps b{color:var(--fg)}
 .ctas{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+.note{font-size:.8rem;color:var(--dim)}
 footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:var(--dim)}
 
 .desk{display:none;gap:1.1rem;font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
@@ -96,6 +97,9 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 .desk a:hover,.desk a.on{color:var(--gold)}
 .actions{display:flex;align-items:center;gap:.65rem}
 .menu-btn{display:inline-flex;min-height:2.75rem;min-width:2.75rem;align-items:center;justify-content:center;border:1px solid var(--line);font-size:1.1rem}
+@media(min-width:900px){.menu-btn{display:none}}
+.desk-cta{display:none}
+@media(min-width:1100px){.desk-cta{display:inline-flex}}
 .mobile{display:none;flex-direction:column;gap:.35rem;padding:0 0 1rem;border-bottom:1px solid var(--line)}
 .mobile.open{display:flex}
 .mobile a{padding:.55rem 0;color:var(--muted);font-size:.9rem}
@@ -121,16 +125,17 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
         <a href="/watch/" class="on" hreflang="en">EN</a>
         <a href="/fr/watch/" hreflang="fr">FR</a>
       </div>
+      <a class="btn desk-cta" href="/contact/#geometry">Send us your part</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
-  <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/" class="on">Watch</a><a href="/try/">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send a geometry</a></div>
+  <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/" class="on">Watch</a><a href="/try/">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send us your part</a><span class="note">CAD file or the physical part, either works.</span></span></div>
 </header>
 <main class="wrap page">
   <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Watch</span></nav>
   <div class="mono" style="margin-top:1.2rem">Watch · lab demo · 7 min 35</div>
   <h1 class="font-display">From 3D scan<br/>to contact UT.</h1>
-  <p class="lead">The inspection workflow on a welded industrial part: geometry, trajectory, robot setup, path check, then <b>contact UT</b> acquisition. Pause, scrub, jump to a chapter. PAUT / TFM = stack / PoC — not proven by this video.</p>
+  <p class="lead">The inspection workflow on a welded industrial part: geometry, trajectory, robot setup, path check, then <b>contact UT</b> acquisition. Pause, scrub, jump to a chapter. PAUT and TFM: can be integrated, still to validate in a PoC — not proven by this video.</p>
 
   <div class="player" data-presentation data-chapters='[{"t":0,"title":"3D scan","sub":"0:00 – 0:30"},{"t":30,"title":"Trajectory","sub":"Generation · 0:30 – 1:22"},{"t":83,"title":"Robot setup","sub":"Environment · 1:23 – 5:04"},{"t":304,"title":"Path quality","sub":"Verification · 5:04 – 6:03"},{"t":363,"title":"Contact UT","sub":"Acquisition · 6:03 – 7:12"}]' tabindex="0">
     <div class="player-layout">
@@ -171,20 +176,19 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
       <li><b>0:00 – 0:30 · 3D scan.</b> Point cloud of the part, then the mesh used for path planning.</li>
       <li><b>0:30 – 1:22 · Trajectory.</b> Tool path generated on the surface, normal to the weld.</li>
       <li><b>1:23 – 5:04 · Robot setup.</b> Cell, coupling, probe on the part — the slow, real preparation.</li>
-      <li><b>5:04 – 6:03 · Path quality.</b> Check that the TCP follows the weld before acquisition.</li>
-      <li><b>6:03 – 7:12 · Contact UT.</b> Synchronized contact UT recording along the trajectory. PAUT / TFM = stack / PoC, not shown as proven here.</li>
+      <li><b>5:04 – 6:03 · Path quality.</b> Check that the TCP (tool center point) follows the weld before acquisition.</li>
+      <li><b>6:03 – 7:12 · Contact UT.</b> Synchronized contact UT recording along the trajectory. PAUT and TFM: can be integrated, still to validate in a PoC, not shown as proven here.</li>
     </ol>
-    <p>Times are those of the part in the video. A full cycle on the filmed part is about 30 minutes — measured on that part only, not a universal SLA. Acquisition itself is under a minute; the 3D scan about 30 seconds; trajectory a few seconds. UT expertise stays critical behind the cell.</p>
-  <p class="muted" style="font-size:.85rem">Deep-link chapters: <code>?t=363</code> or <code>#chapter=4</code> / <code>#t=363</code>.</p>
+    <p>Times are those of the part in the video. A full cycle on the filmed part is about 30 minutes — measured on that part only, not a universal SLA. Acquisition itself is under a minute; the 3D scan about 30 seconds; trajectory in a few seconds. UT expertise stays critical behind the cell.</p>
   </article>
   <div class="ctas">
-    <a class="btn btn-lg" href="/contact/#geometry">Send a geometry</a>
-    <a class="btn btn-lg btn-ghost" href="/contact/">Discuss a case</a>
+    <span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn btn-lg" href="/contact/#geometry">Send us your part</a><span class="note">CAD file or the physical part, either works.</span></span>
+    <a class="btn btn-lg btn-ghost" href="/contact/#discuss">Discuss a case</a>
   </div>
 </main>
 <footer><div class="wrap ft">
   <div>© 2026 ROBINSPECT Systems — Integrator · Belgium · Europe &amp; United States</div>
-  <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+  <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet us</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Use cases · <a href="/weld/">Weld inspection</a> · <a href="/aerospace/">Curved geometry</a> · <a href="/energy/">Constrained sites</a></div>
 </div></footer>
 <script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>
 <script src="/player.js"></script>

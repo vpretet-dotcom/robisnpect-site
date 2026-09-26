@@ -20,12 +20,12 @@ header{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(7,7,7,.85);bac
 .btn:hover{background:var(--gold-hot)}
 .btn-lg{min-height:3rem;padding:.75rem 1.5rem;font-size:.875rem}
 .btn-ghost{background:transparent;color:var(--fg);border:1px solid rgba(244,241,234,.25)}
-.crumb{display:flex;gap:.5rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}
+.crumb{display:flex;gap:.5rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-bottom:1.2rem}
 .crumb a{color:var(--gold)}
-h1{margin:.7rem 0 0;font-size:2.4rem;line-height:.9}
+h1{margin:.7rem 0 0;font-size:2.4rem;line-height:1}
 @media(min-width:768px){h1{font-size:3.5rem}}
 .lead{max-width:40rem;margin:1.1rem 0 0;color:rgba(244,241,234,.8);line-height:1.6}
-.page{padding:7rem 0 4rem}
+.page{padding-block:7rem 4rem}
 .hero-img{margin-top:1.8rem;border:1px solid var(--line);overflow:hidden;background:#000}
 .hero-img img{width:100%;aspect-ratio:16/8;object-fit:cover}
 .copy{max-width:42rem;margin:2.2rem 0 0;color:var(--muted);line-height:1.65;font-size:.95rem}
@@ -53,6 +53,9 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 .desk a:hover,.desk a.on{color:var(--gold)}.desk a.on{border-bottom:1px solid var(--gold);padding-bottom:.15rem}.mobile a.on{color:var(--gold)}
 .actions{display:flex;align-items:center;gap:.65rem}
 .menu-btn{display:inline-flex;min-height:2.75rem;min-width:2.75rem;align-items:center;justify-content:center;border:1px solid var(--line);font-size:1.1rem}
+@media(min-width:900px){.menu-btn{display:none}}
+.desk-cta{display:none}
+@media(min-width:1100px){.desk-cta{display:inline-flex}}
 .mobile{display:none;flex-direction:column;gap:.35rem;padding:0 0 1rem;border-bottom:1px solid var(--line)}
 .mobile.open{display:flex}
 .mobile a{padding:.55rem 0;color:var(--muted);font-size:.9rem}
@@ -80,7 +83,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 .meet-grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1.5rem;max-width:28rem}
 @media(min-width:600px){.meet-grid{grid-template-columns:1fr 1fr 1fr}}
 .meet-cell{background:var(--ink);padding:1rem 1.1rem}
-.meet-cell b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:1.4rem;margin-top:.25rem}
+.meet-cell b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:1.4rem;margin-top:.25rem;line-height:1}
 .meet-code{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-top:1.5rem;padding:1.1rem 1.2rem;border:1px solid var(--line);max-width:36rem}
 .meet-code b{font-family:"IBM Plex Mono",monospace;font-size:1.1rem;color:var(--gold);letter-spacing:.08em}
 
@@ -91,11 +94,14 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 .split{display:grid}
 @media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}
 .photo{position:relative;min-height:48vh;overflow:hidden}
-@media(min-width:1024px){.photo{min-height:72vh}}
+@media(min-width:1024px){.photo{min-height:0}}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .pad{padding:2.5rem 1.25rem}
 @media(min-width:768px){.pad{padding:4rem 2.5rem}}
-h2.display{margin:.8rem 0 0;font-size:2.4rem;line-height:.9}
+/* .pad shorthand must not shift text off the .wrap edge when both classes share an element */
+.wrap.pad{padding-inline:1.25rem}
+@media(min-width:768px){.wrap.pad{padding-inline:2rem}}
+h2.display{margin:.8rem 0 0;font-size:2.4rem;line-height:1}
 @media(min-width:768px){h2.display{font-size:3.6rem}}
 .muted{color:var(--muted)}
 .grid2{display:grid;gap:2rem;margin-top:2rem}
@@ -109,7 +115,7 @@ h2.display{margin:.8rem 0 0;font-size:2.4rem;line-height:.9}
 @media(min-width:768px){.idea-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1100px){.idea-grid{grid-template-columns:repeat(4,1fr)}}
 .idea-card{background:var(--ink);padding:1.5rem 1.35rem}
-.idea-card h3{margin:.7rem 0 0;font-family:"Barlow Condensed",sans-serif;font-size:1.55rem;letter-spacing:-.02em;text-transform:uppercase;line-height:.95}
+.idea-card h3{margin:.7rem 0 0;font-family:"Barlow Condensed",sans-serif;font-size:1.55rem;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
 .box{border:1px solid var(--line);background:#0a0908;padding:1.5rem}
 .frow{display:flex;flex-direction:column;gap:1.5rem;align-items:flex-start}
 @media(min-width:768px){.frow{flex-direction:row}}
