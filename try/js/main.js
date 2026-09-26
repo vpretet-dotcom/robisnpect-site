@@ -64,6 +64,8 @@ function pickTier(gpu) {
   if (/swiftshader|llvmpipe|software|basic render/i.test(n)) return 'low';
   const small = Math.min(screen.width, screen.height) < 820;
   if (isTouch || small) {
+    // iOS Safari reports 4 cores on every iPhone, so the core count is meaningless there.
+    if (/apple gpu/i.test(n)) return 'medium';
     const cores = navigator.hardwareConcurrency || 4;
     return cores <= 4 ? 'low' : 'medium';
   }

@@ -133,6 +133,7 @@
 .xp-load::before{content:"";position:absolute;width:42rem;height:42rem;border-radius:50%;background:radial-gradient(circle,rgba(232,197,71,.08) 0%,transparent 64%);pointer-events:none}
 .js .xp-load{display:flex}
 .xp.is-live .xp-load,.xp.is-fallback .xp-load,.no-module .xp-load{opacity:0;visibility:hidden;pointer-events:none}
+.xp.is-fallback .xp-load{transition-duration:.25s}
 .xp-load-in{position:relative;width:min(26rem,84vw)}
 .xp-load-k{margin:0 0 .45rem;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
 .xp-load-word{font-size:clamp(2.3rem,7.5vw,4rem);letter-spacing:.2em;line-height:.85;color:var(--fg)}
@@ -222,8 +223,11 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
   .xp-play{padding:0;width:2.75rem}
   .xp-play-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .xp-recenter{padding:0 .55rem;font-size:9px;letter-spacing:.1em}
-  .xp-fallback-card{left:0;width:auto}
+  .xp-fallback-card{left:0;width:auto;padding:.95rem 1rem 1rem}
+  .xp-fallback-steps{display:none}
+  .xp-fallback-card .btn{margin-top:.9rem}
   .xp.is-fallback .xp-hero{bottom:auto;top:0}
+  .xp.is-fallback .xp-shade{background:linear-gradient(to bottom,rgba(5,5,5,.88) 0%,rgba(5,5,5,.7) 34%,rgba(5,5,5,0) 50%),linear-gradient(to top,rgba(5,5,5,.9) 0%,rgba(5,5,5,0) 30%)}
 }
 @media(prefers-reduced-motion:reduce){
   .xp-cap,.xp-hero,.xp-ascan,.xp-report,.xp-log li,.xp-load{transition:none}
