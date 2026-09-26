@@ -86,7 +86,7 @@
         <li>Lecture de la surface CAO</li>
         <li>Calcul des normales</li>
         <li>Passes le long de la courbure</li>
-        <li>Découpe : la sonde passe au-dessus</li>
+        <li>Découpe&nbsp;: la sonde passe au-dessus</li>
         <li>Trajectoire prête</li>
       </ol>
 
@@ -104,12 +104,12 @@
       <div class="xp-toast mono" id="xp-toast" role="status" aria-live="polite"></div>
 
       <div class="xp-fallback-card" id="xp-fallback-card">
-        <p class="xp-fallback-note" id="xp-fallback-note">Votre navigateur ne peut pas afficher la scène 3D : voici une image fixe du résultat.</p>
+        <p class="xp-fallback-note" id="xp-fallback-note">Votre navigateur ne peut pas afficher la scène 3D&nbsp;: voici une image fixe du résultat.</p>
         <ol class="xp-fallback-steps">
-          <li><b>01</b> La pièce : un panneau composite courbe, issu de la CAO.</li>
-          <li><b>02</b> La trajectoire : calculée depuis la surface.</li>
-          <li><b>03</b> Le scan : UT contact le long de la trajectoire.</li>
-          <li><b>04</b> Le résultat : indications localisées, aperçu du rapport.</li>
+          <li><b>01</b> La pièce&nbsp;: un panneau composite courbe, issu de la CAO.</li>
+          <li><b>02</b> La trajectoire&nbsp;: calculée depuis la surface.</li>
+          <li><b>03</b> Le scan&nbsp;: UT contact le long de la trajectoire.</li>
+          <li><b>04</b> Le résultat&nbsp;: indications localisées, aperçu du rapport.</li>
         </ol>
         <a class="btn btn-lg" href="/fr/contact/">Envoyez-nous votre géométrie</a>
       </div>
@@ -176,16 +176,16 @@
   <div class="wrap pad">
     <div class="mono">Comment le lire</div>
     <h2 class="font-display display">Quatre actes, un seul flux.</h2>
-    <p class="lead">Tout est dans l’enchaînement : la géométrie pilote la trajectoire, la trajectoire pilote le robot, et le scan se pose sur la pièce sous forme de cartographie. Personne n’apprend au robot point par point.</p>
+    <p class="lead">Tout est dans l’enchaînement&nbsp;: la géométrie pilote la trajectoire, la trajectoire pilote le robot, et le scan se pose sur la pièce sous forme de cartographie. Personne n’apprend au robot point par point.</p>
     <div class="xp-cards">
       <article class="xp-card"><div class="mono">01 · La pièce</div><h3>Votre géométrie en entrée</h3><p>Un panneau composite courbe et raidi, avec une découpe. Dans un vrai projet, l’entrée est votre fichier CAO ou un scan 3D de la pièce.</p><span class="xp-status mono" data-kind="input">Entrée · CAO ou scan 3D</span></article>
-      <article class="xp-card"><div class="mono">02 · La trajectoire</div><h3>Calculée, pas apprise</h3><p>La trajectoire de scan est calculée depuis la surface : elle suit la courbure, garde la sonde normale à la peau et passe au-dessus de la découpe.</p><span class="xp-status mono" data-kind="lab">Montré dans la démo labo</span></article>
-      <article class="xp-card"><div class="mono">03 · Le scan</div><h3>UT contact sur la trajectoire</h3><p>Toute marque de robot : le bras porte une sonde UT contact le long de la trajectoire. Peindre le C-scan sur la pièce est une illustration.</p><span class="xp-status mono" data-kind="lab">UT contact · montré dans la démo labo</span></article>
+      <article class="xp-card"><div class="mono">02 · La trajectoire</div><h3>Calculée, pas apprise</h3><p>La trajectoire de scan est calculée depuis la surface&nbsp;: elle suit la courbure, garde la sonde normale à la peau et passe au-dessus de la découpe.</p><span class="xp-status mono" data-kind="lab">Montré dans la démo labo</span></article>
+      <article class="xp-card"><div class="mono">03 · Le scan</div><h3>UT contact sur la trajectoire</h3><p>Toute marque de robot&nbsp;: le bras porte une sonde UT contact le long de la trajectoire. Peindre le C-scan sur la pièce est une illustration.</p><span class="xp-status mono" data-kind="lab">UT contact · montré dans la démo labo</span></article>
       <article class="xp-card"><div class="mono">04 · Le résultat</div><h3>Une cartographie, puis un rapport</h3><p>Les indications sont localisées sur la pièce et résumées pour l’analyse du contrôleur. Le rapport automatisé est une direction, pas un produit en service.</p><span class="xp-status mono" data-kind="direction">Direction</span></article>
     </div>
     <div class="xp-honest">
       <span class="mono">Statut</span>
-      <p><b>Simulation illustrative, pas de données réelles.</b> La pièce, la trajectoire, le C-scan et le rapport de cette page sont générés dans votre navigateur. Ce qui est démontré aujourd’hui, c’est l’UT contact, dans une <a href="/fr/watch/">démo labo filmée</a> : environ 30 minutes pour le cycle complet, mesurées sur la pièce filmée uniquement. Le PAUT et le TFM sont au stade de preuve de concept et ne sont pas montrés ici. Tout le reste de cette page relève de la direction.</p>
+      <p><b>Simulation illustrative, pas de données réelles.</b> La pièce, la trajectoire, le C-scan et le rapport de cette page sont générés dans votre navigateur. Ce qui est démontré aujourd’hui, c’est l’UT contact, dans une <a href="/fr/watch/">démo labo filmée</a> sur une pièce industrielle soudée, et non sur ce panneau&nbsp;: environ 30&nbsp;minutes pour le cycle complet, mesurées sur la pièce filmée uniquement. Le PAUT et le TFM sont au stade de preuve de concept et ne sont pas montrés ici. Tout le reste de cette page relève de la direction.</p>
     </div>
   </div>
 </section>
@@ -199,16 +199,16 @@
 <script type="application/json" id="xp-copy">{
   "acts": [
     {"n": "01", "name": "La pièce", "text": "Un panneau de fuselage composite courbe, avec raidisseurs et découpe de hublot, tel qu’il sort de la CAO. Faites-le pivoter.", "status": "Entrée · CAO ou scan 3D", "kind": "input"},
-    {"n": "02", "name": "La trajectoire", "text": "La trajectoire est calculée depuis la surface : les passes suivent la courbure, la sonde reste normale à la peau et passe au-dessus de la découpe.", "status": "Montré dans la démo labo", "kind": "lab"},
+    {"n": "02", "name": "La trajectoire", "text": "La trajectoire est calculée depuis la surface\u00a0: les passes suivent la courbure, la sonde reste normale à la peau et passe au-dessus de la découpe.", "status": "Montré dans la démo labo", "kind": "lab"},
     {"n": "03", "name": "Le scan", "text": "Un bras de n’importe quelle marque porte la sonde UT contact le long de la trajectoire. Le C-scan se peint sur la pièce au fil du passage.", "status": "UT contact · montré dans la démo labo", "kind": "lab"},
     {"n": "04", "name": "Le résultat", "text": "Deux indications localisées sur la pièce, et un aperçu de rapport prêt pour le contrôleur.", "status": "Direction · pas encore un produit", "kind": "direction"}
   ],
   "load": ["Chargement du moteur", "Construction de la géométrie", "Calcul de la trajectoire", "Compilation des shaders", "Prêt"],
   "ui": {"play": "Lecture", "pause": "Pause", "replay": "Rejouer", "indication": "Indication", "zone": "zone"},
   "fallback": {
-    "nowebgl": "Votre navigateur ne peut pas afficher la scène 3D : voici une image fixe du résultat.",
-    "slow": "Cet appareil affiche la scène 3D trop lentement : voici une image fixe du résultat.",
-    "error": "La scène 3D n’a pas pu démarrer ici : voici une image fixe du résultat."
+    "nowebgl": "Votre navigateur ne peut pas afficher la scène 3D\u00a0: voici une image fixe du résultat.",
+    "slow": "Cet appareil affiche la scène 3D trop lentement\u00a0: voici une image fixe du résultat.",
+    "error": "La scène 3D n’a pas pu démarrer ici\u00a0: voici une image fixe du résultat."
   }
 }</script>
 <script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>
