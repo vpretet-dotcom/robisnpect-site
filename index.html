@@ -83,7 +83,9 @@ header.open .mobile{display:block}
 .lead{max-width:36rem;margin:1.25rem 0 0;color:rgba(244,241,234,.8);line-height:1.6;font-size:15px}
 @media(min-width:768px){.lead{font-size:1.125rem}}
 .ctas{display:flex;flex-direction:column;gap:.75rem;margin-top:1.6rem}
-@media(min-width:640px){.ctas{flex-direction:row}}
+.ctas>span{align-self:stretch}
+.ctas>span>.btn{width:100%}
+@media(min-width:640px){.ctas{flex-direction:row;align-items:flex-start}.ctas>span{align-self:flex-start}.ctas>span>.btn{width:auto}}
 .sm-only{display:inline}@media(min-width:640px){.sm-only{display:none}.lg-only{display:inline!important}}
 .lg-only{display:none}
 .geo{margin-top:2rem;font-size:.75rem;color:var(--muted)}
