@@ -217,7 +217,7 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
   .xp-report-note{display:none}
   .xp-cta{margin-top:.8rem}
   .act-4 .xp-cap-t{display:none}
-  .xp-steps button{flex-direction:column;align-items:flex-start;justify-content:center;gap:.2rem;padding-right:.5rem;font-size:9px;letter-spacing:.1em}
+  .xp-steps button{flex-direction:column;align-items:flex-start;justify-content:center;gap:.2rem;padding-right:.5rem;font-size:9px;letter-spacing:.06em}
   .xp-step-bar{right:.5rem}
   .xp-bar-in{gap:.5rem}
   .xp-play{padding:0;width:2.75rem}
@@ -226,7 +226,7 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
   .xp-fallback-card{left:0;width:auto;padding:.95rem 1rem 1rem}
   .xp-fallback-steps{display:none}
   .xp-fallback-card .btn{margin-top:.9rem}
-  .xp.is-fallback .xp-hero{bottom:auto;top:0}
+  .xp.is-fallback .xp-hero{bottom:auto;top:.55rem}
   .xp.is-fallback .xp-shade{background:linear-gradient(to bottom,rgba(5,5,5,.88) 0%,rgba(5,5,5,.7) 34%,rgba(5,5,5,0) 50%),linear-gradient(to top,rgba(5,5,5,.9) 0%,rgba(5,5,5,0) 30%)}
 }
 @media(prefers-reduced-motion:reduce){

@@ -153,7 +153,7 @@ function start(M, stage, world, tierName) {
   const pins = [...document.querySelectorAll('.xp-pin')];
   const logItems = [...document.querySelectorAll('#xp-log li')];
   const toast = $('xp-toast');
-  let toastTimer = 0;
+  let toastUntil = 0;
   const zoneEls = document.querySelectorAll('[data-zone]');
   zoneEls.forEach((el) => {
     const ind = world.panel.indications[+el.dataset.zone];
@@ -223,12 +223,11 @@ function start(M, stage, world, tierName) {
     else if (e.key === 'ArrowLeft') story.goto(story.index - 1);
   });
 
-  function showToast(i) {
+  function showToast(i, time) {
     const ind = world.panel.indications[i];
     toast.textContent = `${copy.ui.indication} ${ind.id} · ${copy.ui.zone} ${ind.zone}`;
     toast.classList.add('on');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('on'), 2400);
+    toastUntil = time + 2.4;
   }
 
   // ---------------- per-frame ----------------
@@ -328,12 +327,16 @@ function start(M, stage, world, tierName) {
       }
       if (story.playing) {
         world.discovery.forEach((s, k) => {
-          if (lastS < s && p.coverS >= s) showToast(k);
+          if (lastS < s && p.coverS >= s) showToast(k, time);
         });
       }
       lastS = p.coverS;
     } else {
       root.classList.remove('ascan-on', 'ascan-hot');
+    }
+    if (toastUntil && (time > toastUntil || i !== 2)) {
+      toast.classList.remove('on');
+      toastUntil = 0;
     }
     const showReport = i === 3 && story.t > 2.3;
     root.classList.toggle('report-on', showReport);
