@@ -305,6 +305,7 @@ function start(M, stage, world, tierName) {
     });
     stage.setShadowStrength(p.shadow);
     stage.setFade(p.fade);
+    stage.scene.environmentRotation.y = p.envRot;
   }
 
   function uiFrame(p, dt, time) {

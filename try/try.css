@@ -88,20 +88,20 @@
 .report-on .xp-report{opacity:1;visibility:visible;transform:none;transition-delay:0s}
 .xp-report-head{display:flex;justify-content:space-between;align-items:center;gap:.75rem}
 .xp-report-head .xp-status{margin:0}
-.xp-report h2{margin:.75rem 0 0;font-size:1.75rem;line-height:.95}
-.xp-report-sub{margin:.4rem 0 0;color:var(--dim);font-size:.56rem;letter-spacing:.14em}
-.xp-thumb{display:block;width:100%;aspect-ratio:1092/800;margin-top:.9rem;border:1px solid var(--line);background:#070707}
-.xp-report-dl{margin:.9rem 0 0;display:grid;gap:.4rem}
-.xp-report-dl div{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.4rem}
+.xp-report h2{margin:.6rem 0 0;font-size:1.7rem;line-height:.95}
+.xp-report-sub{margin:.35rem 0 0;color:var(--dim);font-size:.56rem;letter-spacing:.14em;line-height:1.5}
+.xp-thumb{display:block;width:100%;aspect-ratio:1092/800;margin-top:.75rem;border:1px solid var(--line);background:#070707}
+.xp-report-dl{margin:.75rem 0 0;display:grid;gap:.3rem}
+.xp-report-dl div{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.3rem}
 .xp-report-dl dt{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 .xp-report-dl dd{margin:0;font-size:.8rem;text-align:right}
-.xp-report-list{list-style:none;margin:.8rem 0 0;padding:0;display:grid;gap:.45rem}
+.xp-report-list{list-style:none;margin:.7rem 0 0;padding:0;display:grid;gap:.4rem}
 .xp-report-list li{display:flex;gap:.6rem;align-items:baseline;font-size:.82rem;line-height:1.4;color:rgba(244,241,234,.88)}
 .xp-report-list b{flex:none;font:500 .64rem/1 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.08em;color:var(--ink);background:var(--gold);padding:.2rem .36rem}
 .xp-report-list em{font-style:normal;color:var(--gold)}
-.xp-report-note{margin:.85rem 0 0;font-size:.75rem;line-height:1.5;color:var(--muted)}
+.xp-report-note{margin:.7rem 0 0;font-size:.75rem;line-height:1.5;color:var(--muted)}
 .xp-cta{margin-top:1rem;width:100%}
-@media(min-width:721px){.xp-report .xp-cta{margin-top:auto}.xp-report-note{margin-bottom:1rem}}
+@media(min-width:721px){.xp-report .xp-cta{margin-top:auto}.xp-report-note{margin-bottom:.8rem}}
 
 /* Bottom act strip (home .specs idiom) */
 .xp-bar{position:absolute;left:0;right:0;bottom:0;z-index:4;height:var(--bar-h);border-top:1px solid rgba(36,33,28,.9);background:rgba(7,7,7,.74);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}

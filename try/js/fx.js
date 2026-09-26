@@ -12,13 +12,15 @@ export const FX = {
 export const GOLD_LIN = new THREE.Color(0xe8c547).convertSRGBToLinear();
 
 // Punctual lights on glossy coats produce sun-like glints that bloom into
-// blobs; softbox reflections come from the environment map instead.
-const SPEC_CLAMP = `
-  reflectedLight.directSpecular = min(reflectedLight.directSpecular, vec3(0.9));
-  reflectedLight.indirectSpecular = min(reflectedLight.indirectSpecular, vec3(1.15));
+// blobs; softbox reflections come from the environment map instead. A soft
+// knee (not min) keeps the highlight falloff smooth instead of a flat disc.
+const DEFAULT_CLAMP = [0.7, 0.75, 0.6, 0.7];
+const specClamp = ([d, i, cd, ci]) => `
+  reflectedLight.directSpecular = fxKnee(reflectedLight.directSpecular, ${d.toFixed(3)});
+  reflectedLight.indirectSpecular = fxKnee(reflectedLight.indirectSpecular, ${i.toFixed(3)});
   #ifdef USE_CLEARCOAT
-    clearcoatSpecularDirect = min(clearcoatSpecularDirect, vec3(0.9));
-    clearcoatSpecularIndirect = min(clearcoatSpecularIndirect, vec3(1.15));
+    clearcoatSpecularDirect = fxKnee(clearcoatSpecularDirect, ${cd.toFixed(3)});
+    clearcoatSpecularIndirect = fxKnee(clearcoatSpecularIndirect, ${ci.toFixed(3)});
   #endif
 `;
 
@@ -36,13 +38,14 @@ export function patchMaterial(mat, parts, key) {
         '#include <project_vertex>',
         `#include <project_vertex>\nvFxW = (modelMatrix * vec4(transformed, 1.0)).xyz;\nvFxUv = uv;\n${parts.vertMain || ''}`
       );
+    const knee = `vec3 fxKnee(vec3 x, float c) { float a = 0.5 * c; return min(x, vec3(a)) + (c - a) * (1.0 - exp(-max(x - a, 0.0) / (c - a))); }\n`;
     shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', `#include <common>\n${shared}${parts.fragPars || ''}`)
+      .replace('#include <common>', `#include <common>\n${shared}${knee}${parts.fragPars || ''}`)
       .replace('#include <clipping_planes_fragment>', `#include <clipping_planes_fragment>\n${parts.fragStart || ''}`)
       .replace('#include <color_fragment>', `#include <color_fragment>\n${parts.fragColor || ''}`)
       .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>\n${parts.fragEmissive || ''}`)
       .replace('#include <lights_physical_fragment>', `#include <lights_physical_fragment>\n${parts.fragMaterial || ''}`)
-      .replace('#include <lights_fragment_end>', `#include <lights_fragment_end>\n${SPEC_CLAMP}`)
+      .replace('#include <lights_fragment_end>', `#include <lights_fragment_end>\n${specClamp(parts.specClamp || DEFAULT_CLAMP)}`)
       .replace('#include <opaque_fragment>', `${parts.fragFinal || ''}\n#include <opaque_fragment>`);
   };
   mat.customProgramCacheKey = () => key;

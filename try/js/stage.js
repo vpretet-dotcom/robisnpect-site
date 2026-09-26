@@ -95,10 +95,10 @@ function makeStudioEnvironment(renderer) {
     env.add(m);
   };
   const o = new THREE.Vector3(0, 0, 0);
-  box(9, 4, new THREE.Color(3.0, 2.92, 2.75), new THREE.Vector3(0, 9, 1), o);
+  box(9, 4, new THREE.Color(3.4, 3.3, 3.1), new THREE.Vector3(0, 9, 1), o);
   box(1.4, 7, new THREE.Color(1.7, 1.66, 1.58), new THREE.Vector3(-9, 3, 3), o);
   box(1.2, 7, new THREE.Color(1.7, 1.24, 0.46), new THREE.Vector3(8, 3, -5), o);
-  box(7, 2.2, new THREE.Color(1.9, 1.7, 1.3), new THREE.Vector3(0, 3.2, -10), o);
+  box(9, 2.6, new THREE.Color(3.2, 2.9, 2.3), new THREE.Vector3(0, 3.4, -10), o);
   box(2.4, 5, new THREE.Color(1.2, 1.15, 1.08), new THREE.Vector3(7, 4, 6), o);
   box(8, 1.0, new THREE.Color(0.3, 0.3, 0.29), new THREE.Vector3(2, 0.6, 9), o);
   const pmrem = new THREE.PMREMGenerator(renderer);
@@ -135,6 +135,7 @@ function makeFloor() {
         float grid = 1.0 - smoothstep(0.0, 1.0, min(gg.x, gg.y));
         totalEmissiveRadiance += uGold * (cell * 0.075 + grid * 0.006) * floorFade;
       `,
+      fragFinal: `outgoingLight *= floorFade;`,
     },
     'floor'
   );
@@ -210,7 +211,7 @@ export function createStage(container, { tier, capture = false, glowTexture }) {
 
   const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 60);
 
-  const key = new THREE.DirectionalLight(0xfff3e4, 2.1);
+  const key = new THREE.DirectionalLight(0xfff7ee, 2.1);
   key.position.set(-2.3, 4.8, 2.4);
   key.target.position.set(0, 0.7, -0.45);
   key.castShadow = true;
@@ -231,7 +232,7 @@ export function createStage(container, { tier, capture = false, glowTexture }) {
   rim.target.position.set(0, 0.9, -0.6);
   scene.add(rim, rim.target);
 
-  const fill = new THREE.HemisphereLight(0x26241f, 0x050505, 0.3);
+  const fill = new THREE.HemisphereLight(0x232321, 0x050505, 0.3);
   scene.add(fill);
 
   const pool = new THREE.SpotLight(0xfff0dc, 3.2, 6, 0.55, 0.95, 1.4);

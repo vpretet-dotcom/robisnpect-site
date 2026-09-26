@@ -37,6 +37,7 @@ export function baseParams() {
     leaders: 0,
     probe: null,
     contact: false,
+    envRot: 0.4,
   };
 }
 
@@ -62,11 +63,12 @@ export const ACTS = [
       p.partReveal = lerp(-0.06, 1.1, easeInOutSine(invLerp(0.45, 3.9, t)));
       p.partRevealOn = p.partReveal < 1.09 ? 1 : 0;
       p.shadow = smoothstep(0.8, 3.9, t);
+      p.envRot = lerp(-1.1, 0.4, easeInOutSine(invLerp(0.3, 7.5, t)));
       return p;
     },
     shot(ctx, t) {
       const k = easeInOutCubic(invLerp(0, 7.5, t));
-      return shot(0, 0.82, 0.02, lerp(1.02, 0.6, k), lerp(0.3, 0.42, k), ctx.mobile ? 0.8 : 0.6, {
+      return shot(0, 0.82, 0.02, lerp(1.1, 0.6, k), lerp(0.06, 0.42, easeInOutSine(invLerp(0.4, 7.2, t))), ctx.mobile ? 0.8 : 0.6, {
         distMul: lerp(1.45, 1.0, easeOutCubic(invLerp(0, 4.5, t))),
         offX: ctx.mobile ? 0 : -0.13,
         offY: ctx.mobile ? 0.16 : 0,
@@ -84,6 +86,7 @@ export const ACTS = [
       p.isoSweep = 1.05 * easeInOutSine(invLerp(0.05, 1.7, t));
       p.pathDraw = total * easeInOutSine(invLerp(1.7, 7.9, t));
       p.head = t > 1.7 && t < 8.1;
+      p.envRot = lerp(0.4, 0.62, invLerp(0, 9.5, t));
       return p;
     },
     shot(ctx, t) {
@@ -117,19 +120,31 @@ export const ACTS = [
       p.glow = 1;
       p.scanNow = pose.s / total;
       p.probe = pose.X !== undefined ? [pose.X, pose.Y, pose.contact ? 1 : 0] : null;
+      p.envRot = lerp(0.62, 0.95, invLerp(0, w.scanDuration, t));
       return p;
     },
     shot(ctx, t) {
-      const A = TIMING.a3;
-      const scanT = t - A.descend1;
-      if (t < 3.3) return shot(0.05, 1.02, -0.6, 0.92, 0.2, ctx.mobile ? 1.18 : 1.28, { omega: 2.0 });
-      if (scanT < 6.2) {
-        ctx.world.probeWorld(_t);
+      const w = ctx.world;
+      const [d1, d2] = w.discoveryT;
+      const m = ctx.mobile;
+      if (t < 3.3) return shot(0.05, 1.02, -0.6, 0.92, 0.2, m ? 1.18 : 1.28, { omega: 2.0 });
+      if (t < d2 - 0.9) {
+        w.probeWorld(_t);
         _t.lerp(CENTER, 0.45);
-        return shot(_t.x, _t.y, _t.z, 1.05, 0.38, ctx.mobile ? 0.62 : 0.66, { omega: 1.6 });
+        return shot(_t.x, _t.y, _t.z, 1.05, 0.38, m ? 0.62 : 0.66, { omega: 1.6 });
       }
-      if (scanT < 13.2) return shot(0.0, 0.94, -0.28, -0.55, 0.6, ctx.mobile ? 0.98 : 1.0, { omega: 1.4 });
-      return shot(0.03, 0.88, 0.0, 0.18, 0.86, ctx.mobile ? 0.72 : 0.78, { omega: 1.5 });
+      if (t < d2 + 2.3) {
+        w.probeWorld(_t);
+        _t.lerp(w.panel.indications[1].pos, 0.6);
+        return shot(_t.x, _t.y, _t.z, 0.42, 0.8, m ? 0.56 : 0.54, { omega: 1.5 });
+      }
+      if (t < d1 - 1.4) return shot(0.0, 0.94, -0.28, -0.55, 0.6, m ? 0.98 : 1.0, { omega: 1.3 });
+      if (t < d1 + 2.0) {
+        w.probeWorld(_t);
+        _t.lerp(w.panel.indications[0].pos, 0.6);
+        return shot(_t.x, _t.y, _t.z, 0.3, 0.7, m ? 0.54 : 0.52, { omega: 1.5 });
+      }
+      return shot(0.03, 0.88, 0.0, 0.18, 0.86, m ? 0.72 : 0.78, { omega: 1.5 });
     },
   },
   {
@@ -152,6 +167,7 @@ export const ACTS = [
       p.marks = smoothstep(0.9, 2.0, t);
       p.leaders = smoothstep(1.0, 2.0, t);
       p.zones = smoothstep(1.2, 2.6, t);
+      p.envRot = lerp(0.95, 1.1, invLerp(0, 6, t));
       return p;
     },
     shot(ctx, t) {

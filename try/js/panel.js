@@ -659,7 +659,7 @@ export function createPanel({ fieldW = 512, fieldH = 376, anisotropy = 4 } = {})
   const rampGLSL = RAMP.map(([p], i) => `if (v <= ${p.toFixed(3)}) return mix(uRampC[${Math.max(i - 1, 0)}], uRampC[${i}], ${i === 0 ? '1.0' : `(v - ${RAMP[i - 1][0].toFixed(3)}) / ${(p - RAMP[i - 1][0]).toFixed(3)}`});`).join('\n');
 
   const top = new THREE.MeshPhysicalMaterial({
-    color: 0x232322,
+    color: 0x2a2a28,
     map: weave.color,
     roughness: 0.42,
     metalness: 0.0,
@@ -719,7 +719,7 @@ export function createPanel({ fieldW = 512, fieldH = 376, anisotropy = 4 } = {})
         float hot = smoothstep(0.72, 0.95, val);
         fxLate += cs * covered * uCscanGain * (1.0 + 0.9 * fresh + 1.6 * hot);
         float isoOn = uIso * (1.0 - smoothstep(uIsoSweep - 0.02, uIsoSweep, pu.x)) * (1.0 - covered * 0.85);
-        fxLate += uGold * (iso * (isoOn * 0.32 + wire * 1.2) + outline * (wire * 2.2 + isoOn * 1.2));
+        fxLate += uGold * (iso * (isoOn * 0.24 + wire * 1.2) + outline * (wire * 2.0 + isoOn * 0.9));
         fxLate += vec3(1.0, 0.66, 0.16) * 3.4 * uPartRevealOn * (1.0 - smoothstep(0.0, 0.012, abs(fxFront)));
         float zg = fxGrid(pu, vec2(6.0, 4.0), 1.0);
         fxLate += uGold * zg * uZones * 0.55;
@@ -735,6 +735,7 @@ export function createPanel({ fieldW = 512, fieldH = 376, anisotropy = 4 } = {})
         material.roughness = mix(material.roughness, 0.7, covered * 0.6);
       `,
       fragFinal: `outgoingLight += fxLate;`,
+      specClamp: [0.3, 0.75, 0.28, 0.7],
     },
     'panel-top'
   );

@@ -90,6 +90,21 @@ export function createWorld(stage, tier) {
     return lerp(traj.samples[lo].s, traj.samples[hi].s, k);
   }
 
+  function tAtS(s) {
+    let lo = 0;
+    let hi = n - 1;
+    if (s <= 0) return 0;
+    if (s >= traj.total) return TIMING.scan;
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (traj.samples[mid].s <= s) lo = mid;
+      else hi = mid;
+    }
+    const k = (s - traj.samples[lo].s) / (traj.samples[hi].s - traj.samples[lo].s || 1);
+    return lerp(tCum[lo], tCum[hi], k);
+  }
+  const discoveryT = discovery.map((s) => TIMING.a3.descend1 + tAtS(s));
+
   // Key poses.
   const first = traj.samples[0];
   const last = traj.samples[n - 1];
@@ -147,6 +162,8 @@ export function createWorld(stage, tier) {
     coverage,
     markers,
     discovery,
+    discoveryT,
+    tAtS,
     glow,
     poseScan,
     poseResult,
