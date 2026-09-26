@@ -29,9 +29,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/inner.css?v=20260925passo"/>
-<link rel="stylesheet" href="/try/try.css?v=20260926cad"/>
-<style id="dev-note-css">:root{--dev-h:1.7rem}body{padding-top:var(--dev-h)}html{scroll-padding-top:var(--dev-h)}.dev-note{height:var(--dev-h);display:flex;align-items:center;justify-content:center;padding:0 1rem;background:#0b0a08;border-bottom:1px solid var(--line,#24211c);color:var(--gold,#e8c547);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dev-note .s{display:none}@media(max-width:720px){.dev-note{letter-spacing:.05em}.dev-note .l{display:none}.dev-note .s{display:inline}}</style>
+<link rel="stylesheet" href="/inner.css?v=20260926audit"/>
+<link rel="stylesheet" href="/try/try.css?v=20260927loc"/>
 <script>document.documentElement.classList.add('js');</script>
 <script nomodule>document.documentElement.classList.add('no-module');</script>
 <script type="importmap">
@@ -42,7 +41,6 @@
 </head>
 <body class="try-page">
 <header>
-<div class="dev-note" role="note"><span class="l">This site is under development. Some content may not yet be accurate or final.</span><span class="s">Site under development · some content not final yet</span></div>
   <div class="wrap hbar">
     <a class="brand" href="/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
     <nav class="desk" aria-label="Primary"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/" class="on">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a></nav>
@@ -51,10 +49,11 @@
         <a href="/try/" class="on" hreflang="en">EN</a>
         <a href="/fr/try/" hreflang="fr">FR</a>
       </div>
+      <a class="btn desk-cta" href="/contact/#geometry">Send us your part</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
-  <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/" class="on">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send a geometry</a></div>
+  <div class="mobile wrap" id="mobile"><a href="/platform/">Platform</a><a href="/about/">About</a><a href="/watch/">Watch</a><a href="/try/" class="on">Try</a><a href="/faq/">FAQ</a><a href="/contact/">Contact</a><a href="/meet/">Meet us</a><span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn" style="margin-top:.5rem" href="/contact/#geometry">Send us your part</a><span class="note">CAD file or the physical part, either works.</span></span></div>
 </header>
 
 <main>
@@ -111,7 +110,8 @@
           <li><b>03</b> The scan: contact UT along the path.</li>
           <li><b>04</b> The result: indications located, report preview.</li>
         </ol>
-        <a class="btn btn-lg" href="/contact/">Send us your geometry</a>
+        <a class="btn btn-lg" href="/contact/#geometry">Send us your part</a>
+        <p class="note xp-cta-note">CAD file or the physical part, either works.</p>
       </div>
       <p class="xp-hint mono" id="xp-hint">Drag to rotate</p>
       </div>
@@ -135,7 +135,8 @@
           </div>
         </div>
         <p class="xp-report-note">The final call stays with a qualified UT inspector.</p>
-        <a class="btn btn-lg xp-cta" href="/contact/">Send us your geometry</a>
+        <a class="btn btn-lg xp-cta" href="/contact/#geometry">Send us your part</a>
+        <p class="note xp-cta-note">CAD file or the physical part, either works.</p>
       </aside>
     </div>
 
@@ -178,7 +179,7 @@
     <h2 class="font-display display">Four acts, one workflow.</h2>
     <p class="lead">The point is the chain: the geometry drives the trajectory, the trajectory drives the robot, and the scan lands on the part as a map. Nobody teaches the robot point by point.</p>
     <div class="xp-cards">
-      <article class="xp-card"><div class="mono">01 · The part</div><h3>Your geometry is the input</h3><p>A curved, stiffened composite panel with a cutout. In a real project the input is your CAD file or a 3D scan of the part.</p><span class="xp-status mono" data-kind="input">Input · CAD or 3D scan</span></article>
+      <article class="xp-card"><div class="mono">01 · The part</div><h3>Your part as input</h3><p>A curved, stiffened composite panel with a cutout. In a real project the input is your CAD file or a 3D scan of the part.</p><span class="xp-status mono" data-kind="input">Input · CAD or 3D scan</span></article>
       <article class="xp-card"><div class="mono">02 · The trajectory</div><h3>Computed, not taught</h3><p>The scan path is computed from the surface: it follows the curvature, keeps the probe normal to the skin and lifts over the cutout.</p><span class="xp-status mono" data-kind="lab">Shown in the lab demo</span></article>
       <article class="xp-card"><div class="mono">03 · The scan</div><h3>Contact UT on the path</h3><p>Any robot brand: the arm carries a contact UT probe along the path. Painting the C-scan onto the part is an illustration.</p><span class="xp-status mono" data-kind="lab">Contact UT · shown in the lab demo</span></article>
       <article class="xp-card"><div class="mono">04 · The result</div><h3>A map, then a report</h3><p>Indications are located on the part and summarized for the inspector's review. Automated reporting is a direction, not a live product.</p><span class="xp-status mono" data-kind="direction">Direction</span></article>
@@ -193,7 +194,7 @@
 
 <footer><div class="wrap ft">
   <div>© 2026 ROBINSPECT Systems — Integrator · Belgium · Europe &amp; United States</div>
-  <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+  <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet us</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Use cases · <a href="/weld/">Weld inspection</a> · <a href="/aerospace/">Curved geometry</a> · <a href="/energy/">Constrained sites</a></div>
 </div></footer>
 
 <script type="application/json" id="xp-copy">{

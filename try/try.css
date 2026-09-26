@@ -5,8 +5,8 @@
 .xp{position:relative;margin-top:calc(var(--hbar) + 1px);background:var(--bg)}
 .xp-stage{
   position:relative;overflow:hidden;isolation:isolate;outline:none;
-  height:calc(100vh - var(--dev-h) - var(--hbar) - 1px);
-  height:calc(100svh - var(--dev-h) - var(--hbar) - 1px);
+  height:calc(100vh - var(--hbar) - 1px);
+  height:calc(100svh - var(--hbar) - 1px);
   min-height:34rem;
   background:radial-gradient(ellipse 70% 60% at 58% 46%,#15120c 0%,#070707 58%,#050505 100%);
 }
@@ -102,6 +102,7 @@
 .xp-report-note{margin:.7rem 0 0;font-size:.75rem;line-height:1.5;color:var(--muted)}
 .xp-cta{margin-top:1rem;width:100%}
 @media(min-width:721px){.xp-report .xp-cta{margin-top:auto}.xp-report-note{margin-bottom:.8rem}}
+.xp-cta-note{margin:.45rem 0 0;line-height:1.4}
 
 /* Bottom act strip (home .specs idiom) */
 .xp-bar{position:absolute;left:0;right:0;bottom:0;z-index:4;height:var(--bar-h);border-top:1px solid rgba(36,33,28,.9);background:rgba(7,7,7,.74);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
@@ -216,6 +217,7 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
   .xp-report-list li{font-size:.74rem}
   .xp-report-note{display:none}
   .xp-cta{margin-top:.8rem}
+  .xp-cta-note{margin-top:.35rem;font-size:.72rem}
   .act-4 .xp-cap-t{display:none}
   .xp-steps button{flex-direction:column;align-items:flex-start;justify-content:center;gap:.2rem;padding-right:.5rem;font-size:9px;letter-spacing:.06em}
   .xp-step-bar{right:.5rem}

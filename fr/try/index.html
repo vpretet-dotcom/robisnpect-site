@@ -29,9 +29,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/inner.css?v=20260925passo"/>
-<link rel="stylesheet" href="/try/try.css?v=20260926cad"/>
-<style id="dev-note-css">:root{--dev-h:1.7rem}body{padding-top:var(--dev-h)}html{scroll-padding-top:var(--dev-h)}.dev-note{height:var(--dev-h);display:flex;align-items:center;justify-content:center;padding:0 1rem;background:#0b0a08;border-bottom:1px solid var(--line,#24211c);color:var(--gold,#e8c547);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dev-note .s{display:none}@media(max-width:720px){.dev-note{letter-spacing:.05em}.dev-note .l{display:none}.dev-note .s{display:inline}}</style>
+<link rel="stylesheet" href="/inner.css?v=20260926audit"/>
+<link rel="stylesheet" href="/try/try.css?v=20260927loc"/>
 <script>document.documentElement.classList.add('js');</script>
 <script nomodule>document.documentElement.classList.add('no-module');</script>
 <script type="importmap">
@@ -42,19 +41,19 @@
 </head>
 <body class="try-page">
 <header>
-<div class="dev-note" role="note"><span class="l">Site en cours de développement. Certains contenus ne sont pas encore exacts ni définitifs.</span><span class="s">Site en développement · contenus pas encore définitifs</span></div>
   <div class="wrap hbar">
     <a class="brand" href="/fr/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
-    <nav class="desk" aria-label="Primary"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/" class="on">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a></nav>
+    <nav class="desk" aria-label="Navigation principale"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Démo</a><a href="/fr/try/" class="on">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a></nav>
     <div class="actions">
       <div class="lang" role="group" aria-label="Langue">
         <a href="/try/" hreflang="en">EN</a>
         <a href="/fr/try/" class="on" hreflang="fr">FR</a>
       </div>
+      <a class="btn desk-cta" href="/fr/contact/#geometry">Envoyer votre pièce</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
     </div>
   </div>
-  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Watch</a><a href="/fr/try/" class="on">Try</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer une géométrie</a></div>
+  <div class="mobile wrap" id="mobile"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Démo</a><a href="/fr/try/" class="on">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a><a href="/fr/rdv/">Nous rencontrer</a><span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn" style="margin-top:.5rem" href="/fr/contact/#geometry">Envoyer votre pièce</a><span class="note">Fichier CAO ou pièce physique, les deux marchent.</span></span></div>
 </header>
 
 <main>
@@ -111,7 +110,8 @@
           <li><b>03</b> Le scan&nbsp;: UT contact le long de la trajectoire.</li>
           <li><b>04</b> Le résultat&nbsp;: indications localisées, aperçu du rapport.</li>
         </ol>
-        <a class="btn btn-lg" href="/fr/contact/">Envoyez-nous votre géométrie</a>
+        <a class="btn btn-lg" href="/fr/contact/#geometry">Envoyer votre pièce</a>
+        <p class="note xp-cta-note">Fichier CAO ou pièce physique, les deux marchent.</p>
       </div>
       <p class="xp-hint mono" id="xp-hint">Glisser pour pivoter</p>
       </div>
@@ -135,7 +135,8 @@
           </div>
         </div>
         <p class="xp-report-note">La décision finale revient à un contrôleur UT qualifié.</p>
-        <a class="btn btn-lg xp-cta" href="/fr/contact/">Envoyez-nous votre géométrie</a>
+        <a class="btn btn-lg xp-cta" href="/fr/contact/#geometry">Envoyer votre pièce</a>
+        <p class="note xp-cta-note">Fichier CAO ou pièce physique, les deux marchent.</p>
       </aside>
     </div>
 
@@ -178,7 +179,7 @@
     <h2 class="font-display display">Quatre actes, un seul flux.</h2>
     <p class="lead">Tout est dans l’enchaînement&nbsp;: la géométrie pilote la trajectoire, la trajectoire pilote le robot, et le scan se pose sur la pièce sous forme de cartographie. Personne n’apprend au robot point par point.</p>
     <div class="xp-cards">
-      <article class="xp-card"><div class="mono">01 · La pièce</div><h3>Votre géométrie en entrée</h3><p>Un panneau composite courbe et raidi, avec une découpe. Dans un vrai projet, l’entrée est votre fichier CAO ou un scan 3D de la pièce.</p><span class="xp-status mono" data-kind="input">Entrée · CAO ou scan 3D</span></article>
+      <article class="xp-card"><div class="mono">01 · La pièce</div><h3>Votre pièce en entrée</h3><p>Un panneau composite courbe et raidi, avec une découpe. Dans un vrai projet, l’entrée est votre fichier CAO ou un scan 3D de la pièce.</p><span class="xp-status mono" data-kind="input">Entrée · CAO ou scan 3D</span></article>
       <article class="xp-card"><div class="mono">02 · La trajectoire</div><h3>Calculée, pas apprise</h3><p>La trajectoire de scan est calculée depuis la surface&nbsp;: elle suit la courbure, garde la sonde normale à la peau et passe au-dessus de la découpe.</p><span class="xp-status mono" data-kind="lab">Montré dans la démo labo</span></article>
       <article class="xp-card"><div class="mono">03 · Le scan</div><h3>UT contact sur la trajectoire</h3><p>Toute marque de robot&nbsp;: le bras porte une sonde UT contact le long de la trajectoire. Peindre le C-scan sur la pièce est une illustration.</p><span class="xp-status mono" data-kind="lab">UT contact · montré dans la démo labo</span></article>
       <article class="xp-card"><div class="mono">04 · Le résultat</div><h3>Une cartographie, puis un rapport</h3><p>Les indications sont localisées sur la pièce et résumées pour l’analyse du contrôleur. Le rapport automatisé est une direction, pas un produit en service.</p><span class="xp-status mono" data-kind="direction">Direction</span></article>
@@ -192,8 +193,8 @@
 </main>
 
 <footer><div class="wrap ft">
-  <div>© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe &amp; États-Unis</div>
-  <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Watch</a> · <a href="/fr/try/">Try</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">RDV</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a></div>
+  <div>© 2026 ROBINSPECT Systems — Intégrateur · Belgique · Europe et États-Unis</div>
+  <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Démo</a> · <a href="/fr/try/">Simulateur</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">Nous rencontrer</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Cas d’usage · <a href="/fr/soudure/">Soudure</a> · <a href="/fr/aero/">Géométrie courbe</a> · <a href="/fr/contraint/">Milieu contraint</a></div>
 </div></footer>
 
 <script type="application/json" id="xp-copy">{
