@@ -255,6 +255,7 @@ html.boot,html.boot body{overflow:hidden;background:#050505}
 .mobile .btn{margin-top:.5rem}
 </style>
 <link rel="stylesheet" href="/boot.css"/>
+<style id="dev-note-css">:root{--dev-h:1.7rem}body{padding-top:var(--dev-h)}html{scroll-padding-top:var(--dev-h)}.dev-note{height:var(--dev-h);display:flex;align-items:center;justify-content:center;padding:0 1rem;background:#0b0a08;border-bottom:1px solid var(--line,#24211c);color:var(--gold,#e8c547);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dev-note .s{display:none}@media(max-width:720px){.dev-note{letter-spacing:.05em}.dev-note .l{display:none}.dev-note .s{display:inline}}</style><style id="dev-note-home">:root{--header-h:calc(6.75rem + var(--dev-h))}@media(min-width:768px){:root{--header-h:calc(7.75rem + var(--dev-h))}}</style>
 </head>
 <body>
 <div id="boot" role="status" aria-live="polite" aria-busy="true" aria-label="Loading ROBINSPECT">
@@ -274,6 +275,7 @@ html.boot,html.boot body{overflow:hidden;background:#050505}
   </div>
 </div>
 <header id="topbar">
+<div class="dev-note" role="note"><span class="l">This site is under development. Some content may not yet be accurate or final.</span><span class="s">Site under development · some content not final yet</span></div>
   <div class="meet-flash" id="meetFlash" data-count="1" role="region" aria-label="Upcoming events">
   <div class="meet-flash-viewport">
     <div class="meet-flash-track">
