@@ -30,13 +30,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="/inner.css?v=20260926audit"/>
-<link rel="stylesheet" href="/try/try.css?v=20260927e"/>
+<link rel="stylesheet" href="/try/try.css?v=20260927f"/>
 <script>document.documentElement.classList.add('js');</script>
 <script nomodule>document.documentElement.classList.add('no-module');</script>
 <script type="importmap">
 {"imports":{"three":"/try/vendor/three/three.module.min.js","three/addons/":"/try/vendor/three/addons/"}}
 </script>
-<link rel="modulepreload" href="/try/js/main.js?v=20260927e"/>
+<link rel="modulepreload" href="/try/js/main.js?v=20260927f"/>
 <link rel="modulepreload" href="/try/vendor/three/three.module.min.js"/>
 </head>
 <body class="try-page">
@@ -71,7 +71,7 @@
     <div class="yt-fallback" id="yt-fallback" data-phase="pick">
       <div class="ytf-top">
         <div>
-          <div class="mono ytf-k"><span>05</span> <span>À vous de jouer</span></div>
+          <div class="mono ytf-k xp-cap-k"><span>05</span><span class="xp-cap-of">/ 05</span><span class="xp-cap-name">À vous de jouer</span></div>
           <p class="ytf-sub">Choisissez une pièce, on calcule le chemin du palpeur.</p>
         </div>
         <p class="xp-badge mono">Simulation illustrative · pas&nbsp;de&nbsp;données&nbsp;réelles</p>
@@ -80,9 +80,7 @@
         <img class="ytf-before" src="/try/yt/panel-before.webp" alt="" width="960" height="540"/>
         <img class="ytf-after" src="/try/yt/panel-center-after.webp" alt="" width="960" height="540"/>
         <div class="ytf-frame">
-          <div class="ytf-clip">
-            <div class="ytf-zone" aria-hidden="true"></div>
-          </div>
+          <img class="ytf-zone" src="/try/yt/panel-center-zone.webp" alt="" width="960" height="540" aria-hidden="true"/>
         </div>
       </div>
       <div data-yt="pick">
@@ -289,7 +287,7 @@
         <div class="wrap xp-bar-in">
           <ol class="xp-steps" id="xp-steps" aria-label="Étapes">
             <li><button type="button" data-act="0"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">01</span><span class="xp-step-t">Pièce</span></button></li>
-            <li><button type="button" data-act="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">02</span><span class="xp-step-t">Trajectoire</span></button></li>
+            <li><button type="button" data-act="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">02</span><span class="xp-step-t">Trajec&shy;toire</span></button></li>
             <li><button type="button" data-act="2"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">03</span><span class="xp-step-t">Scan</span></button></li>
             <li><button type="button" data-act="3"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">04</span><span class="xp-step-t">Rapport</span></button></li>
             <li><button type="button" id="xp-step-turn" data-turn="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">05</span><span class="xp-step-t">À vous</span></button></li>
@@ -404,6 +402,6 @@
   }
 }</script>
 <script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>
-<script type="module" src="/try/js/main.js?v=20260927e"></script>
+<script type="module" src="/try/js/main.js?v=20260927f"></script>
 </body>
 </html>

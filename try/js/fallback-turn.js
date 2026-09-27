@@ -2,10 +2,11 @@ import { renderReport, clearReport, reportCopy } from './report.js';
 
 /*
  * No-WebGL path for the your-turn step. Stills stand in for the 3D scene:
- * one of the bare part, and one per zone preset of the painted end state.
- * /try/yt/turn.json holds, per part and preset, the zone box on the still
- * and the report numbers, exported from the live computation together with
- * those stills. Zone handles and the weld sliders need the 3D scene.
+ * one of the bare part, and per zone preset an overlay of that zone (drawn
+ * from the zone region on the surface, cut to the part's silhouette) and
+ * the painted end state. /try/yt/turn.json holds the report numbers,
+ * exported from the live computation together with those stills. Zone
+ * handles and the weld sliders need the 3D scene.
  */
 
 const STILL_W = 960;
@@ -23,7 +24,6 @@ export function mountFallbackTurn() {
   const before = root.querySelector('.ytf-before');
   const after = root.querySelector('.ytf-after');
   const frame = root.querySelector('.ytf-frame');
-  const clip = root.querySelector('.ytf-clip');
   const overlay = root.querySelector('.ytf-zone');
   const reportEl = root.querySelector('.yt-report');
   const reportThumb = reportEl?.querySelector('[data-r="thumb"]');
@@ -85,14 +85,7 @@ export function mountFallbackTurn() {
   function placeOverlay() {
     if (!overlay) return;
     fitFrame();
-    if (clip) clip.style.webkitMaskImage = clip.style.maskImage = `url(/try/yt/${part}-mask.webp)`;
-    const box = data?.[part]?.[preset]?.box;
-    overlay.hidden = !box;
-    if (!box) return;
-    overlay.style.left = `${box[0] * 100}%`;
-    overlay.style.top = `${box[1] * 100}%`;
-    overlay.style.width = `${box[2] * 100}%`;
-    overlay.style.height = `${box[3] * 100}%`;
+    overlay.src = `/try/yt/${part}-${preset}-zone.webp`;
   }
 
   function markPreset() {
