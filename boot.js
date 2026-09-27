@@ -247,6 +247,8 @@
 
   if (reduce) {
     setPhase("reduced");
+    /* No video, but the word still says whose site this is */
+    if (word) word.classList.add("on");
     holdThenReveal();
   } else {
     setPhase("poster");
