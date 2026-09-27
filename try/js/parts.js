@@ -1,7 +1,8 @@
 import * as THREE from 'three';
-import { P, surfacePoint, radiusAt, holeLevel, RAMP } from './panel.js';
+import { P, surfacePoint, radiusAt, holeLevel, RAMP, fromMetric, zoneOf } from './panel.js';
+import { SCAN } from './trajectory.js';
 import { patchMaterial, GOLD_LIN } from './fx.js';
-import { mulberry32 } from './util.js';
+import { makeNoise2D, fbm, smoothstep } from './util.js';
 
 /*
  * Illustrative parts for the "your turn" step. Each one is a parametric
@@ -155,50 +156,74 @@ function rampGLSL() {
   }).join('\n');
 }
 
-function makeField(seed, spots) {
-  const w = 128;
-  const h = 128;
-  const rnd = mulberry32(seed);
+/* Same threshold as the act panel shader's `hot` term. */
+export const IND_THRESHOLD = 0.72;
+export const FIELD_KIND = { SOUND: 1, IND: 4 };
+
+/*
+ * Simulated C-scan field in (s, t), built in metres so noise and spots keep
+ * their size on a curved or stretched parameterisation. `spots` carry the
+ * indication positions reported at the end of a scan.
+ */
+function makeField(seed, { lengthS, lengthT, spots, structure }) {
+  const long = Math.max(lengthS, lengthT);
+  const w = Math.max(48, Math.round((256 * lengthS) / long));
+  const h = Math.max(48, Math.round((256 * lengthT) / long));
+  const n1 = makeNoise2D(seed);
+  const n2 = makeNoise2D(seed + 11);
+  const val = new Float32Array(w * h);
+  const kind = new Uint8Array(w * h);
   const rgba = new Uint8Array(w * h * 4);
   for (let y = 0; y < h; y++) {
+    const v = (y + 0.5) / h;
+    const Y = v * lengthT;
     for (let x = 0; x < w; x++) {
       const u = (x + 0.5) / w;
-      const v = (y + 0.5) / h;
-      let val = 0.42 + (rnd() - 0.5) * 0.07;
-      val += Math.sin(u * 48 + seed) * Math.cos(v * 40 + seed * 0.2) * 0.035;
+      const X = u * lengthS;
+      let value = 0.47;
+      value += (fbm(n1, X * 13 + 3.1, Y * 13 + 7.7, 3) - 0.5) * 0.1;
+      value += (n2(X * 110, Y * 110) - 0.5) * 0.04;
+      if (structure) value += structure(u, v);
+      let k = FIELD_KIND.SOUND;
       for (const spot of spots) {
-        const d = Math.hypot((u - spot.u) / spot.ru, (v - spot.v) / spot.rv);
-        const g = Math.exp(-d * d * 1.4);
-        val = val * (1 - g) + spot.amp * g;
+        const d = Math.hypot((u - spot.u) * lengthS, (v - spot.v) * lengthT) / spot.r;
+        const g = 1 - smoothstep(0.75, 1.1, d);
+        if (g > 0) value = value + (spot.amp - value) * g;
+        if (g > 0.35) k = FIELD_KIND.IND;
       }
-      val = Math.min(0.98, Math.max(0.06, val));
-      const o = (y * w + x) * 4;
-      rgba[o] = Math.round(val * 255);
+      value = Math.min(1, Math.max(0.02, value));
+      const i = y * w + x;
+      val[i] = value;
+      kind[i] = k;
+      const o = i * 4;
+      rgba[o] = Math.round(value * 255);
       rgba[o + 3] = 255;
     }
   }
-  const tex = new THREE.DataTexture(rgba, w, h, THREE.RGBAFormat);
-  tex.needsUpdate = true;
-  tex.magFilter = THREE.LinearFilter;
-  tex.minFilter = THREE.LinearFilter;
-  tex.generateMipmaps = false;
-  return tex;
+  const texture = new THREE.DataTexture(rgba, w, h, THREE.RGBAFormat);
+  texture.needsUpdate = true;
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearFilter;
+  texture.generateMipmaps = false;
+  function sample(s, t) {
+    const x = Math.min(w - 1, Math.max(0, Math.floor(s * w)));
+    const y = Math.min(h - 1, Math.max(0, Math.floor(t * h)));
+    const i = y * w + x;
+    return { value: val[i], kind: kind[i] };
+  }
+  return { w, h, val, kind, texture, sample };
 }
 
 const RAMP_SRC = rampGLSL();
 
-function makePainted(id, { color, metalness, roughness, clearcoat, bead }) {
-  const field = makeField(id.length * 17 + 3, [
-    { u: 0.62, v: 0.58, ru: 0.08, rv: 0.06, amp: 0.92 },
-    { u: 0.38, v: 0.42, ru: 0.05, rv: 0.1, amp: 0.78 },
-  ]);
+function makePainted(id, { color, metalness, roughness, clearcoat, bead, field }) {
   const cover = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);
   cover.needsUpdate = true;
   const uniforms = {
-    uField: { value: field },
+    uField: { value: field.texture },
     uCover: { value: cover },
     uCscan: { value: 0 },
-    uCscanGain: { value: 2.15 },
+    uCscanGain: { value: 2.3 },
     uScanNow: { value: 0 },
     uGlow: { value: 0 },
     uBead: { value: bead ? 1 : 0 },
@@ -230,36 +255,30 @@ function makePainted(id, { color, metalness, roughness, clearcoat, bead }) {
         float beadTint = uBead * exp(-pow((vFxUv.x - 0.5) / 0.055, 2.0));
         diffuseColor.rgb *= mix(1.0, 0.78, beadTint);
         vec4 fxCov = texture2D(uCover, vFxUv);
+        vec4 fxFld = texture2D(uField, vFxUv);
         float covered = clamp(fxCov.r, 0.0, 1.0) * uCscan;
-        diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * 0.25, covered);
+        diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * 0.22, covered);
       `,
       fragEmissive: `
-        vec4 fxCovE = texture2D(uCover, vFxUv);
-        vec4 fxFldE = texture2D(uField, vFxUv);
-        float coveredE = clamp(fxCovE.r, 0.0, 1.0) * uCscan;
-        float val = fxFldE.r * (0.94 + 0.1 * fxCovE.b);
+        vec3 fxLate = vec3(0.0);
+        float val = fxFld.r * (0.955 + 0.09 * fxCov.b);
         vec3 cs = goldRamp(clamp(val, 0.0, 1.0));
-        float fresh = coveredE * uGlow * clamp(1.0 - (uScanNow - fxCovE.g) * 14.0, 0.0, 1.0);
-        totalEmissiveRadiance += cs * coveredE * uCscanGain * (1.0 + fresh);
+        float fresh = covered * uGlow * clamp(1.0 - (uScanNow - fxCov.g) * 16.0, 0.0, 1.0);
+        float hot = smoothstep(0.72, 0.95, val);
+        fxLate += cs * covered * uCscanGain * (1.0 + 0.9 * fresh + 1.6 * hot);
       `,
       fragMaterial: `
         float beadRough = uBead * exp(-pow((vFxUv.x - 0.5) / 0.055, 2.0));
         material.roughness = mix(material.roughness, 0.66, beadRough);
-        float coveredM = clamp(texture2D(uCover, vFxUv).r, 0.0, 1.0) * uCscan;
-        material.clearcoat *= 1.0 - 0.65 * coveredM;
+        material.clearcoat *= 1.0 - 0.72 * covered;
+        material.roughness = mix(material.roughness, 0.7, covered * 0.6);
       `,
+      fragFinal: `outgoingLight += fxLate;`,
+      specClamp: [0.3, 0.75, 0.28, 0.7],
     },
     'yt-paint-' + id
   );
   return { mat, uniforms, field, cover };
-}
-
-function presetsRect() {
-  return {
-    all: { s0: 0, s1: 1, t0: 0, t1: 1 },
-    center: { s0: 0.28, s1: 0.72, t0: 0.3, t1: 0.7 },
-    edge: { s0: 0, s1: 0.24, t0: 0.1, t1: 0.9 },
-  };
 }
 
 function mountMesh(group, geo, mat) {
@@ -287,8 +306,22 @@ function weldNormal(s, t, out) {
   return out.set(-dBeads, WELD.W, 0).normalize();
 }
 
+const WELD_SPOTS = [
+  { id: '01', u: 0.5 + 0.016 / WELD.W, v: 0.56, r: 0.011, amp: 0.93 },
+  { id: '02', u: 0.5, v: 0.2, r: 0.009, amp: 0.84 },
+];
+
 export function createWeldPart() {
-  const painted = makePainted('weld', { color: 0x6a6660, metalness: 0.82, roughness: 0.4, clearcoat: 0.15, bead: true });
+  const field = makeField(41, {
+    lengthS: WELD.W,
+    lengthT: WELD.L,
+    spots: WELD_SPOTS,
+    structure(u) {
+      const x = Math.abs((u - 0.5) * WELD.W);
+      return -0.07 * Math.exp(-(((x - 0.012) / 0.004) ** 2));
+    },
+  });
+  const painted = makePainted('weld', { color: 0x6a6660, metalness: 0.82, roughness: 0.4, clearcoat: 0.15, bead: true, field });
   const group = new THREE.Group();
   group.name = 'yt-weld';
   const geo = buildShell(weldPoint, weldNormal, 64, 36, WELD.thick);
@@ -301,8 +334,8 @@ export function createWeldPart() {
     along: 't',
     lengthS: WELD.W,
     lengthT: WELD.L,
-    edge: 0.016,
-    swath: 0.02,
+    edge: 0.008,
+    swath: 0.022,
     lift: 0.04,
     weldOffsets: [-0.034, -0.017, 0, 0.017, 0.034],
     point: weldPoint,
@@ -310,6 +343,11 @@ export function createWeldPart() {
     group,
     pick,
     uniforms: painted.uniforms,
+    field,
+    spots: WELD_SPOTS,
+    locate(u, v) {
+      return { a: v * WELD.L * 1000, b: Math.abs(u - 0.5) * WELD.W * 1000 };
+    },
     ownsGroup: true,
     presets: {
       all: { s0: 0.42, s1: 0.58, t0: 0, t1: 1 },
@@ -353,8 +391,16 @@ function elbowNormal(s, t, out) {
   return out.set(Math.sin(alpha) * f.ox, Math.cos(alpha), Math.sin(alpha) * f.oz).normalize();
 }
 
+const ELBOW_SPOTS = [
+  { id: '01', u: 0.62, v: 0.6, r: 0.011, amp: 0.92 },
+  { id: '02', u: 0.36, v: 0.14, r: 0.009, amp: 0.83 },
+];
+
 export function createElbowPart() {
-  const painted = makePainted('elbow', { color: 0x5c5954, metalness: 0.78, roughness: 0.38, clearcoat: 0.2, bead: false });
+  const lengthS = measureLength(elbowPoint, 's');
+  const lengthT = measureLength(elbowPoint, 't');
+  const field = makeField(53, { lengthS, lengthT, spots: ELBOW_SPOTS });
+  const painted = makePainted('elbow', { color: 0x5c5954, metalness: 0.78, roughness: 0.38, clearcoat: 0.2, bead: false, field });
   const group = new THREE.Group();
   group.name = 'yt-elbow';
   const geo = buildShell(elbowPoint, elbowNormal, 36, 48, ELBOW.thick);
@@ -366,17 +412,21 @@ export function createElbowPart() {
     id: 'elbow',
     kind: 'raster',
     along: 't',
-    lengthS: measureLength(elbowPoint, 's'),
-    lengthT: measureLength(elbowPoint, 't'),
+    lengthS,
+    lengthT,
     edge: 0.012,
     swath: 0.028,
     lift: 0.04,
-    maxPasses: 6,
     point: elbowPoint,
     normal: elbowNormal,
     group,
     pick,
     uniforms: painted.uniforms,
+    field,
+    spots: ELBOW_SPOTS,
+    locate(u, v) {
+      return { a: v * lengthT * 1000, b: Math.abs(u - 0.5) * ELBOW.alpha * ELBOW.r * 1000 };
+    },
     ownsGroup: true,
     presets: {
       all: { s0: 0, s1: 1, t0: 0, t1: 1 },
@@ -428,8 +478,16 @@ function fairingNormal(s, t, out) {
   return out.normalize();
 }
 
+const FAIR_SPOTS = [
+  { id: '01', u: 0.56, v: 0.5, r: 0.012, amp: 0.93 },
+  { id: '02', u: 0.4, v: 0.15, r: 0.01, amp: 0.83 },
+];
+
 export function createFairingPart() {
-  const painted = makePainted('fairing', { color: 0x2a2a28, metalness: 0.08, roughness: 0.46, clearcoat: 0.85, bead: false });
+  const lengthS = measureLength(fairingPoint, 's');
+  const lengthT = measureLength(fairingPoint, 't');
+  const field = makeField(67, { lengthS, lengthT, spots: FAIR_SPOTS });
+  const painted = makePainted('fairing', { color: 0x2a2a28, metalness: 0.08, roughness: 0.46, clearcoat: 0.85, bead: false, field });
   const group = new THREE.Group();
   group.name = 'yt-fairing';
   const geo = buildShell(fairingPoint, fairingNormal, 40, 36, FAIR.thick);
@@ -440,20 +498,22 @@ export function createFairingPart() {
   return {
     id: 'fairing',
     kind: 'raster',
-    // Passes wrap the leading edge so the probe axis follows the normal
-    // from flank to crest to flank. The span is the cross-track.
-    along: 's',
-    lengthS: measureLength(fairingPoint, 's'),
-    lengthT: measureLength(fairingPoint, 't'),
-    edge: 0.006,
+    along: 't',
+    lengthS,
+    lengthT,
+    edge: 0.014,
     swath: 0.045,
     lift: 0.035,
-    maxPasses: 4,
     point: fairingPoint,
     normal: fairingNormal,
     group,
     pick,
     uniforms: painted.uniforms,
+    field,
+    spots: FAIR_SPOTS,
+    locate(u, v) {
+      return { a: v * FAIR.span * 1000, b: Math.abs(u - 0.5) * FAIR.ang * fairRadius(v) * 1000 };
+    },
     ownsGroup: true,
     presets: {
       all: { s0: 0, s1: 1, t0: 0, t1: 1 },
@@ -495,10 +555,9 @@ export function createPanelPart(panel) {
     along: 's',
     lengthS: P.W0,
     lengthT: P.LZ,
-    edge: 0.028,
-    swath: 0.07,
-    lift: 0.06,
-    maxPasses: 8,
+    edge: SCAN.edge,
+    swath: SCAN.swath,
+    lift: SCAN.lift,
     point,
     normal,
     blocked(s, t) {
@@ -509,6 +568,14 @@ export function createPanelPart(panel) {
     group: panel.group,
     pick: panel.skinTop,
     uniforms: panel.uniforms,
+    field: panel.field,
+    spots: panel.indications.map((ind) => {
+      const [u, v] = fromMetric(ind.X, ind.Y);
+      return { id: ind.id, u, v, r: ind.ring, amp: panel.field.sample(u, v).value };
+    }),
+    locate(u, v) {
+      return { cell: zoneOf((u - 0.5) * P.W0, (v - 0.5) * P.LZ) };
+    },
     ownsGroup: false,
     presets: {
       all: { s0: 0, s1: 1, t0: 0, t1: 1 },

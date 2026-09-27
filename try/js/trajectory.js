@@ -359,29 +359,89 @@ function makeZoneBuilder(surface) {
     }
     void alongS;
   };
-  const transit = (sA, tA, sB, tB, pass, alongS) => {
-    const h = Math.min(surface.lift || 0.04, 0.02);
-    const steps = 22;
+  /*
+   * On-part U-turn between passes, a semicircle of radius pitch / 2 as in
+   * the scripted path. The shoe roll stays on the pass axis through the
+   * turn: the next pass runs back along the same line, so the wrist does
+   * not wind by π at every reversal.
+   */
+  const uturn = (aEnd, cA, cB, dir, alongS, pass) => {
+    const aScale = alongS ? surface.lengthS || 1 : surface.lengthT || 1;
+    const cScale = alongS ? surface.lengthT || 1 : surface.lengthS || 1;
+    const r = (Math.abs(cB - cA) * cScale) / 2;
+    const cMid = (cA + cB) / 2;
+    const sign = Math.sign(cB - cA) || 1;
+    const steps = Math.max(8, Math.ceil((Math.PI * r) / 0.005));
     const hint = new THREE.Vector3();
     const back = new THREE.Vector3();
-    const eps = 0.015;
+    const eps = 0.012;
     for (let i = 1; i < steps; i++) {
-      const u = i / steps;
-      const s = sA + (sB - sA) * u;
-      const t = tA + (tB - tA) * u;
+      const phi = -Math.PI / 2 + (Math.PI * i) / steps;
+      const a = Math.min(1, Math.max(0, aEnd + (dir * r * Math.cos(phi)) / aScale));
+      const c = Math.min(1, Math.max(0, cMid + (sign * r * Math.sin(phi)) / cScale));
+      const s = alongS ? a : c;
+      const t = alongS ? c : a;
       surface.point(s, t, p);
       surface.normal(s, t, n);
-      p.addScaledVector(n, h * Math.sin(Math.PI * u));
+      let contact = true;
+      if (surface.blocked?.(s, t)) {
+        p.addScaledVector(n, surface.lift || 0.05);
+        contact = false;
+      }
       const ds = alongS ? eps : 0;
       const dt = alongS ? 0 : eps;
       surface.point(Math.min(1, s + ds), Math.min(1, t + dt), hint);
       surface.point(Math.max(0, s - ds), Math.max(0, t - dt), back);
       hint.sub(back);
-      if (hint.lengthSq() < 1e-10) hint.set(alongS ? 1 : 0, 0, alongS ? 0 : 1);
-      push(s, t, false, pass, 'transit', p, n, hint);
+      push(s, t, contact, pass, 'turn', p, n, hint);
     }
   };
-  return { samples, push, line, lift, passAlong, transit };
+  return { samples, push, line, lift, passAlong, uturn };
+}
+
+/* Passes are at most this fraction of the probe footprint apart, so bands overlap. */
+export const PITCH_OF_SWATH = 0.85;
+
+function passCount(crossSpan, swath) {
+  if (crossSpan <= PITCH_OF_SWATH * swath) return 1;
+  return Math.min(40, Math.ceil(crossSpan / (PITCH_OF_SWATH * swath) - 1e-9) + 1);
+}
+
+/*
+ * Serpentine raster over `crosses` (parameter values) between a0 and a1.
+ * a0 / a1 are the zone ends. A U-turn's apex stops a quarter of `edge`
+ * short of them, so the turn stays inside the zone and the footprint
+ * still reaches its end.
+ */
+function buildRaster(surface, alongS, a0, a1, crosses) {
+  const aScale = alongS ? surface.lengthS || 1 : surface.lengthT || 1;
+  const cScale = alongS ? surface.lengthT || 1 : surface.lengthS || 1;
+  const pitch = crosses.length > 1 ? Math.abs(crosses[1] - crosses[0]) * cScale : 0;
+  const endGap = (surface.edge ?? 0.02) * 0.25 + pitch / 2;
+  const lo = a0 + endGap / aScale;
+  const hi = a1 - endGap / aScale;
+  if (!(hi - lo > ZONE_MIN_TRAVEL / aScale)) return null;
+  const bld = makeZoneBuilder(surface);
+  const passInfo = [];
+  for (let k = 0; k < crosses.length; k++) {
+    const c = crosses[k];
+    const fwd = k % 2 === 0;
+    const from = fwd ? lo : hi;
+    const to = fwd ? hi : lo;
+    const sStart = bld.samples.length ? bld.samples[bld.samples.length - 1].s : 0;
+    if (alongS) bld.passAlong(from, to, c, c, k);
+    else bld.passAlong(c, c, from, to, k);
+    passInfo.push({ pass: k, s0: sStart, s1: bld.samples.length ? bld.samples[bld.samples.length - 1].s : sStart, dir: fwd ? 1 : -1 });
+    if (k < crosses.length - 1) bld.uturn(to, c, crosses[k + 1], fwd ? 1 : -1, alongS, k);
+  }
+  if (bld.samples.length < 2) return null;
+  const done = finishZoneSamples(bld.samples);
+  if (done.contactLen < ZONE_MIN_TRAVEL * 0.8) return null;
+  done.passInfo = passInfo;
+  done.passes = crosses.length;
+  done.pitch = pitch;
+  done.swath = surface.swath ?? 0.05;
+  return done;
 }
 
 export function computeZoneTrajectory(surface, zone) {
@@ -395,91 +455,35 @@ function computeRasterTrajectory(surface, zone) {
   const edge = surface.edge ?? 0.022;
   const Ls = surface.lengthS || 1;
   const Lt = surface.lengthT || 1;
-  let s0 = zone.s0 + edge / Ls;
-  let s1 = zone.s1 - edge / Ls;
-  let t0 = zone.t0 + edge / Lt;
-  let t1 = zone.t1 - edge / Lt;
+  const s0 = zone.s0 + edge / Ls;
+  const s1 = zone.s1 - edge / Ls;
+  const t0 = zone.t0 + edge / Lt;
+  const t1 = zone.t1 - edge / Lt;
   if (!(s1 > s0) || !(t1 > t0)) return { tooSmall: true };
   const travelLen = (alongS ? s1 - s0 : t1 - t0) * (alongS ? Ls : Lt);
   const crossLen = (alongS ? t1 - t0 : s1 - s0) * (alongS ? Lt : Ls);
   if (travelLen < ZONE_MIN_TRAVEL || crossLen < ZONE_MIN_CROSS) return { tooSmall: true };
 
   const swath = surface.swath ?? 0.05;
-  let nPass = Math.round(crossLen / swath);
-  nPass = Math.max(1, Math.min(surface.maxPasses || 8, nPass));
+  const nPass = passCount(crossLen, swath);
   const cross0 = alongS ? t0 : s0;
   const cross1 = alongS ? t1 : s1;
-  const crossScale = alongS ? Lt : Ls;
-  const dCross = nPass === 1 ? 0 : (cross1 - cross0) / (nPass - 1);
-  const travelScale = alongS ? Ls : Lt;
-  // Passes all run the same way. The link back is a lifted transit whose
-  // shoe stays on the scan direction, so the wrist untilts instead of
-  // winding through a U-turn.
-  const a0 = alongS ? s0 : t0;
-  const a1 = alongS ? s1 : t1;
-  if (a1 - a0 < ZONE_MIN_TRAVEL / travelScale) return { tooSmall: true };
-
-  const bld = makeZoneBuilder(surface);
-  const passInfo = [];
-  for (let k = 0; k < nPass; k++) {
-    const cross = cross0 + k * dCross;
-    const sFrom = alongS ? a0 : cross;
-    const sTo = alongS ? a1 : cross;
-    const tFrom = alongS ? cross : a0;
-    const tTo = alongS ? cross : a1;
-    const sStart = bld.samples.length ? bld.samples[bld.samples.length - 1].s : 0;
-    bld.passAlong(sFrom, sTo, tFrom, tTo, k);
-    passInfo.push({ pass: k, s0: sStart, s1: bld.samples.length ? bld.samples[bld.samples.length - 1].s : sStart });
-    if (k < nPass - 1 && dCross !== 0) {
-      const next = cross0 + (k + 1) * dCross;
-      const sA = alongS ? a1 : cross;
-      const tA = alongS ? cross : a1;
-      const sB = alongS ? a0 : next;
-      const tB = alongS ? next : a0;
-      bld.transit(sA, tA, sB, tB, k, alongS);
-    }
-  }
-  if (bld.samples.length < 2) return { tooSmall: true };
-  const done = finishZoneSamples(bld.samples);
-  if (done.contactLen < ZONE_MIN_TRAVEL * 0.8) return { tooSmall: true };
-  done.passInfo = passInfo;
-  done.passes = nPass;
-  const crossPitch = nPass <= 1 ? swath / crossScale : Math.abs(dCross);
-  const alongPitch = 0.008 / Math.max(travelScale, 1e-4);
-  done.pitchS = alongS ? alongPitch : crossPitch;
-  done.pitchT = alongS ? crossPitch : alongPitch;
-  return done;
+  const crosses = [];
+  for (let k = 0; k < nPass; k++) crosses.push(nPass === 1 ? (cross0 + cross1) / 2 : cross0 + ((cross1 - cross0) * k) / (nPass - 1));
+  const done = buildRaster(surface, alongS, alongS ? zone.s0 : zone.t0, alongS ? zone.s1 : zone.t1, crosses);
+  return done || { tooSmall: true };
 }
 
 function computeWeldTrajectory(surface, zone) {
   const edge = surface.edge ?? 0.018;
   const Lt = surface.lengthT || 1;
   const Ls = surface.lengthS || 1;
-  let t0 = zone.t0 + edge / Lt;
-  let t1 = zone.t1 - edge / Lt;
+  const t0 = zone.t0 + edge / Lt;
+  const t1 = zone.t1 - edge / Lt;
   if (!(t1 > t0) || (t1 - t0) * Lt < ZONE_MIN_TRAVEL) return { tooSmall: true };
   const offsets = surface.weldOffsets || [-0.032, -0.016, 0, 0.016, 0.032];
-  const nPass = offsets.length;
-  const dSM = Math.abs(offsets[1] - offsets[0]) || 0.016;
-  const a0 = t0;
-  const a1 = t1;
-  if (a1 - a0 < ZONE_MIN_TRAVEL / Lt) return { tooSmall: true };
-  const bld = makeZoneBuilder(surface);
-  for (let k = 0; k < nPass; k++) {
-    const s = 0.5 + offsets[k] / Ls;
-    bld.line(s, s, a0, a1, k);
-    if (k < nPass - 1) {
-      const sNext = 0.5 + offsets[k + 1] / Ls;
-      bld.transit(s, a1, sNext, a0, k, false);
-    }
-  }
-  if (bld.samples.length < 2) return { tooSmall: true };
-  const done = finishZoneSamples(bld.samples);
-  if (done.contactLen < ZONE_MIN_TRAVEL * 0.8) return { tooSmall: true };
-  done.passes = nPass;
-  done.pitchS = dSM / Math.max(Ls, 1e-4);
-  done.pitchT = 0.008 / Math.max(Lt, 1e-4);
-  return done;
+  const done = buildRaster(surface, false, zone.t0, zone.t1, offsets.map((o) => 0.5 + o / Ls));
+  return done || { tooSmall: true };
 }
 
 /** Arc length at which the probe first passes over each indication. */

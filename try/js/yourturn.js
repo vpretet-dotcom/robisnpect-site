@@ -3,9 +3,12 @@ import { HOME } from './arm.js';
 import { FX } from './fx.js';
 import { createPathVisuals } from './trajectory.js';
 import { computeZoneTrajectory } from './trajectory.js';
-import { createCoverageUV } from './cscan.js';
-import { createWeldPart, createElbowPart, createFairingPart, createPanelPart } from './parts.js';
-import { easeInOutSine, clamp } from './util.js';
+import { createCoverageUV, coverageGrid, COVER_RADIUS } from './cscan.js';
+import { createWeldPart, createElbowPart, createFairingPart, createPanelPart, IND_THRESHOLD } from './parts.js';
+import { derivePacing, timeProfile } from './pacing.js';
+import { renderReport, clearReport, reportCopy } from './report.js';
+import { rampRGB } from './panel.js';
+import { easeInOutSine, easeInOutCubic, clamp } from './util.js';
 
 /*
  * Interactive step after the four scripted acts. The act timeline is not
@@ -60,6 +63,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     capText: document.getElementById('xp-cap-text'),
     capStatus: document.getElementById('xp-cap-status'),
     bar: document.querySelector('#xp-step-turn .xp-step-bar i'),
+    report: document.getElementById('yt-report'),
+    reportThumb: document.getElementById('yt-report-thumb'),
   };
   if (dom.error && copy?.tooSmall) dom.error.textContent = copy.tooSmall;
 
@@ -91,7 +96,6 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
   let drag = -1;
   let drawT = 0;
   let scanT = 0;
-  let scanDur = 4;
   let mobile = false;
   let shotHold = false;
   let prevQ = null;
@@ -108,9 +112,37 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     omega: 2.1,
     distMul: 1,
   };
-  const drawDur = fast ? 0.45 : reduceMotion ? 0.4 : 1.55;
-  const approachT = 0.6;
-  const retractT = 0.5;
+  const pacing = derivePacing(world);
+  api.pacing = pacing;
+  /* ?ytfast=1 (tests) plays the same timeline faster. */
+  const timeScale = fast ? 0.12 : 1;
+  let plan = null;
+  let report = null;
+
+  function makePlan() {
+    const profile = timeProfile(traj, pacing, spotsWorld());
+    if (reduceMotion) {
+      return { draw: 0.4, drawHold: 0, pre: 0, approach: 0.3, descend: 0.15, scan: 1.4, lift: 0.15, settle: 0, retract: 0.3, profile, linear: true };
+    }
+    const k = timeScale;
+    return {
+      draw: (traj.total / pacing.vDraw) * k,
+      drawHold: pacing.drawHold * k,
+      pre: pacing.preApproach * k,
+      approach: pacing.approach * k,
+      descend: pacing.descend * k,
+      scan: profile.duration * k,
+      lift: pacing.lift * k,
+      settle: pacing.settle * k,
+      retract: pacing.retract * k,
+      profile,
+      linear: false,
+    };
+  }
+
+  function spotsWorld() {
+    return (part.spots || []).map((sp) => ({ ...sp, at: part.point(sp.u, sp.v, new THREE.Vector3()) }));
+  }
 
   function setPhase(next) {
     phase = next;
@@ -131,6 +163,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       removeZone();
       removeHandles();
     }
+    if (next === 'done') showReport();
+    else if (next !== 'drawing' && next !== 'scan') hideReport();
     frameShot();
   }
 
@@ -204,6 +238,15 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     if (!shotHold) {
       const dock = phase === 'pick' || phase === 'zone' || phase === 'done';
       shot.offY = dock ? (mobile ? 0.14 : 0.06) : mobile ? 0.06 : 0.02;
+      shot.offX = 0;
+      // The end report sits in the dock: part above it on phones, right of it on desktop.
+      if (phase === 'done') {
+        if (mobile) shot.offY = 0.24;
+        else {
+          shot.offX = -0.17;
+          shot.offY = 0.03;
+        }
+      }
     }
   }
 
@@ -241,6 +284,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
   function leave() {
     if (!api.active) return;
     hold = null;
+    hideReport();
     if (debugLines) {
       debugLines.n.visible = false;
       debugLines.a.visible = false;
@@ -379,7 +423,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
 
   function zoneBand() {
     if (part.kind === 'weld') {
-      const half = 0.046 / part.lengthS;
+      const offs = part.weldOffsets.map(Math.abs);
+      const half = (Math.max(...offs) + COVER_RADIUS * (part.swath / 2)) / part.lengthS;
       return { s0: 0.5 - half, s1: 0.5 + half, t0: zone.t0, t1: zone.t1 };
     }
     return zone;
@@ -684,14 +729,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     path.uniforms.uAct3.value = 0;
     path.uniforms.uProbeS.value = -1;
     scene.add(path.group);
-    const stampU = (part.swath || 0.05) / part.lengthS;
-    const stampV = (part.swath || 0.05) / part.lengthT;
-    coverage = createCoverageUV(stage.renderer, traj, {
-      width: 1024,
-      height: 768,
-      stampU: clamp(stampU, 0.02, 0.22),
-      stampV: clamp(stampV, 0.02, 0.24),
-    });
+    coverage = createCoverageUV(stage.renderer, traj, { surface: part, clip: { ...zoneBand() } });
   }
 
   function keySamples(samples) {
@@ -772,7 +810,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       lim += r.limit;
       maxStep = Math.max(maxStep, r.step || 0);
       if (!r.ok) {
-        return { maxPos, maxAng, maxRoll, lim, maxStep, qLast: r.q.slice(), n: samples.length, failed: true };
+        return { maxPos, maxAng, maxRoll, lim, maxStep, qLast: r.q.slice(), n: samples.length, failed: true, failedAt: si };
       }
       prev = r.q;
     }
@@ -828,7 +866,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       .map((b) => scoreBase(b, keys))
       .sort((a, c) => a.score - c.score);
     let found = null;
-    const tries = ranked.slice(0, 3);
+    const tries = ranked.slice(0, 8);
     for (const b of tries) {
       applyBase(b);
       const first = samples[0];
@@ -854,8 +892,12 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     for (const s of samples) {
       if (s.q) minSin = Math.min(minSin, Math.abs(Math.sin(s.q[4])));
     }
+    const failed = chain.failed ? samples[chain.failedAt] : null;
     const pose = {
       ok: judged.ok,
+      failedAt: failed ? { i: chain.failedAt, u: +failed.u.toFixed(3), v: +failed.v.toFixed(3), kind: failed.kind } : null,
+      hoverOk: !!(qH && qH.ok),
+      endOk: !!(qE && qE.ok),
       pos: judged.pos,
       ang: judged.ang,
       roll: judged.roll,
@@ -892,20 +934,208 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       return;
     }
     world.arm.root.visible = false;
+    plan = makePlan();
+    report = buildReport();
+    api.plan = {
+      draw: plan.draw,
+      scan: plan.scan,
+      total: plan.draw + plan.drawHold + plan.pre + plan.approach + plan.descend + plan.scan + plan.lift + plan.settle + plan.retract,
+      passTimes: plan.profile.passTimes,
+      pathLength: traj.total,
+      contactLength: traj.contactLen,
+    };
     drawT = 0;
     setPhase('drawing');
   }
 
   function startScan() {
     scanT = 0;
-    const travel = fast ? 0.9 : clamp(traj.total / 0.28, 2.6, 5.2);
-    scanDur = reduceMotion ? 1.4 : travel;
     coverage.clear();
     world.arm.root.visible = true;
     world.arm.setLed(false);
     prevQ = HOME.slice();
     world.arm.setJoints(HOME);
     setPhase('scan');
+  }
+
+  /* Travel and cross extents (mm) of the zone, measured on the surface at mid-zone. */
+  function zoneExtent(band) {
+    const alongS = part.along !== 't';
+    const n = 24;
+    const measure = (fixedS, isS) => {
+      let L = 0;
+      for (let i = 0; i < n; i++) {
+        const a = (isS ? band.s0 : band.t0) + (((isS ? band.s1 : band.t1) - (isS ? band.s0 : band.t0)) * i) / n;
+        const b = (isS ? band.s0 : band.t0) + (((isS ? band.s1 : band.t1) - (isS ? band.s0 : band.t0)) * (i + 1)) / n;
+        if (isS) {
+          part.point(a, fixedS, _p);
+          part.point(b, fixedS, _n);
+        } else {
+          part.point(fixedS, a, _p);
+          part.point(fixedS, b, _n);
+        }
+        L += _p.distanceTo(_n);
+      }
+      return L * 1000;
+    };
+    const midS = (band.s0 + band.s1) / 2;
+    const midT = (band.t0 + band.t1) / 2;
+    const lenS = measure(midT, true);
+    const lenT = measure(midS, false);
+    return alongS ? { travel: lenS, cross: lenT } : { travel: lenT, cross: lenS };
+  }
+
+  /* Everything the end report states, from this part, this zone and this path. */
+  function buildReport() {
+    const band = { ...zoneBand() };
+    const grid = coverageGrid(traj, part, band, coverage.radius);
+    const found = [];
+    for (const sp of part.spots || []) {
+      if (sp.u < band.s0 || sp.u > band.s1 || sp.v < band.t0 || sp.v > band.t1) continue;
+      if (!grid.covered(sp.u, sp.v)) continue;
+      if (sp.amp < IND_THRESHOLD) continue;
+      found.push(sp);
+    }
+    found.sort((a, b) => a.id.localeCompare(b.id));
+    const ext = zoneExtent(band);
+    return {
+      part: part.id,
+      preset: presetName(),
+      zoneMm: [Math.round(ext.travel), Math.round(ext.cross)],
+      passes: traj.passes,
+      contactM: traj.contactLen,
+      coverage: grid.fraction,
+      indications: found.map((sp, i) => {
+        const loc = part.locate(sp.u, sp.v);
+        return {
+          id: String(i + 1).padStart(2, '0'),
+          a: loc.a !== undefined ? Math.round(loc.a) : undefined,
+          b: loc.b !== undefined ? Math.round(loc.b) : undefined,
+          cell: loc.cell,
+          u: sp.u,
+          v: sp.v,
+          r: sp.r,
+        };
+      }),
+      band,
+      grid,
+    };
+  }
+
+  function presetName() {
+    for (const name of ['all', 'center', 'edge']) {
+      const p = part.presets[name];
+      if (!p) continue;
+      const same = Math.abs(p.t0 - zone.t0) < 1e-3 && Math.abs(p.t1 - zone.t1) < 1e-3 && (part.kind === 'weld' || (Math.abs(p.s0 - zone.s0) < 1e-3 && Math.abs(p.s1 - zone.s1) < 1e-3));
+      if (same) return name;
+    }
+    return 'custom';
+  }
+
+  /*
+   * C-scan thumbnail of the scanned zone: the simulated field where the
+   * probe footprint passed, dark where it did not. The longer side of the
+   * zone runs across; on the panel that is s across and t downward, as in
+   * the act-4 thumbnail, so the zone letters and numbers read the same.
+   */
+  function drawReportThumb(canvas, rep, widthPx) {
+    if (!canvas) return;
+    const band = rep.band;
+    const grid = rep.grid;
+    const spanS = (band.s1 - band.s0) * part.lengthS;
+    const spanT = (band.t1 - band.t0) * part.lengthT;
+    const sAcross = spanS >= spanT;
+    const aspect = clamp(sAcross ? spanT / spanS : spanS / spanT, 0.3, 1);
+    const dpr = widthPx ? widthPx / 160 : Math.min(window.devicePixelRatio || 1, 2);
+    const cssW = widthPx ? 160 : canvas.getBoundingClientRect().width || 150;
+    const W = Math.max(60, Math.round(cssW * dpr));
+    const H = Math.max(20, Math.round(W * aspect));
+    canvas.width = W;
+    canvas.height = H;
+    canvas.style.aspectRatio = `${W} / ${H}`;
+    const ctx = canvas.getContext('2d');
+    const img = ctx.createImageData(W, H);
+    const lut = [];
+    for (let i = 0; i < 256; i++) {
+      const c = rampRGB(i / 255);
+      lut.push([c.r * 255, c.g * 255, c.b * 255]);
+    }
+    const toUV = (x, y) => {
+      const a = (x + 0.5) / W;
+      const b = (y + 0.5) / H;
+      return sAcross ? [band.s0 + a * (band.s1 - band.s0), band.t0 + b * (band.t1 - band.t0)] : [band.s0 + b * (band.s1 - band.s0), band.t0 + a * (band.t1 - band.t0)];
+    };
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const [u, v] = toUV(x, y);
+        const o = (y * W + x) * 4;
+        img.data[o + 3] = 255;
+        if (part.blocked?.(u, v)) {
+          img.data[o] = img.data[o + 1] = img.data[o + 2] = 7;
+          continue;
+        }
+        if (!grid.covered(u, v)) {
+          img.data[o] = img.data[o + 1] = img.data[o + 2] = 14;
+          continue;
+        }
+        const c = lut[Math.max(0, Math.min(255, Math.round(part.field.sample(u, v).value * 255)))];
+        img.data[o] = c[0];
+        img.data[o + 1] = c[1];
+        img.data[o + 2] = c[2];
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    const toPx = (u, v) => {
+      const a = sAcross ? (u - band.s0) / (band.s1 - band.s0) : (v - band.t0) / (band.t1 - band.t0);
+      const b = sAcross ? (v - band.t0) / (band.t1 - band.t0) : (u - band.s0) / (band.s1 - band.s0);
+      return [a * W, b * H];
+    };
+    const pxPerM = W / Math.max(spanS, spanT);
+    for (const ind of rep.indications) {
+      const [cx, cy] = toPx(ind.u, ind.v);
+      const rr = Math.max(5 * dpr, ind.r * 1.4 * pxPerM);
+      ctx.strokeStyle = '#e8c547';
+      ctx.lineWidth = Math.max(1.5, 1.4 * dpr);
+      ctx.beginPath();
+      ctx.arc(cx, cy, rr, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = '#e8c547';
+      ctx.font = `600 ${Math.round(10 * dpr)}px "IBM Plex Mono", ui-monospace, monospace`;
+      ctx.textBaseline = 'bottom';
+      const tx = Math.min(W - 18 * dpr, cx + rr * 0.72);
+      const ty = Math.max(12 * dpr, cy - rr * 0.72);
+      ctx.fillText(ind.id, tx, ty);
+    }
+    ctx.strokeStyle = 'rgba(244,241,234,0.18)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
+  }
+
+  function showReport() {
+    if (!report || !dom.report) return;
+    const lang = document.documentElement.lang || 'en';
+    renderReport(dom.report, report, reportCopy(copy), lang);
+    drawReportThumb(dom.reportThumb, report);
+    api.report = {
+      part: report.part,
+      preset: report.preset,
+      zoneMm: report.zoneMm,
+      passes: report.passes,
+      contactM: +report.contactM.toFixed(3),
+      coverage: +report.coverage.toFixed(4),
+      indications: report.indications.map(({ id, a, b, cell }) => ({ id, a, b, cell })),
+      text: dom.report.innerText,
+    };
+  }
+
+  function hideReport() {
+    report = null;
+    api.report = null;
+    if (dom.report) clearReport(dom.report);
+    if (dom.reportThumb) {
+      const c = dom.reportThumb;
+      c.getContext('2d')?.clearRect(0, 0, c.width, c.height);
+    }
   }
 
   function lerpJoints(a, b, k) {
@@ -994,7 +1224,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     return api.parked;
   }
 
-  function paintLook(s, contact) {
+  function paintLook(s, contact, paint = true) {
     const U = part.uniforms;
     U.uCover.value = coverage.texture;
     U.uCscan.value = 1;
@@ -1010,8 +1240,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
         U.uProbe.value.set(X, Y, 1);
       } else U.uProbe.value.z = 0;
     }
-    coverage.paintTo(s);
-    api.cover = s;
+    if (paint) coverage.paintTo(s);
+    api.cover = paint ? s : 0;
     path.uniforms.uDraw.value = traj.total;
     path.uniforms.uAct3.value = 1;
     path.uniforms.uProbeS.value = s;
@@ -1030,51 +1260,75 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     if (!rig.isLocked) rig.setShot(shot);
     if (phase === 'drawing' && traj) {
       drawT += dt;
-      const k = easeInOutSine(Math.min(1, drawT / drawDur));
+      const k = easeInOutSine(Math.min(1, drawT / Math.max(plan.draw, 1e-3)));
       const s = traj.total * k;
       path.uniforms.uDraw.value = s;
       path.uniforms.uFade.value = 1;
-      path.head.visible = true;
+      path.head.visible = drawT < plan.draw;
       traj.at(s, st);
       path.head.position.copy(st.p).addScaledVector(st.n, 0.008);
       api.pathDraw = s;
-      if (drawT >= drawDur) startScan();
+      if (drawT >= plan.draw + plan.drawHold) startScan();
     } else if (phase === 'scan' && traj) {
       scanT += dt;
-      const scanEnd = approachT + scanDur;
       const first = traj.samples[0];
       const last = traj.samples[traj.samples.length - 1];
-      if (scanT < approachT) {
-        const k = easeInOutSine(scanT / approachT);
-        lerpJoints(traj.qHover || first.q, first.q, k);
+      const qHover = traj.qHover || first.q;
+      const qEnd = traj.qEnd || last.q || first.q;
+      const tApproach = plan.pre;
+      const tDescend = tApproach + plan.approach;
+      const tScan = tDescend + plan.descend;
+      const tLift = tScan + plan.scan;
+      const tSettle = tLift + plan.lift;
+      const tRetract = tSettle + plan.settle;
+      const tDone = tRetract + plan.retract;
+      path.head.visible = false;
+      if (scanT < tDescend) {
+        const k = scanT < tApproach ? 0 : easeInOutCubic(clamp((scanT - tApproach) / Math.max(plan.approach, 1e-3), 0, 1));
+        lerpJoints(HOME, qHover, k);
         syncDebug(first.p, first.n);
-        world.arm.setLed(k > 0.92);
-        paintLook(0, false);
-        path.head.visible = false;
-      } else if (scanT < scanEnd) {
-        const k = easeInOutSine((scanT - approachT) / scanDur);
-        const s = traj.total * k;
+        world.arm.setLed(false);
+        paintLook(0, false, false);
+      } else if (scanT < tScan) {
+        const k = easeInOutCubic(clamp((scanT - tDescend) / Math.max(plan.descend, 1e-3), 0, 1));
+        lerpJoints(qHover, first.q, k);
+        syncDebug(first.p, first.n);
+        world.arm.setLed(k > 0.98);
+        paintLook(0, false, false);
+      } else if (scanT < tLift) {
+        const tau = scanT - tScan;
+        const s = plan.linear ? traj.total * (tau / Math.max(plan.scan, 1e-3)) : plan.profile.sAt(tau / timeScale);
         traj.at(s, st);
         if (st.q) world.arm.setJoints(st.q);
         syncDebug(st.p, st.n);
         world.arm.setLed(!!st.contact);
-        paintLook(s, !!st.contact);
+        paintLook(s, !!st.contact, true);
         api.pathDraw = traj.total;
-      } else {
-        const k = easeInOutSine(Math.min(1, (scanT - scanEnd) / retractT));
-        lerpJoints(last.q || first.q, traj.qEnd || last.q || first.q, k);
+      } else if (scanT < tSettle) {
+        const k = easeInOutCubic(clamp((scanT - tLift) / Math.max(plan.lift, 1e-3), 0, 1));
+        lerpJoints(last.q || first.q, qEnd, k);
         syncDebug(last.p, last.n);
         world.arm.setLed(false);
-        paintLook(traj.total, false);
-        if (k >= 1) setPhase('done');
+        paintLook(traj.total, false, true);
+      } else {
+        const k = easeInOutCubic(clamp((scanT - tRetract) / Math.max(plan.retract, 1e-3), 0, 1));
+        lerpJoints(qEnd, HOME, k);
+        world.arm.setLed(false);
+        paintLook(traj.total, false, true);
+        const fade = clamp((scanT - tRetract) / Math.max(plan.retract, 1e-3), 0, 1);
+        path.uniforms.uFade.value = 1 - fade;
+        part.uniforms.uGlow.value = 1 - fade;
+        if (scanT >= tDone) setPhase('done');
       }
     }
     if (dom.bar) {
       let v = 0.12;
       if (phase === 'zone') v = 0.28;
-      else if (phase === 'drawing') v = 0.28 + 0.32 * Math.min(1, drawT / drawDur);
-      else if (phase === 'scan') v = 0.6 + 0.4 * Math.min(1, scanT / (approachT + scanDur + retractT));
-      else if (phase === 'done') v = 1;
+      else if (phase === 'drawing' && plan) v = 0.28 + 0.32 * Math.min(1, drawT / Math.max(plan.draw + plan.drawHold, 1e-3));
+      else if (phase === 'scan' && plan) {
+        const total = plan.pre + plan.approach + plan.descend + plan.scan + plan.lift + plan.settle + plan.retract;
+        v = 0.6 + 0.4 * Math.min(1, scanT / Math.max(total, 1e-3));
+      } else if (phase === 'done') v = 1;
       dom.bar.style.transform = `scaleX(${v.toFixed(4)})`;
     }
   }
@@ -1083,7 +1337,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     mobile = v;
   }
 
-  async function shoot(id, which) {
+  /* Stills for the no-WebGL fallback: the part, or the painted end state of one preset. */
+  async function shoot(id, which, preset) {
     enter();
     busy = false;
     if (!cache[id]) {
@@ -1091,7 +1346,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       if (cache[id].ownsGroup) scene.add(cache[id].group);
     }
     applyPart(id);
-    setPreset(part.defaultPreset || 'center');
+    setPreset(preset || part.defaultPreset || 'center');
     setPhase('zone');
     if (which === 'before') {
       removeZone();
@@ -1101,26 +1356,31 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       const result = computeZoneTrajectory(part, zone);
       if (result?.tooSmall) return false;
       buildPath(result);
-      placeArm(result);
+      const pose = placeArm(result);
       path.uniforms.uDraw.value = traj.total;
-      path.uniforms.uAct3.value = 0;
-      path.uniforms.uFade.value = 1;
+      path.uniforms.uAct3.value = 1;
+      path.uniforms.uProbeS.value = traj.total + 1;
+      path.uniforms.uFade.value = 0;
       path.head.visible = false;
       coverage.paintTo(traj.total);
       part.uniforms.uCover.value = coverage.texture;
       part.uniforms.uCscan.value = 1;
-      part.uniforms.uGlow.value = 0.15;
+      part.uniforms.uGlow.value = 0;
       part.uniforms.uScanNow.value = 1;
       if (part.id === 'panel') {
         part.uniforms.uMarks.value = 0;
         part.uniforms.uZones.value = 0;
         part.uniforms.uIso.value = 0;
+        part.uniforms.uProbe.value.z = 0;
       }
       world.arm.root.visible = false;
       removeZone();
       removeHandles();
       api.cover = traj.total;
       api.pathDraw = traj.total;
+      report = buildReport();
+      showReport();
+      api.report.poseOk = pose.ok;
     }
     shotHold = true;
     frameShot();
@@ -1129,6 +1389,13 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     rig.snap();
     api.shotReady = true;
     return true;
+  }
+
+  function thumbURL(width = 320) {
+    if (!report) return null;
+    const c = document.createElement('canvas');
+    drawReportThumb(c, report, width);
+    return c.toDataURL('image/png');
   }
 
   dom.thumbs.forEach((b) => b.addEventListener('click', () => selectPart(b.dataset.part)));
@@ -1146,10 +1413,11 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     let minY = 1;
     let maxX = 0;
     let maxY = 0;
-    const s0 = zone.s0 ?? 0;
-    const s1 = zone.s1 ?? 1;
-    const t0 = zone.t0 ?? 0;
-    const t1 = zone.t1 ?? 1;
+    const band = zoneBand();
+    const s0 = band.s0 ?? 0;
+    const s1 = band.s1 ?? 1;
+    const t0 = band.t0 ?? 0;
+    const t1 = band.t1 ?? 1;
     for (let j = 0; j <= 14; j++) {
       for (let i = 0; i <= 14; i++) {
         part.point(s0 + ((s1 - s0) * i) / 14, t0 + ((t1 - t0) * j) / 14, _p);
@@ -1204,6 +1472,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
   api.projectZone = projectZone;
   api.handleAt = (i) => handleScreen(i);
   api.hideDress = hideDress;
+  api.thumbURL = thumbURL;
   api.renderMask = renderMask;
   api.selectPart = selectPart;
   api.setPreset = setPreset;
