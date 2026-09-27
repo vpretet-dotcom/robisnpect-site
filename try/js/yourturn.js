@@ -533,18 +533,63 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     }
   }
 
+  /* Ray hit, or the closest point of the surface when the pointer leaves the mesh. */
+  function surfaceUV() {
+    const hit = raycaster.intersectObject(part.pick, false)[0];
+    if (hit?.uv) return { s: hit.uv.x, t: hit.uv.y };
+    const ray = raycaster.ray;
+    let best = Infinity;
+    let bs = 0.5;
+    let bt = 0.5;
+    const n = 20;
+    for (let j = 0; j <= n; j++) {
+      const t = j / n;
+      for (let i = 0; i <= n; i++) {
+        const s = i / n;
+        part.point(s, t, _p);
+        const d = ray.distanceToPoint(_p);
+        if (d < best) {
+          best = d;
+          bs = s;
+          bt = t;
+        }
+      }
+    }
+    let span = 1 / n;
+    for (let iter = 0; iter < 3; iter++) {
+      span *= 0.5;
+      let ns = bs;
+      let nt = bt;
+      for (let j = -2; j <= 2; j++) {
+        for (let i = -2; i <= 2; i++) {
+          const s = clamp(bs + i * span, 0, 1);
+          const t = clamp(bt + j * span, 0, 1);
+          part.point(s, t, _p);
+          const d = ray.distanceToPoint(_p);
+          if (d < best) {
+            best = d;
+            ns = s;
+            nt = t;
+          }
+        }
+      }
+      bs = ns;
+      bt = nt;
+    }
+    return { s: bs, t: bt };
+  }
+
   function onPointerMove(e) {
     if (drag < 0) return;
     e.preventDefault();
     e.stopPropagation();
     pointerNDC(e);
     raycaster.setFromCamera(ndc, stage.camera);
-    const hit = raycaster.intersectObject(part.pick, false)[0];
-    if (!hit || !hit.uv) return;
+    const uv = surfaceUV();
     const minS = 0.06;
     const minT = 0.06;
-    let s = clamp(hit.uv.x, 0, 1);
-    let t = clamp(hit.uv.y, 0, 1);
+    let s = clamp(uv.s, 0, 1);
+    let t = clamp(uv.t, 0, 1);
     if (drag === 0 || drag === 3) zone.s0 = Math.min(s, zone.s1 - minS);
     else zone.s1 = Math.max(s, zone.s0 + minS);
     if (drag === 0 || drag === 1) zone.t0 = Math.min(t, zone.t1 - minT);
@@ -805,6 +850,10 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     result.qEnd = (qE && qE.q ? qE.q : chain.qLast).slice();
     world.arm.setJoints(HOME);
     prevQ = HOME.slice();
+    let minSin = 1;
+    for (const s of samples) {
+      if (s.q) minSin = Math.min(minSin, Math.abs(Math.sin(s.q[4])));
+    }
     const pose = {
       ok: judged.ok,
       pos: judged.pos,
@@ -812,6 +861,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       roll: judged.roll,
       limit: judged.lim,
       step: judged.step,
+      minSin,
       n: samples.length,
       x: b.x,
       y: b.y,
@@ -1090,10 +1140,71 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
   dom.compute?.addEventListener('click', () => compute());
   dom.again?.addEventListener('click', () => showPick());
 
+  function projectZone() {
+    const cam = stage.camera;
+    let minX = 1;
+    let minY = 1;
+    let maxX = 0;
+    let maxY = 0;
+    const s0 = zone.s0 ?? 0;
+    const s1 = zone.s1 ?? 1;
+    const t0 = zone.t0 ?? 0;
+    const t1 = zone.t1 ?? 1;
+    for (let j = 0; j <= 14; j++) {
+      for (let i = 0; i <= 14; i++) {
+        part.point(s0 + ((s1 - s0) * i) / 14, t0 + ((t1 - t0) * j) / 14, _p);
+        _p.project(cam);
+        if (_p.z > 1) continue;
+        const x = _p.x * 0.5 + 0.5;
+        const y = -_p.y * 0.5 + 0.5;
+        if (x < minX) minX = x;
+        if (y < minY) minY = y;
+        if (x > maxX) maxX = x;
+        if (y > maxY) maxY = y;
+      }
+    }
+    return { left: minX, top: minY, width: Math.max(0.02, maxX - minX), height: Math.max(0.02, maxY - minY) };
+  }
+
+  function hideDress(hide) {
+    scene.traverse((o) => {
+      if (o.name === 'floor' || o.name === 'yt-support' || o.isPoints) o.visible = !hide;
+    });
+  }
+
+  function renderMask() {
+    const hidden = [];
+    scene.traverse((o) => {
+      if ((o.isMesh || o.isPoints || o.isLine || o.isLineSegments) && o !== part.pick && o.visible) {
+        hidden.push(o);
+        o.visible = false;
+      }
+    });
+    const prev = part.pick.material;
+    const white = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+    part.pick.material = white;
+    const bg = scene.background;
+    const env = scene.environment;
+    scene.background = new THREE.Color(0x000000);
+    scene.environment = null;
+    stage.renderer.render(scene, stage.camera);
+    part.pick.material = prev;
+    white.dispose();
+    scene.background = bg;
+    scene.environment = env;
+    hidden.forEach((o) => {
+      o.visible = true;
+    });
+  }
+
   api.zone = zone;
   api.setMobile = setMobile;
   api.frame = frame;
   api.shoot = shoot;
+  api.projectZone = projectZone;
+  api.handleAt = (i) => handleScreen(i);
+  api.hideDress = hideDress;
+  api.renderMask = renderMask;
   api.selectPart = selectPart;
   api.setPreset = setPreset;
   api.compute = compute;

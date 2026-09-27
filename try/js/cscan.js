@@ -157,9 +157,12 @@ export function createCoverageUV(renderer, traj, { width = 1024, height = 768, s
     fragmentShader: /* glsl */ `
       varying vec2 vQ; varying float vT; varying float vG;
       void main() {
-        float r = length(vQ);
-        float m = 1.0 - smoothstep(0.4, 1.0, r);
-        if (m < 0.035) discard;
+        /* Local +Y is the cross-track. The quad is scaled to the pass pitch,
+           so a band (not a probe-sized disc) meets the next pass. */
+        float across = 1.0 - smoothstep(0.9, 1.0, abs(vQ.y));
+        float along = 1.0 - smoothstep(0.86, 1.0, abs(vQ.x));
+        float m = across * along;
+        if (m < 0.02) discard;
         gl_FragColor = vec4(m, vT, 1.0, 1.0);
       }`,
     blending: THREE.CustomBlending,
@@ -237,8 +240,10 @@ export function createCoverageUV(renderer, traj, { width = 1024, height = 768, s
         du /= span;
         dv /= span;
       }
-      const along = Math.max(span * 2.6, 0.01);
-      const cross = Math.max(Math.hypot(pitchS * -dv, pitchT * du) * 1.22, 0.014);
+      const pitch = Math.max(Math.hypot(pitchS * -dv, pitchT * du), 1e-4);
+      /* Solid core runs to 0.9 of the quad, so 1.16× pitch overlaps the next pass. */
+      const along = Math.max(span * 2.4, pitch * 0.45, 0.012);
+      const cross = Math.max(pitch * 1.16, 0.014);
       qBrush.setFromAxisAngle(zAxis, Math.atan2(dv, du));
       sBrush.set(along, cross, 1);
       pBrush.set(state.u, state.v, 0);

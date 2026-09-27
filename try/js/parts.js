@@ -15,8 +15,16 @@ const _p = new THREE.Vector3();
 const _q = new THREE.Vector3();
 const _r = new THREE.Vector3();
 
+/*
+ * Finite-difference normal. Partials are normalised before the cross so the
+ * degeneracy test is an angle, not a world-space length: a small shell
+ * (the fairing nose is a few centimetres) used to fall under an absolute
+ * lengthSq cut and collapse to +Y. Sign is dt × ds, the outward winding of
+ * the plate, elbow and panel. The fairing uses analytic ∂s × ∂t instead,
+ * which is the outward direction for that parameterisation.
+ */
 function numericNormal(point, s, t, out) {
-  const e = 1e-3;
+  const e = 2e-4;
   const s0 = Math.max(0, s - e);
   const s1 = Math.min(1, s + e);
   const t0 = Math.max(0, t - e);
@@ -27,9 +35,14 @@ function numericNormal(point, s, t, out) {
   point(s, t1, _b);
   point(s, t0, _a);
   const dt = _b.sub(_a);
-  const n = out.crossVectors(dt, ds);
-  if (n.lengthSq() < 1e-10) return out.set(0, 1, 0);
-  return n.normalize();
+  const dsL = ds.length();
+  const dtL = dt.length();
+  if (dsL < 1e-12 || dtL < 1e-12) return out.set(0, 1, 0);
+  ds.multiplyScalar(1 / dsL);
+  dt.multiplyScalar(1 / dtL);
+  out.crossVectors(dt, ds);
+  if (out.lengthSq() < 1e-8) return out.set(0, 1, 0);
+  return out.normalize();
 }
 
 function measureLength(point, axis) {
@@ -116,6 +129,7 @@ function buildShell(point, normal, ns, nt, thick) {
 function addTable(group, x, topY, z, w, d) {
   const mat = new THREE.MeshStandardMaterial({ color: 0x2b2a28, metalness: 0.55, roughness: 0.46 });
   const top = new THREE.Mesh(new THREE.BoxGeometry(w, 0.018, d), mat);
+  top.name = 'yt-support';
   top.position.set(x, topY, z);
   top.castShadow = true;
   top.receiveShadow = true;
@@ -124,6 +138,7 @@ function addTable(group, x, topY, z, w, d) {
   for (const sx of [-1, 1]) {
     for (const sz of [-1, 1]) {
       const leg = new THREE.Mesh(new THREE.BoxGeometry(0.028, legH, 0.028), mat);
+      leg.name = 'yt-support';
       leg.position.set(x + sx * (w * 0.5 - 0.04), legH / 2, z + sz * (d * 0.5 - 0.04));
       leg.castShadow = true;
       leg.receiveShadow = true;
@@ -369,7 +384,7 @@ export function createElbowPart() {
       edge: { s0: 0.08, s1: 0.92, t0: 0, t1: 0.38 },
     },
     defaultPreset: 'center',
-    shot: { az: 0.7, el: 0.52, radius: 0.48, fov: 30 },
+    shot: { az: 0.7, el: 0.52, radius: 0.2, fov: 30 },
     focus(out = new THREE.Vector3()) {
       return elbowPoint(0.5, 0.5, out);
     },
@@ -446,7 +461,7 @@ export function createFairingPart() {
       edge: { s0: 0.04, s1: 0.96, t0: 0, t1: 0.32 },
     },
     defaultPreset: 'center',
-    shot: { az: 0.95, el: 0.42, radius: 0.52, fov: 30 },
+    shot: { az: 0.95, el: 0.42, radius: 0.26, fov: 30 },
     focus(out = new THREE.Vector3()) {
       return fairingPoint(0.5, 0.5, out);
     },

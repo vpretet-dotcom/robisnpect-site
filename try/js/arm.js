@@ -431,7 +431,14 @@ export function createArm() {
           const continuous = step <= STEP_MAX;
           const ok = m.pos <= 2 && m.ang <= 3 && lim === 0 && continuous;
           const barrier = room < 0.45 ? (0.45 - room) * 5 : 0;
-          const score = (ok ? 0 : 1e6) + m.pos * 8 + m.ang * 4 + m.roll * 0.35 + jump * 2 + lim * 80 + (continuous ? 0 : 500) + barrier;
+          // Near J5 = 0 the wrist axes line up. A flip trades J4 and J6 by
+          // about π while the tip barely moves. Keep the continuous branch
+          // (the fairing "whole part" path passes |sin J5| ~ 0.09) and do
+          // not reject the pose for being close to that singularity.
+          const sin5 = Math.abs(Math.sin(buf[4]));
+          const wristTrade = Math.abs(buf[3] - prev[3]) + Math.abs(buf[5] - prev[5]);
+          const singular = sin5 < 0.22 ? (0.22 - sin5) * wristTrade * 30 : 0;
+          const score = (ok ? 0 : 1e6) + m.pos * 8 + m.ang * 4 + m.roll * 0.35 + jump * 2 + lim * 80 + (continuous ? 0 : 500) + barrier + singular;
           if (!best || score < best.score) best = { q: buf.slice(), pos: m.pos, ang: m.ang, roll: m.roll, limit: lim, jump, step, ok, score };
           if (ok && jump < 0.28 && m.roll < 20 && room > 0.7) {
             setJoints(best.q);

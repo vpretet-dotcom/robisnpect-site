@@ -254,7 +254,7 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
 .yt[data-phase="zone"] [data-yt="zone"],
 .yt[data-phase="done"] [data-yt="done"]{display:flex;flex-direction:column;gap:.55rem}
 .yt-thumbs{display:flex;flex-wrap:nowrap;gap:.4rem;width:100%;max-width:36rem}
-.yt-thumb{position:relative;flex:1 1 0;min-width:0;max-width:9.5rem;display:flex;flex-direction:column;gap:.28rem;padding:.28rem;border:1px solid var(--line);background:rgba(7,7,7,.82);text-align:left;color:var(--fg)}
+.yt-thumb{position:relative;flex:1 1 0;min-width:0;max-width:9.5rem;display:flex;flex-direction:column;gap:.28rem;padding:.28rem;border:1px solid var(--line);background:rgba(7,7,7,.82);text-align:left;color:var(--fg);-webkit-tap-highlight-color:transparent}
 .yt-thumb.on{border-color:var(--gold)}
 .yt-thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#0c0c0c}
 .yt-thumb-name{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:.78rem;line-height:.95;letter-spacing:-.01em;text-transform:uppercase;overflow-wrap:anywhere}
@@ -284,7 +284,8 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
 .yt-fallback[hidden]{display:none!important}
 .xp.is-fallback .yt-fallback{display:flex}
 .xp.is-fallback .xp-fallback-card{display:none!important}
-.ytf-top{display:flex;justify-content:space-between;gap:.6rem;align-items:flex-start}
+.ytf-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.4rem .75rem;align-items:flex-start;min-width:0;max-width:100%}
+.ytf-top>div{min-width:0;flex:1 1 10rem}
 .ytf-k{margin:0}
 .ytf-sub{margin:.35rem 0 0;font-size:.84rem;line-height:1.45;color:rgba(244,241,234,.86)}
 .yt-fallback[data-phase="zone"] .ytf-sub,
@@ -294,7 +295,10 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
 .ytf-view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ytf-after{clip-path:inset(0 100% 0 0)}
 .yt-fallback.is-drawn .ytf-after{clip-path:inset(0 0 0 0);transition:clip-path 1.5s linear}
-.ytf-zone{position:absolute;border:1px solid var(--gold);background:rgba(232,197,71,.22);pointer-events:none}
+.ytf-frame{position:absolute;pointer-events:none}
+.ytf-clip{position:absolute;inset:0;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-position:center;mask-position:center}
+.ytf-zone{position:absolute;background:rgba(232,197,71,.28);box-shadow:inset 0 0 0 1px var(--gold);pointer-events:none}
+.yt-fallback .yt-thumb,.yt-fallback [data-zone]{-webkit-tap-highlight-color:transparent}
 .yt-fallback[data-phase="drawing"] .ytf-zone,
 .yt-fallback[data-phase="done"] .ytf-zone,
 .yt-fallback[data-phase="pick"] .ytf-zone{display:none}
@@ -303,7 +307,7 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
 .yt-fallback[data-phase="zone"] [data-yt="zone"],
 .yt-fallback[data-phase="done"] [data-yt="done"]{display:flex;flex-direction:column;gap:.45rem}
 .yt-fallback .yt-thumbs{max-width:none}
-.yt-fallback .xp-badge{flex:none}
+.yt-fallback .xp-badge{flex:1 1 auto;max-width:100%;min-width:0;white-space:normal;letter-spacing:.06em;line-height:1.35;overflow-wrap:anywhere}
 @media(max-width:400px){
   .xp-steps button{font-size:7px;letter-spacing:0;padding-right:.22rem;gap:.08rem}
 }
@@ -313,4 +317,5 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
   .yt-thumb-name{font-size:.68rem}
   .yt-exits{flex-direction:column}
   .yt-exits .btn,.yt-exits .btn-ghost{flex-basis:auto;width:100%}
+  .ytf-top{flex-direction:column;align-items:flex-start}
 }

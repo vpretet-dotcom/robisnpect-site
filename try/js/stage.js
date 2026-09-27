@@ -140,6 +140,7 @@ function makeFloor() {
     'floor'
   );
   const m = new THREE.Mesh(new THREE.PlaneGeometry(24, 24), mat);
+  m.name = 'floor';
   m.rotation.x = -Math.PI / 2;
   m.receiveShadow = true;
   return m;

@@ -18,7 +18,39 @@ export function mountFallbackTurn() {
   const error = root.querySelector('.yt-error');
   const before = root.querySelector('.ytf-before');
   const after = root.querySelector('.ytf-after');
+  const frame = root.querySelector('.ytf-frame');
+  const clip = root.querySelector('.ytf-clip');
   const overlay = root.querySelector('.ytf-zone');
+  const STILL_W = 960;
+  const STILL_H = 540;
+  /*
+   * Zone boxes are fractions of the still (same camera as the webp).
+   * The silhouette mask clips them to the part outline.
+   * Filled in after the still capture; defaults keep a visible highlight
+   * until those fractions are written.
+   */
+  const ZONE_BOX = {
+    weld: {
+      all: [0.4083, 0.3994, 0.1772, 0.1884],
+      center: [0.4556, 0.4405, 0.0883, 0.0981],
+      edge: [0.5031, 0.3994, 0.0824, 0.0897],
+    },
+    panel: {
+      all: [0.2073, 0.3626, 0.5642, 0.536],
+      center: [0.3759, 0.4066, 0.2434, 0.199],
+      edge: [0.2291, 0.3728, 0.2556, 0.1782],
+    },
+    elbow: {
+      all: [0.3569, 0.3041, 0.2189, 0.5758],
+      center: [0.4198, 0.3624, 0.1387, 0.324],
+      edge: [0.3776, 0.3041, 0.1742, 0.1847],
+    },
+    fairing: {
+      all: [0.3555, 0.3182, 0.2677, 0.6028],
+      center: [0.429, 0.3562, 0.1185, 0.3069],
+      edge: [0.3595, 0.3211, 0.0987, 0.1962],
+    },
+  };
   let part = 'panel';
   let phase = 'pick';
   let zone = { t0: 0.3, t1: 0.7, preset: 'center' };
@@ -38,26 +70,39 @@ export function mountFallbackTurn() {
     if (after) after.alt = name;
   }
 
+  function fitFrame() {
+    if (!frame) return;
+    const view = frame.parentElement;
+    if (!view) return;
+    const vw = view.clientWidth;
+    const vh = view.clientHeight;
+    if (!vw || !vh) return;
+    const scale = Math.max(vw / STILL_W, vh / STILL_H);
+    const w = STILL_W * scale;
+    const h = STILL_H * scale;
+    frame.style.left = `${(vw - w) / 2}px`;
+    frame.style.top = `${(vh - h) / 2}px`;
+    frame.style.width = `${w}px`;
+    frame.style.height = `${h}px`;
+  }
+
   function placeOverlay() {
     if (!overlay) return;
-    if (part === 'weld') {
-      const left = 10 + zone.t0 * 70;
-      const width = Math.max(8, (zone.t1 - zone.t0) * 70);
-      overlay.style.left = `${left}%`;
-      overlay.style.width = `${width}%`;
-      overlay.style.top = '40%';
-      overlay.style.height = '18%';
-      return;
+    fitFrame();
+    if (clip) clip.style.webkitMaskImage = clip.style.maskImage = `url(/try/yt/${part}-mask.webp)`;
+    const table = ZONE_BOX[part] || ZONE_BOX.panel;
+    let box;
+    if (part === 'weld' && !zone.preset) {
+      const full = table.all;
+      const span = Math.max(0.04, zone.t1 - zone.t0);
+      box = [full[0] + (1 - zone.t1) * full[2], full[1], span * full[2], full[3]];
+    } else {
+      box = table[zone.preset] || table.center;
     }
-    const box = {
-      all: [8, 14, 84, 70],
-      center: [28, 26, 44, 46],
-      edge: [8, 16, 26, 66],
-    }[zone.preset] || [28, 26, 44, 46];
-    overlay.style.left = `${box[0]}%`;
-    overlay.style.top = `${box[1]}%`;
-    overlay.style.width = `${box[2]}%`;
-    overlay.style.height = `${box[3]}%`;
+    overlay.style.left = `${box[0] * 100}%`;
+    overlay.style.top = `${box[1] * 100}%`;
+    overlay.style.width = `${box[2] * 100}%`;
+    overlay.style.height = `${box[3] * 100}%`;
   }
 
   function markPreset() {
@@ -171,4 +216,6 @@ export function mountFallbackTurn() {
   markPreset();
   placeOverlay();
   show('pick');
+  window.addEventListener('resize', fitFrame);
+  if (before) before.addEventListener('load', fitFrame);
 }
