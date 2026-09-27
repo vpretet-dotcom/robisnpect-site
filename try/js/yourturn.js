@@ -239,10 +239,13 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       const dock = phase === 'pick' || phase === 'zone' || phase === 'done';
       shot.offY = dock ? (mobile ? 0.14 : 0.06) : mobile ? 0.06 : 0.02;
       shot.offX = 0;
+      shot.distMul = 1;
       // The end report sits in the dock: part above it on phones, right of it on desktop.
       if (phase === 'done') {
-        if (mobile) shot.offY = 0.24;
-        else {
+        if (mobile) {
+          shot.offY = 0.27;
+          shot.distMul = 1.4;
+        } else {
           shot.offX = -0.17;
           shot.offY = 0.03;
         }
@@ -1213,6 +1216,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     shot.radius = 0.32;
     shot.fov = 26;
     shot.offY = 0;
+    shot.offX = 0;
+    shot.distMul = 1;
     shotHold = true;
     if (dom.yt) dom.yt.hidden = true;
     rig.recenter();

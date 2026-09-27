@@ -343,3 +343,6 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
   .yt-report .xp-report-list li{font-size:.7rem}
   .yt-report .xp-report-note{font-size:.64rem;margin-top:.4rem}
 }
+@media(max-width:720px) and (max-height:700px){
+  .yt .yt-note{display:none}
+}
