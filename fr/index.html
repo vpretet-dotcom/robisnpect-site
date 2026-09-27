@@ -33,6 +33,8 @@
 <link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<script>(function(){var r=document.documentElement,k="robinspect-boot";try{if(sessionStorage.getItem(k)){r.classList.remove("boot");return}sessionStorage.setItem(k,"1")}catch(e){}[["640","(max-width: 767px)"],["960","(min-width: 768px)"]].forEach(function(p){var l=document.createElement("link");l.rel="preload";l.as="image";l.type="image/webp";l.media=p[1];l.href="/media/loader/robinspect-loading-poster-"+p[0]+".webp";document.head.appendChild(l)});setTimeout(function(){if(!r.classList.contains("boot"))return;r.classList.remove("boot");var b=document.getElementById("boot");if(b)b.classList.add("out");window.dispatchEvent(new Event("robinspect:ready"))},8000)})();</script>
+<noscript><style>#boot{display:none}html.boot,html.boot body{overflow-x:hidden;overflow-y:visible}</style></noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -260,21 +262,8 @@ html.boot,html.boot body{overflow:hidden;background:#050505}
 
 </head>
 <body>
-<div id="boot" role="status" aria-live="polite" aria-busy="true" aria-label="Chargement ROBINSPECT">
-  <div class="boot-glow" aria-hidden="true"></div>
-  <div class="boot-scene" id="bootScene"></div>
-  <div class="boot-ui">
-    <p class="boot-kicker">Système</p>
-    <div class="boot-word">ROBINSPECT</div>
-    <div class="boot-meta">
-      <div class="boot-row">
-        <span id="bootStatus">Initialisation</span>
-        <span id="bootPct">0.0</span>
-      </div>
-      <div class="boot-bar"><i id="bootFill"></i></div>
-      <button type="button" class="boot-skip" id="bootSkip">Passer</button>
-    </div>
-  </div>
+<div id="boot" aria-hidden="true">
+  <div class="boot-word">ROBINSPECT</div>
 </div>
 
 <header id="topbar">
@@ -366,7 +355,6 @@ html.boot,html.boot body{overflow:hidden;background:#050505}
   <div>© 2026 ROBINSPECT Systems — Tous droits réservés.</div>
   <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Démo</a> · <a href="/fr/try/">Simulateur</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">Nous rencontrer</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Cas d’usage · <a href="/fr/soudure/">Soudure</a> · <a href="/fr/aero/">Géométrie courbe</a> · <a href="/fr/contraint/">Milieu contraint</a></div>
 </div></footer>
-<script src="/boot-3d.js"></script>
 <script src="/boot.js"></script>
 <script>
 (function(){
