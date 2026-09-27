@@ -159,14 +159,20 @@
   }
 
   function onFirstFrame(v, fn) {
-    if (typeof v.requestVideoFrameCallback === "function") {
-      v.requestVideoFrameCallback(function () { fn(); });
-    } else {
-      v.addEventListener("playing", function once() {
-        v.removeEventListener("playing", once);
-        requestAnimationFrame(fn);
-      });
+    var fired = false;
+    var rvfc = typeof v.requestVideoFrameCallback === "function";
+    function go() {
+      if (fired) return;
+      fired = true;
+      fn();
     }
+    if (rvfc) v.requestVideoFrameCallback(go);
+    v.addEventListener("playing", function once() {
+      v.removeEventListener("playing", once);
+      /* Backup in case the frame callback is withheld for a layer at opacity 0 */
+      if (rvfc) setTimeout(go, 250);
+      else requestAnimationFrame(go);
+    });
   }
 
   /* Later clips sit above earlier ones, so the previous clip's last frame stays
