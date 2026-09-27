@@ -12,6 +12,15 @@ export const K = { d1: 0.52, a1: 0.16, a2: 0.92, a3: 0.14, x4: 0.34, d4: 0.96, d
 
 export const HOME = [0, 0.1, -0.12, 0, -1.45, 0];
 
+export const JOINT_LIMITS = [
+  [-2.9, 2.9],
+  [-1.35, 1.7],
+  [-2.3, 1.4],
+  [-3.1, 3.1],
+  [-2.25, 2.25],
+  [-3.4, 3.4],
+];
+
 const AX = new THREE.Vector3(1, 0, 0);
 const AY = new THREE.Vector3(0, 1, 0);
 const AZ = new THREE.Vector3(0, 0, 1);
@@ -264,9 +273,210 @@ export function createArm() {
     return out.copy(tipLocal).applyMatrix4(tool.matrixWorld);
   }
 
+  const _mx = new THREE.Vector3();
+  const _my = new THREE.Vector3();
+  const _tang = new THREE.Vector3();
+  const _aw = new THREE.Vector3();
+
+  /** Tool +X (probe axis, toward the tip) and +Y (shoe) in world space. */
+  function toolAxes(outX, outY) {
+    tool.updateWorldMatrix(true, false);
+    const e = tool.matrixWorld.elements;
+    if (outX) outX.set(e[0], e[1], e[2]).normalize();
+    if (outY) outY.set(e[4], e[5], e[6]).normalize();
+    return outX;
+  }
+
+  /*
+   * Full 6-DOF analytic IK. `Aw` is the tool axis (into the part, −normal).
+   * `tangent` (world) sets the tool roll so the shoe follows the pass.
+   * Branches: elbow, base facing, wrist flip. The returned joints are the
+   * reachable solution nearest `prev`, unwrapped for continuity.
+   * `solve()` above is unchanged and still drives the scripted acts.
+   */
+  function solveRaw(Pw, Aw, tangent, elbowSign, facingSign, flip, out) {
+    root.updateWorldMatrix(true, false);
+    _Pb.copy(Pw);
+    root.worldToLocal(_Pb);
+    root.getWorldQuaternion(_qi).invert();
+    _Ab.copy(Aw).applyQuaternion(_qi).normalize();
+    _W.copy(_Pb).addScaledVector(_Ab, -(K.d6 + K.tool));
+    let t1 = Math.atan2(-_W.z, _W.x);
+    const rho = Math.hypot(_W.x, _W.z);
+    let xp = rho - K.a1;
+    if (facingSign < 0) {
+      t1 += Math.PI;
+      xp = -(rho + K.a1);
+    }
+    const yp = _W.y - K.d1;
+    const L3 = Math.hypot(K.d4, K.a3);
+    const psi = Math.atan2(K.a3, K.d4);
+    const cArg = (xp * xp + yp * yp - K.a2 * K.a2 - L3 * L3) / (2 * K.a2 * L3);
+    if (cArg > 1.02 || cArg < -1.02) return false;
+    const Kc = clamp(cArg, -1, 1);
+    const sAng = Math.asin(Kc);
+    const t3 = (elbowSign < 0 ? Math.PI - sAng : sAng) - psi;
+    const qx = K.d4 * Math.cos(t3) - K.a3 * Math.sin(t3);
+    const qy = K.a2 + K.d4 * Math.sin(t3) + K.a3 * Math.cos(t3);
+    if (qx * qx + qy * qy < 1e-8) return false;
+    const t2 = Math.atan2(yp, xp) - Math.atan2(qy, qx);
+    _q03.setFromAxisAngle(AY, t1).multiply(_qa.setFromAxisAngle(AZ, t2 + t3));
+    _q03.invert();
+    _a.copy(_Ab).applyQuaternion(_q03);
+    let t5 = Math.atan2(Math.hypot(_a.y, _a.z), _a.x);
+    let t4 = Math.atan2(_a.z, _a.y);
+    if (t4 > Math.PI / 2) {
+      t4 -= Math.PI;
+      t5 = -t5;
+    } else if (t4 < -Math.PI / 2) {
+      t4 += Math.PI;
+      t5 = -t5;
+    }
+    if (tangent) _y.copy(tangent).applyQuaternion(_qi);
+    else _y.set(Math.cos(t1), 0, -Math.sin(t1));
+    _y.addScaledVector(_Ab, -_y.dot(_Ab));
+    if (_y.lengthSq() < 1e-8) _y.set(-_Ab.y, _Ab.x, 0);
+    if (_y.lengthSq() < 1e-8) _y.set(0, 1, 0);
+    _y.normalize().applyQuaternion(_q03);
+    _qb.setFromAxisAngle(AX, t4).multiply(_qa.setFromAxisAngle(AZ, t5)).invert();
+    _y.applyQuaternion(_qb);
+    let t6 = Math.atan2(_y.z, _y.y);
+    if (flip) {
+      t4 += Math.PI;
+      t5 = -t5;
+      t6 += Math.PI;
+    }
+    out[0] = t1;
+    out[1] = t2;
+    out[2] = t3;
+    out[3] = t4;
+    out[4] = t5;
+    out[5] = t6;
+    return true;
+  }
+
+  function unwrapToward(q, prev) {
+    for (let i = 0; i < 6; i++) {
+      let d = q[i] - prev[i];
+      while (d > Math.PI) {
+        q[i] -= Math.PI * 2;
+        d -= Math.PI * 2;
+      }
+      while (d < -Math.PI) {
+        q[i] += Math.PI * 2;
+        d += Math.PI * 2;
+      }
+    }
+  }
+
+  function limitExcess(q) {
+    let e = 0;
+    for (let i = 0; i < 6; i++) {
+      if (q[i] < JOINT_LIMITS[i][0]) e += JOINT_LIMITS[i][0] - q[i];
+      else if (q[i] > JOINT_LIMITS[i][1]) e += q[i] - JOINT_LIMITS[i][1];
+    }
+    return e;
+  }
+
+  function jointRoom(q) {
+    let room = Infinity;
+    for (let i = 0; i < 6; i++) {
+      room = Math.min(room, q[i] - JOINT_LIMITS[i][0], JOINT_LIMITS[i][1] - q[i]);
+    }
+    return room;
+  }
+
+  function maxJointStep(q, prev) {
+    let step = 0;
+    for (let i = 0; i < 6; i++) step = Math.max(step, Math.abs(q[i] - prev[i]));
+    return step;
+  }
+
+  /** Position (mm), tool-axis angle (deg) and shoe-roll angle (deg) of the current joints. */
+  function measurePose(Pw, Aw, tangent) {
+    const tip = tipWorld(_mx);
+    const pos = tip.distanceTo(Pw) * 1000;
+    toolAxes(_mx, _my);
+    const A = _aw.copy(Aw).normalize();
+    const ang = (Math.acos(clamp(_mx.dot(A), -1, 1)) * 180) / Math.PI;
+    let roll = 0;
+    if (tangent) {
+      _tang.copy(tangent).addScaledVector(A, -tangent.dot(A));
+      if (_tang.lengthSq() > 1e-8) {
+        _tang.normalize();
+        roll = (Math.acos(clamp(_my.dot(_tang), -1, 1)) * 180) / Math.PI;
+      }
+    }
+    return { pos, ang, roll };
+  }
+
+  const STEP_MAX = 1.05;
+
+  function solvePose(Pw, Aw, tangent, prev = HOME) {
+    const buf = [0, 0, 0, 0, 0, 0];
+    let best = null;
+    const facings = [1, -1];
+    for (const facing of facings) {
+      for (const elbow of [1, -1]) {
+        for (const flip of [0, 1]) {
+          if (!solveRaw(Pw, Aw, tangent, elbow, facing, flip, buf)) continue;
+          unwrapToward(buf, prev);
+          const lim = limitExcess(buf);
+          const step = maxJointStep(buf, prev);
+          setJoints(buf);
+          const m = measurePose(Pw, Aw, tangent);
+          let jump = 0;
+          for (let i = 0; i < 6; i++) jump += (buf[i] - prev[i]) ** 2;
+          const room = jointRoom(buf);
+          const continuous = step <= STEP_MAX;
+          const ok = m.pos <= 2 && m.ang <= 3 && lim === 0 && continuous;
+          const barrier = room < 0.45 ? (0.45 - room) * 5 : 0;
+          // Near J5 = 0 the wrist axes line up. A flip trades J4 and J6 by
+          // about π while the tip barely moves. Keep the continuous branch
+          // (the fairing "whole part" path passes |sin J5| ~ 0.09) and do
+          // not reject the pose for being close to that singularity.
+          const sin5 = Math.abs(Math.sin(buf[4]));
+          const wristTrade = Math.abs(buf[3] - prev[3]) + Math.abs(buf[5] - prev[5]);
+          const singular = sin5 < 0.22 ? (0.22 - sin5) * wristTrade * 30 : 0;
+          const score = (ok ? 0 : 1e6) + m.pos * 8 + m.ang * 4 + m.roll * 0.35 + jump * 2 + lim * 80 + (continuous ? 0 : 500) + barrier + singular;
+          if (!best || score < best.score) best = { q: buf.slice(), pos: m.pos, ang: m.ang, roll: m.roll, limit: lim, jump, step, ok, score };
+          if (ok && jump < 0.28 && m.roll < 20 && room > 0.7) {
+            setJoints(best.q);
+            return best;
+          }
+        }
+      }
+      if (best && best.ok && best.jump < 0.8 && best.roll < 20 && jointRoom(best.q) > 0.55) break;
+    }
+    if (best) setJoints(best.q);
+    return best;
+  }
+
+  /** In-limit 6-DOF solutions for one pose, before a chain picks one. */
+  function poseSeeds(Pw, Aw, tangent) {
+    const buf = [0, 0, 0, 0, 0, 0];
+    const seeds = [];
+    const origin = [0, 0, 0, 0, 0, 0];
+    for (const facing of [1, -1]) {
+      for (const elbow of [1, -1]) {
+        for (const flip of [0, 1]) {
+          if (!solveRaw(Pw, Aw, tangent, elbow, facing, flip, buf)) continue;
+          unwrapToward(buf, origin);
+          const lim = limitExcess(buf);
+          setJoints(buf);
+          const m = measurePose(Pw, Aw, tangent);
+          if (m.pos > 2 || m.ang > 3 || lim > 0 || m.roll > 25) continue;
+          if (seeds.some((s) => s.q.every((v, i) => Math.abs(v - buf[i]) < 0.4))) continue;
+          seeds.push({ q: buf.slice(), pos: m.pos, ang: m.ang, roll: m.roll, limit: lim });
+        }
+      }
+    }
+    return seeds;
+  }
+
   function setLed(on) {
     led.color.set(0xe8c547).multiplyScalar(on ? 2.6 : 0.2);
   }
 
-  return { root, joints, setJoints, solve, tipWorld, setLed, q, materials: M, tool };
+  return { root, joints, setJoints, solve, solvePose, poseSeeds, measurePose, toolAxes, tipWorld, setLed, q, materials: M, tool };
 }

@@ -140,6 +140,7 @@ function makeFloor() {
     'floor'
   );
   const m = new THREE.Mesh(new THREE.PlaneGeometry(24, 24), mat);
+  m.name = 'floor';
   m.rotation.x = -Math.PI / 2;
   m.receiveShadow = true;
   return m;
@@ -181,7 +182,7 @@ function makeDust(count, glow) {
   return pts;
 }
 
-export function createStage(container, { tier, capture = false, glowTexture }) {
+export function createStage(container, { tier, capture = false, buffer = false, glowTexture }) {
   const canvas = document.createElement('canvas');
   canvas.className = 'xp-gl';
   canvas.setAttribute('aria-hidden', 'true');
@@ -192,7 +193,7 @@ export function createStage(container, { tier, capture = false, glowTexture }) {
     alpha: false,
     stencil: false,
     powerPreference: 'high-performance',
-    preserveDrawingBuffer: capture,
+    preserveDrawingBuffer: capture || buffer,
   });
   renderer.setClearColor(0x050505, 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;

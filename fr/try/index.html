@@ -30,13 +30,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="/inner.css?v=20260926audit"/>
-<link rel="stylesheet" href="/try/try.css?v=20260927loc"/>
+<link rel="stylesheet" href="/try/try.css?v=20260927f"/>
 <script>document.documentElement.classList.add('js');</script>
 <script nomodule>document.documentElement.classList.add('no-module');</script>
 <script type="importmap">
 {"imports":{"three":"/try/vendor/three/three.module.min.js","three/addons/":"/try/vendor/three/addons/"}}
 </script>
-<link rel="modulepreload" href="/try/js/main.js?v=20260926cad"/>
+<link rel="modulepreload" href="/try/js/main.js?v=20260927f"/>
 <link rel="modulepreload" href="/try/vendor/three/three.module.min.js"/>
 </head>
 <body class="try-page">
@@ -68,12 +68,89 @@
       </picture>
     </div>
 
+    <div class="yt-fallback" id="yt-fallback" data-phase="pick">
+      <div class="ytf-top">
+        <div>
+          <div class="mono ytf-k xp-cap-k"><span>05</span><span class="xp-cap-of">/ 05</span><span class="xp-cap-name">À vous de jouer</span></div>
+          <p class="ytf-sub">Choisissez une pièce, on calcule le chemin du palpeur.</p>
+        </div>
+        <p class="xp-badge mono">Simulation illustrative · pas&nbsp;de&nbsp;données&nbsp;réelles</p>
+      </div>
+      <div class="ytf-view">
+        <img class="ytf-before" src="/try/yt/panel-before.webp" alt="" width="960" height="540"/>
+        <img class="ytf-after" src="/try/yt/panel-center-after.webp" alt="" width="960" height="540"/>
+        <div class="ytf-frame">
+          <img class="ytf-zone" src="/try/yt/panel-center-zone.webp" alt="" width="960" height="540" aria-hidden="true"/>
+        </div>
+      </div>
+      <div data-yt="pick">
+        <div class="yt-thumbs">
+          <button type="button" class="yt-thumb" data-part="weld">
+            <img src="/try/yt/weld-before.webp" alt="" width="160" height="120"/>
+            <span class="yt-thumb-load">Chargement de la pièce…</span>
+            <span class="yt-thumb-name">Plaque soudée</span>
+            <span class="yt-thumb-tag">Simulation · géométrie illustrative</span>
+          </button>
+          <button type="button" class="yt-thumb on" data-part="panel">
+            <img src="/try/yt/panel-before.webp" alt="" width="160" height="120"/>
+            <span class="yt-thumb-load">Chargement de la pièce…</span>
+            <span class="yt-thumb-name">Panneau courbe</span>
+            <span class="yt-thumb-tag">Simulation · géométrie illustrative</span>
+          </button>
+          <button type="button" class="yt-thumb" data-part="elbow">
+            <img src="/try/yt/elbow-before.webp" alt="" width="160" height="120"/>
+            <span class="yt-thumb-load">Chargement de la pièce…</span>
+            <span class="yt-thumb-name">Coude de tube</span>
+            <span class="yt-thumb-tag">Simulation · géométrie illustrative</span>
+          </button>
+          <button type="button" class="yt-thumb" data-part="fairing">
+            <img src="/try/yt/fairing-before.webp" alt="" width="160" height="120"/>
+            <span class="yt-thumb-load">Chargement de la pièce…</span>
+            <span class="yt-thumb-name">Carénage double courbure</span>
+            <span class="yt-thumb-tag">Simulation · géométrie illustrative</span>
+          </button>
+        </div>
+      </div>
+      <div data-yt="zone">
+        <div class="yt-zones">
+          <button type="button" data-zone="all">Toute la pièce</button>
+          <button type="button" data-zone="center">Zone centrale</button>
+          <button type="button" data-zone="edge">Bord</button>
+        </div>
+        <p class="yt-error" role="alert" hidden>Zone trop petite pour une passe, agrandissez-la.</p>
+        <button type="button" class="btn btn-lg yt-compute">Calculer la trajectoire</button>
+      </div>
+      <div data-yt="done">
+        <section class="yt-report" aria-label="Rapport · aperçu">
+          <div class="xp-report-head"><span class="mono">Rapport · aperçu</span><span class="xp-status mono" data-kind="direction">Direction</span></div>
+          <h2 class="font-display yt-report-title" data-r="title"></h2>
+          <p class="xp-report-sub mono">Simulation illustrative · pas&nbsp;de&nbsp;données&nbsp;réelles</p>
+          <div class="yt-report-body">
+            <img class="yt-report-thumb" data-r="thumb" alt="" width="320" height="160" decoding="async"/>
+            <dl class="xp-report-dl yt-report-dl">
+              <div><dt>Zone</dt><dd data-r="zone"></dd></div>
+              <div><dt>Passes</dt><dd data-r="passes"></dd></div>
+              <div><dt>Couverture</dt><dd data-r="coverage"></dd></div>
+              <div><dt>Indications</dt><dd data-r="indications"></dd></div>
+            </dl>
+          </div>
+          <ol class="xp-report-list" data-r="list" hidden></ol>
+          <p class="xp-report-note" data-r="note"></p>
+        </section>
+        <p class="note yt-note">Votre pièce n’est pas dans la liste ? Envoyez-la.</p>
+        <div class="yt-exits">
+          <button type="button" class="btn btn-ghost yt-again">Essayer une autre pièce</button>
+          <a class="btn" href="/fr/contact/#geometry">Envoyer votre pièce</a>
+        </div>
+      </div>
+    </div>
+
     <div class="xp-shade" aria-hidden="true"></div>
 
     <div class="xp-ui wrap">
       <div class="xp-top">
         <div class="xp-cap" id="xp-cap" aria-live="polite">
-          <div class="xp-cap-k mono"><span id="xp-cap-num">01</span><span class="xp-cap-of">/ 04</span><span class="xp-cap-name" id="xp-cap-name">La pièce</span></div>
+          <div class="xp-cap-k mono"><span id="xp-cap-num">01</span><span class="xp-cap-of" id="xp-cap-of">/ 04</span><span class="xp-cap-name" id="xp-cap-name">La pièce</span></div>
           <p class="xp-cap-t" id="xp-cap-text">Un panneau de fuselage composite courbe, avec raidisseurs et découpe de hublot, tel qu’il sort de la CAO. Faites-le pivoter.</p>
           <span class="xp-status mono" id="xp-cap-status" data-kind="input">Entrée · CAO ou scan 3D</span>
         </div>
@@ -90,8 +167,8 @@
       </ol>
 
       <div class="xp-hero" id="xp-hero">
-        <nav class="crumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a><span>/</span><span>Tester</span></nav>
-        <div class="mono xp-hero-k">Try · simulation illustrative</div>
+        <nav class="crumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a><span>/</span><span>Simulateur</span></nav>
+        <div class="mono xp-hero-k">Simulateur · simulation illustrative</div>
         <h1 class="font-display">De la CAO<br/>au rapport.</h1>
         <p class="lead">Un panneau composite passe de sa géométrie à une trajectoire calculée, un scan UT contact et un rapport, sans programmer le robot à la main.</p>
       </div>
@@ -114,6 +191,72 @@
         <p class="note xp-cta-note">Fichier CAO ou pièce physique, les deux marchent.</p>
       </div>
       <p class="xp-hint mono" id="xp-hint">Glisser pour pivoter</p>
+      <div class="yt" id="yt" data-phase="pick" hidden>
+        <div data-yt="pick">
+          <div class="yt-thumbs" id="yt-thumbs">
+            <button type="button" class="yt-thumb" data-part="weld">
+              <img src="/try/yt/weld-before.webp" alt="" width="160" height="120"/>
+              <span class="yt-thumb-load">Chargement de la pièce…</span>
+              <span class="yt-thumb-name">Plaque soudée</span>
+              <span class="yt-thumb-tag">Simulation · géométrie illustrative</span>
+            </button>
+            <button type="button" class="yt-thumb on" data-part="panel">
+              <img src="/try/yt/panel-before.webp" alt="" width="160" height="120"/>
+              <span class="yt-thumb-load">Chargement de la pièce…</span>
+              <span class="yt-thumb-name">Panneau courbe</span>
+              <span class="yt-thumb-tag">Simulation · géométrie illustrative</span>
+            </button>
+            <button type="button" class="yt-thumb" data-part="elbow">
+              <img src="/try/yt/elbow-before.webp" alt="" width="160" height="120"/>
+              <span class="yt-thumb-load">Chargement de la pièce…</span>
+              <span class="yt-thumb-name">Coude de tube</span>
+              <span class="yt-thumb-tag">Simulation · géométrie illustrative</span>
+            </button>
+            <button type="button" class="yt-thumb" data-part="fairing">
+              <img src="/try/yt/fairing-before.webp" alt="" width="160" height="120"/>
+              <span class="yt-thumb-load">Chargement de la pièce…</span>
+              <span class="yt-thumb-name">Carénage double courbure</span>
+              <span class="yt-thumb-tag">Simulation · géométrie illustrative</span>
+            </button>
+          </div>
+        </div>
+        <div data-yt="zone">
+          <div class="yt-zones">
+            <button type="button" data-zone="all">Toute la pièce</button>
+            <button type="button" data-zone="center">Zone centrale</button>
+            <button type="button" data-zone="edge">Bord</button>
+          </div>
+          <div class="yt-weld" id="yt-weld" hidden>
+            <label><span>Début</span><input type="range" id="yt-range-a" min="0" max="1000" value="300"/></label>
+            <label><span>Fin</span><input type="range" id="yt-range-b" min="0" max="1000" value="700"/></label>
+          </div>
+          <p class="yt-error" id="yt-error" role="alert" hidden>Zone trop petite pour une passe, agrandissez-la.</p>
+          <button type="button" class="btn btn-lg yt-compute" id="yt-compute">Calculer la trajectoire</button>
+        </div>
+        <div data-yt="done">
+            <section class="yt-report" id="yt-report" aria-labelledby="yt-report-title">
+              <div class="xp-report-head"><span class="mono">Rapport · aperçu</span><span class="xp-status mono" data-kind="direction">Direction</span></div>
+              <h2 class="font-display yt-report-title" id="yt-report-title" data-r="title"></h2>
+              <p class="xp-report-sub mono">Simulation illustrative · pas&nbsp;de&nbsp;données&nbsp;réelles</p>
+              <div class="yt-report-body">
+                <canvas class="yt-report-thumb" id="yt-report-thumb" role="img" data-r="thumb"></canvas>
+                <dl class="xp-report-dl yt-report-dl">
+                  <div><dt>Zone</dt><dd data-r="zone"></dd></div>
+                  <div><dt>Passes</dt><dd data-r="passes"></dd></div>
+                  <div><dt>Couverture</dt><dd data-r="coverage"></dd></div>
+                  <div><dt>Indications</dt><dd data-r="indications"></dd></div>
+                </dl>
+              </div>
+              <ol class="xp-report-list" data-r="list" hidden></ol>
+              <p class="xp-report-note" data-r="note"></p>
+            </section>
+          <p class="note yt-note" id="yt-note">Votre pièce n’est pas dans la liste ? Envoyez-la.</p>
+          <div class="yt-exits">
+            <button type="button" class="btn btn-ghost" id="yt-again">Essayer une autre pièce</button>
+            <a class="btn" id="yt-send" href="/fr/contact/#geometry">Envoyer votre pièce</a>
+          </div>
+        </div>
+      </div>
       </div>
 
       <aside class="xp-report" id="xp-report" aria-labelledby="xp-report-title">
@@ -144,9 +287,10 @@
         <div class="wrap xp-bar-in">
           <ol class="xp-steps" id="xp-steps" aria-label="Étapes">
             <li><button type="button" data-act="0"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">01</span><span class="xp-step-t">Pièce</span></button></li>
-            <li><button type="button" data-act="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">02</span><span class="xp-step-t">Trajectoire</span></button></li>
+            <li><button type="button" data-act="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">02</span><span class="xp-step-t">Trajec&shy;toire</span></button></li>
             <li><button type="button" data-act="2"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">03</span><span class="xp-step-t">Scan</span></button></li>
             <li><button type="button" data-act="3"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">04</span><span class="xp-step-t">Rapport</span></button></li>
+            <li><button type="button" id="xp-step-turn" data-turn="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">05</span><span class="xp-step-t">À vous</span></button></li>
           </ol>
           <div class="xp-ctrl">
             <button type="button" class="xp-recenter mono" id="xp-recenter" hidden>Recentrer</button>
@@ -164,7 +308,7 @@
 
     <div class="xp-load" id="xp-load" role="status" aria-live="polite">
       <div class="xp-load-in">
-        <p class="xp-load-k">Try · simulation</p>
+        <p class="xp-load-k">Simulateur</p>
         <div class="xp-load-word font-display">ROBINSPECT</div>
         <div class="xp-load-row"><span id="xp-load-msg">Chargement</span><span id="xp-load-pct">00</span></div>
         <div class="xp-load-bar"><i id="xp-load-fill"></i></div>
@@ -210,9 +354,54 @@
     "nowebgl": "Votre navigateur ne peut pas afficher la scène 3D\u00a0: voici une image fixe du résultat.",
     "slow": "Cet appareil affiche la scène 3D trop lentement\u00a0: voici une image fixe du résultat.",
     "error": "La scène 3D n’a pas pu démarrer ici\u00a0: voici une image fixe du résultat."
+  },
+  "turn": {
+    "n": "05",
+    "name": "À vous de jouer",
+    "sub": "Choisissez une pièce, on calcule le chemin du palpeur.",
+    "tag": "Simulation · géométrie illustrative",
+    "tooSmall": "Zone trop petite pour une passe, agrandissez-la.",
+    "outOfReach": "Zone hors d’atteinte",
+    "report": {
+      "parts": {
+        "weld": "Plaque soudée",
+        "panel": "Panneau courbe",
+        "elbow": "Coude de tube",
+        "fairing": "Carénage double courbure"
+      },
+      "zones": {
+        "all": "Toute la pièce",
+        "center": "Zone centrale",
+        "edge": "Bord",
+        "custom": "Zone personnalisée"
+      },
+      "zone": "{name} · {a} × {b} mm",
+      "passes": [
+        "{n} passe · {len} m sur la pièce",
+        "{n} passes · {len} m sur la pièce"
+      ],
+      "coverage": "{pct} % de la zone",
+      "indNone": "Aucune dans la zone scannée",
+      "ind": [
+        "{n} simulée, à analyser",
+        "{n} simulées, à analyser"
+      ],
+      "loc": {
+        "weld": "{a} mm le long du cordon, à {b} mm de son axe",
+        "panel": "Zone {cell}",
+        "elbow": "{a} mm le long du coude, à {b} mm du dessus",
+        "fairing": "{a} mm le long de l’envergure, à {b} mm du bord d’attaque"
+      },
+      "above": "au-dessus du seuil",
+      "thumb": [
+        "C-scan simulé de la zone scannée ({part}), {n} indication entourée.",
+        "C-scan simulé de la zone scannée ({part}), {n} indications entourées."
+      ],
+      "note": "Signal simulé sur une géométrie illustrative, pas un résultat de contrôle. La décision finale revient à un contrôleur UT qualifié."
+    }
   }
 }</script>
 <script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>
-<script type="module" src="/try/js/main.js?v=20260926cad"></script>
+<script type="module" src="/try/js/main.js?v=20260927f"></script>
 </body>
 </html>
