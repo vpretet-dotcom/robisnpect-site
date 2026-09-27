@@ -24,7 +24,8 @@
     reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     wide = window.matchMedia("(min-width: 768px)").matches;
   } catch (e) {}
-  var size = wide ? "960" : "640";
+  /* Phones get the 960 clip too: shown whole (contain), so it must stay sharp */
+  var size = "960";
 
   function now() {
     return window.performance && performance.now ? performance.now() : Date.now();
@@ -70,14 +71,21 @@
     var w = boot.clientWidth;
     var h = boot.clientHeight;
     if (!w || !h) return;
-    /* Rendered box of a 16:9 frame under object-fit: cover, centred */
-    var s = Math.max(w / 960, h / 540);
-    var bh = 540 * s;
-    var top = (h - bh) / 2;
-    var a = Math.max(0, top + bh * ZONE);
-    var b = Math.min(h, top + bh);
     var half = word.offsetHeight / 2;
-    var y = Math.min((a + b) / 2, h - half - 12);
+    var y;
+    if (w >= 768) {
+      /* Rendered box of a 16:9 frame under object-fit: cover, centred */
+      var s = Math.max(w / 960, h / 540);
+      var bh = 540 * s;
+      var top = (h - bh) / 2;
+      var a = Math.max(0, top + bh * ZONE);
+      var b = Math.min(h, top + bh);
+      y = Math.min((a + b) / 2, h - half - 12);
+    } else {
+      /* Phones: frame is letterboxed (contain); word sits 24 px under the band */
+      var bh2 = 540 * Math.min(w / 960, h / 540);
+      y = Math.min((h + bh2) / 2 + 24 + half, h - half - 12);
+    }
     word.style.top = y.toFixed(1) + "px";
   }
 
