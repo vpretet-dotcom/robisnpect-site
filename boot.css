@@ -34,3 +34,8 @@ html.boot,html.boot body{overflow:hidden;background:#050505}
   pointer-events:none;
 }
 .boot-word.on{opacity:1}
+/* Phones: shift the crop right so the probe stays in frame for the whole sweep */
+@media(max-width:767px){
+  #boot{background-position:70% 50%}
+  .boot-vid{object-position:70% 50%}
+}
