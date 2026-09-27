@@ -1,11 +1,10 @@
 import * as THREE from 'three';
-import { HOME } from './arm.js';
+import { HOME, JOINT_LIMITS } from './arm.js';
 import { FX } from './fx.js';
-import { createPathVisuals } from './trajectory.js';
-import { computeZoneTrajectory } from './trajectory.js';
+import { createPathVisuals, computeZoneTrajectory, zoneMidSample, finishZoneSamples, passInfoOf } from './trajectory.js';
 import { createCoverageUV, coverageGrid, COVER_RADIUS } from './cscan.js';
 import { createWeldPart, createElbowPart, createFairingPart, createPanelPart, IND_THRESHOLD } from './parts.js';
-import { derivePacing, timeProfile } from './pacing.js';
+import { derivePacing, timeProfile, moveDuration } from './pacing.js';
 import { renderReport, clearReport, reportCopy } from './report.js';
 import { rampRGB } from './panel.js';
 import { easeInOutSine, easeInOutCubic, clamp } from './util.js';
@@ -57,7 +56,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     compute: document.getElementById('yt-compute'),
     again: document.getElementById('yt-again'),
     turnBtn: document.getElementById('xp-step-turn'),
-    of: document.querySelector('.xp-cap-of'),
+    of: document.getElementById('xp-cap-of'),
     capNum: document.getElementById('xp-cap-num'),
     capName: document.getElementById('xp-cap-name'),
     capText: document.getElementById('xp-cap-text'),
@@ -125,16 +124,20 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       return { draw: 0.4, drawHold: 0, pre: 0, approach: 0.3, descend: 0.15, scan: 1.4, lift: 0.15, settle: 0, retract: 0.3, profile, linear: true };
     }
     const k = timeScale;
+    const first = traj.samples[0];
+    const last = traj.samples[traj.samples.length - 1];
+    const qHover = traj.qHover || first.q;
+    const qEnd = traj.qEnd || last.q;
     return {
       draw: (traj.total / pacing.vDraw) * k,
       drawHold: pacing.drawHold * k,
       pre: pacing.preApproach * k,
-      approach: pacing.approach * k,
-      descend: pacing.descend * k,
+      approach: moveDuration(HOME, qHover, pacing.approach) * k,
+      descend: moveDuration(qHover, first.q, pacing.descend) * k,
       scan: profile.duration * k,
-      lift: pacing.lift * k,
+      lift: moveDuration(last.q, qEnd, pacing.lift) * k,
       settle: pacing.settle * k,
-      retract: pacing.retract * k,
+      retract: moveDuration(qEnd, HOME, pacing.retract) * k,
       profile,
       linear: false,
     };
@@ -291,6 +294,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     if (debugLines) {
       debugLines.n.visible = false;
       debugLines.a.visible = false;
+      debugLines.readout.hidden = true;
     }
     api.active = false;
     root.classList.remove('is-turn');
@@ -735,16 +739,43 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     coverage = createCoverageUV(stage.renderer, traj, { surface: part, clip: { ...zoneBand() } });
   }
 
+  /*
+   * Acceptance for a planned path. Every check uses the exact surface point
+   * and normal at the sample's (s, t), never an interpolated one:
+   * probe axis within 3° and tip within 2 mm at each contact sample and
+   * halfway between samples (joint interpolation, as played back), wrist
+   * kept away from the J5 = 0 singularity, and joints within their limits.
+   * Segments are split until no joint moves more than 0.05 rad and the
+   * halfway error stays under 1° / 0.5 mm.
+   */
+  const GATE = { ang: 3, pos: 2, minSin: 0.25, segStep: 0.05, midAng: 1, midPos: 0.5 };
+  const _tp = new THREE.Vector3();
+  const _tn = new THREE.Vector3();
+  const _qm = [0, 0, 0, 0, 0, 0];
+
   function keySamples(samples) {
     const src = samples.filter((s) => s.contact);
     const list = src.length ? src : samples;
-    const n = Math.min(12, list.length);
+    const n = Math.min(16, list.length);
     const out = [];
     for (let i = 0; i < n; i++) out.push(list[Math.round((i * (list.length - 1)) / Math.max(1, n - 1))]);
     return out;
   }
 
+  /*
+   * Candidate robot bases: behind the part (the scripted position), on the
+   * diagonal and on the side away from the camera, each turned to face the
+   * part. The side bases matter on the fairing, whose nose faces the robot:
+   * seen from behind, the probe axis lines up with the forearm (J5 ≈ 0).
+   */
   function baseList() {
+    const F = part.focus(new THREE.Vector3());
+    const box = new THREE.Box3().setFromObject(part.group);
+    const clearOf = (x, z) => {
+      const dx = Math.max(box.min.x - x, 0, x - box.max.x);
+      const dz = Math.max(box.min.z - z, 0, z - box.max.z);
+      return Math.hypot(dx, dz) >= 0.34;
+    };
     const bases = [];
     for (const z of [-0.85, -1.15, -1.45]) {
       for (const y of [0.32, 0.55, 0.82]) {
@@ -753,22 +784,32 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
         }
       }
     }
-    return bases;
+    for (const dir of [-Math.PI * 0.62, -Math.PI * 0.78, Math.PI]) {
+      for (const d of [0.75, 0.95, 1.2]) {
+        for (const y of [0.32, 0.55, 0.82, 1.05]) {
+          const x = F.x + d * Math.cos(dir);
+          const z = F.z + d * Math.sin(dir);
+          const face = Math.atan2(-(F.z - z), F.x - x);
+          for (const dry of [0, -0.35, 0.35]) bases.push({ x, y, z, ry: face + dry });
+        }
+      }
+    }
+    return bases.filter((b) => clearOf(b.x, b.z));
   }
 
   function scoreBase(b, keys) {
     applyBase(b);
     const first = keys[0];
     const seeds = world.arm.poseSeeds(first.p, _aim.copy(first.n).negate(), first.t);
-    if (!seeds.length) return { ok: false, maxPos: 999, maxAng: 999, maxRoll: 999, lim: 1, jump: 99, score: 1e9, ...b };
+    if (!seeds.length) return { ok: false, score: 1e9, ...b };
     let best = null;
     for (const seed of seeds) {
       let prev = seed.q;
       let maxPos = seed.pos;
       let maxAng = seed.ang;
-      let maxRoll = seed.roll;
       let lim = 0;
       let jump = 0;
+      let minSin = Math.abs(Math.sin(seed.q[4]));
       let dead = false;
       for (let i = 1; i < keys.length; i++) {
         const smp = keys[i];
@@ -779,45 +820,33 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
         }
         maxPos = Math.max(maxPos, r.pos);
         maxAng = Math.max(maxAng, r.ang);
-        maxRoll = Math.max(maxRoll, r.roll);
         lim += r.limit;
         jump += r.step || 0;
+        minSin = Math.min(minSin, Math.abs(Math.sin(r.q[4])));
         prev = r.q;
         if (!r.ok && (maxPos > 30 || maxAng > 35 || (r.step || 0) > 1.05)) {
           dead = true;
           break;
         }
       }
-      const ok = !dead && maxPos <= 2 && maxAng <= 3 && lim === 0;
-      const score = (ok ? 0 : 1e6) + maxPos * 6 + maxAng * 4 + maxRoll * 0.05 + jump + lim * 20;
-      if (!best || score < best.score) best = { ok, maxPos, maxAng, maxRoll, lim, jump, score };
+      const ok = !dead && maxPos <= GATE.pos && maxAng <= GATE.ang && lim === 0 && minSin >= GATE.minSin;
+      const score = (ok ? 0 : 1e6) + maxPos * 6 + maxAng * 4 + jump + lim * 20 + Math.max(0, GATE.minSin + 0.1 - minSin) * 60;
+      if (!best || score < best.score) best = { ok, score };
     }
     return { ...best, ...b };
   }
 
   function solveChain(samples, prev0) {
     let prev = prev0.slice();
-    let maxPos = 0;
-    let maxAng = 0;
-    let maxRoll = 0;
-    let lim = 0;
-    let maxStep = 0;
     for (let si = 0; si < samples.length; si++) {
       const smp = samples[si];
       const r = world.arm.solvePose(smp.p, _aim.copy(smp.n).negate(), smp.t, prev);
-      if (!r) return null;
+      if (!r) return { failed: true, failedAt: si };
       smp.q = r.q.slice();
-      maxPos = Math.max(maxPos, r.pos);
-      maxAng = Math.max(maxAng, r.ang);
-      maxRoll = Math.max(maxRoll, r.roll);
-      lim += r.limit;
-      maxStep = Math.max(maxStep, r.step || 0);
-      if (!r.ok) {
-        return { maxPos, maxAng, maxRoll, lim, maxStep, qLast: r.q.slice(), n: samples.length, failed: true, failedAt: si };
-      }
+      if (!r.ok) return { failed: true, failedAt: si };
       prev = r.q;
     }
-    return { maxPos, maxAng, maxRoll, lim, maxStep, qLast: prev.slice(), n: samples.length };
+    return { failed: false, qLast: prev.slice() };
   }
 
   function applyBase(b) {
@@ -826,16 +855,98 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     world.arm.root.updateMatrixWorld(true);
   }
 
-  function chainAccept(chain, qH, qE) {
-    if (!chain) return null;
-    const pos = Math.max(chain.maxPos, qH ? qH.pos : 999, qE ? qE.pos : 999);
-    const ang = Math.max(chain.maxAng, qH ? qH.ang : 999, qE ? qE.ang : 999);
-    const lim = chain.lim + (qH ? qH.limit : 1) + (qE ? qE.limit : 1);
-    const step = Math.max(chain.maxStep, qH ? qH.step || 0 : 99, qE ? qE.step || 0 : 99);
-    const hoverOk = qH && qH.ok;
-    const endOk = qE && qE.ok;
-    const ok = pos <= 2 && ang <= 3 && lim === 0 && step <= 1.05 && hoverOk && endOk;
-    return { ok, pos, ang, lim, step, roll: chain.maxRoll };
+  function targetOf(smp, outP, outN) {
+    if (smp.contact) {
+      part.point(smp.u, smp.v, outP);
+      part.normal(smp.u, smp.v, outN).normalize();
+    } else {
+      outP.copy(smp.p);
+      outN.copy(smp.n);
+    }
+  }
+
+  function jointDelta(a, b) {
+    let d = 0;
+    for (let j = 0; j < 6; j++) d = Math.max(d, Math.abs(a[j] - b[j]));
+    return d;
+  }
+
+  /* Pose error halfway between two solved samples, with interpolated joints. */
+  function midError(a, b) {
+    for (let j = 0; j < 6; j++) _qm[j] = (a.q[j] + b.q[j]) / 2;
+    world.arm.setJoints(_qm);
+    if (a.contact && b.contact) {
+      const u = (a.u + b.u) / 2;
+      const v = (a.v + b.v) / 2;
+      part.point(u, v, _tp);
+      part.normal(u, v, _tn).normalize();
+    } else {
+      _tp.copy(a.p).lerp(b.p, 0.5);
+      _tn.copy(a.n).lerp(b.n, 0.5).normalize();
+    }
+    return world.arm.measurePose(_tp, _tn.negate(), null);
+  }
+
+  function refineChain(samples) {
+    const out = [samples[0]];
+    let fail = null;
+    const split = (a, b, depth) => {
+      let bad = jointDelta(a.q, b.q) > GATE.segStep;
+      if (!bad) {
+        const m = midError(a, b);
+        bad = m.ang > GATE.midAng || m.pos > GATE.midPos;
+      }
+      if (bad && depth < 10) {
+        const mid = zoneMidSample(part, a, b);
+        if (mid) {
+          const r = world.arm.solvePose(mid.p, _aim.copy(mid.n).negate(), mid.tHint || a.t, a.q);
+          if (r && r.ok) {
+            mid.q = r.q.slice();
+            mid.t = (mid.tHint || a.t).clone();
+            split(a, mid, depth + 1);
+            split(mid, b, depth + 1);
+            return;
+          }
+          if (!fail) fail = { u: mid.u, v: mid.v, kind: mid.kind };
+        }
+      }
+      out.push(b);
+    };
+    for (let i = 1; i < samples.length; i++) split(out[out.length - 1], samples[i], 0);
+    return { samples: out, fail };
+  }
+
+  /* Worst errors of a solved path, against the exact surface. */
+  function measurePath(samples, qH, qE) {
+    const m = { ang: 0, pos: 0, angMid: 0, posMid: 0, step: 0, minSin: 1, lim: 0 };
+    for (let i = 0; i < samples.length; i++) {
+      const smp = samples[i];
+      world.arm.setJoints(smp.q);
+      targetOf(smp, _tp, _tn);
+      const e = world.arm.measurePose(_tp, _tn.negate(), null);
+      m.ang = Math.max(m.ang, e.ang);
+      m.pos = Math.max(m.pos, e.pos);
+      m.minSin = Math.min(m.minSin, Math.abs(Math.sin(smp.q[4])));
+      m.lim += limitOver(smp.q);
+      if (i > 0) {
+        m.step = Math.max(m.step, jointDelta(samples[i - 1].q, smp.q));
+        const e2 = midError(samples[i - 1], smp);
+        m.angMid = Math.max(m.angMid, e2.ang);
+        m.posMid = Math.max(m.posMid, e2.pos);
+      }
+    }
+    for (const q of [qH?.q, qE?.q]) {
+      if (!q) continue;
+      m.minSin = Math.min(m.minSin, Math.abs(Math.sin(q[4])));
+      m.lim += limitOver(q);
+    }
+    return m;
+  }
+
+  function limitOver(q) {
+    let e = 0;
+    for (let j = 0; j < 6; j++) e += Math.max(0, JOINT_LIMITS[j][0] - q[j], q[j] - JOINT_LIMITS[j][1]);
+    return e;
   }
 
   function solveStandoff(sample, prev) {
@@ -851,15 +962,19 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
 
   function finishOnBase(b, samples, prev0) {
     applyBase(b);
-    const first = samples[0];
-    const last = samples[samples.length - 1];
-    const qH = solveStandoff(first, prev0);
+    const qH = solveStandoff(samples[0], prev0);
     const chain = solveChain(samples, qH && qH.ok ? qH.q : prev0);
-    if (!chain) return null;
-    const qE = solveStandoff(last, chain.qLast);
-    const judged = chainAccept(chain, qH, qE);
-    if (!judged) return null;
-    return { judged, chain, qH, qE, b };
+    if (chain.failed) {
+      const smp = samples[chain.failedAt];
+      return { ok: false, bad: 1e6 - chain.failedAt, b, failedAt: { u: smp.u, v: smp.v, kind: smp.kind } };
+    }
+    const refined = refineChain(samples);
+    const qE = solveStandoff(refined.samples[refined.samples.length - 1], chain.qLast);
+    const m = measurePath(refined.samples, qH, qE);
+    const ok =
+      !refined.fail && !!(qH && qH.ok) && !!(qE && qE.ok) && m.ang <= GATE.ang && m.pos <= GATE.pos && m.angMid <= GATE.ang && m.posMid <= GATE.pos && m.step <= GATE.segStep + 1e-9 && m.minSin >= GATE.minSin && m.lim === 0;
+    const bad = (refined.fail ? 1000 : 0) + Math.max(0, m.ang - GATE.ang) + Math.max(0, m.angMid - GATE.ang) + Math.max(0, m.pos - GATE.pos) + Math.max(0, m.posMid - GATE.pos) + Math.max(0, GATE.minSin - m.minSin) * 40 + m.lim * 50;
+    return { ok, bad, b, m, qH, qE, refined, failedAt: refined.fail };
   }
 
   function placeArm(result) {
@@ -869,52 +984,53 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       .map((b) => scoreBase(b, keys))
       .sort((a, c) => a.score - c.score);
     let found = null;
-    const tries = ranked.slice(0, 8);
-    for (const b of tries) {
+    for (const b of ranked.slice(0, 16)) {
       applyBase(b);
       const first = samples[0];
       const seeds = world.arm.poseSeeds(first.p, _aim.copy(first.n).negate(), first.t);
       const starts = seeds.length ? seeds : [{ q: HOME }];
       for (const seed of starts) {
         const alt = finishOnBase(b, samples, seed.q);
-        if (!alt) continue;
-        if (!found || alt.judged.ok || alt.judged.lim + alt.judged.step < found.judged.lim + found.judged.step) found = alt;
-        if (found && found.judged.ok) break;
+        alt.seed = seed.q;
+        if (!found || alt.ok || alt.bad < found.bad) found = alt;
+        if (found.ok) break;
       }
-      if (found && found.judged.ok) break;
+      if (found && found.ok) break;
     }
-    if (!found) return { ok: false, pos: 999, ang: 999, roll: 999, limit: 1, step: 99, n: samples.length };
-    const { judged, chain, qH, qE, b } = found;
+    if (!found) return { ok: false, pos: 999, ang: 999, limit: 1, step: 99, minSin: 0, n: samples.length };
+    // Later tries overwrite joints on the shared samples: solve the chosen one again.
+    if (!found.ok) found = { ...finishOnBase(found.b, samples, found.seed), seed: found.seed };
+    const { b, m, qH, qE, refined } = found;
     applyBase(b);
-    if (qH) samples[0].q = samples[0].q || qH.q.slice();
-    result.qHover = (qH && qH.q ? qH.q : samples[0].q).slice();
-    result.qEnd = (qE && qE.q ? qE.q : chain.qLast).slice();
+    if (refined) {
+      const rebuilt = finishZoneSamples(refined.samples);
+      Object.assign(result, rebuilt, { passInfo: passInfoOf(rebuilt.samples) });
+      result.qHover = (qH && qH.q ? qH.q : result.samples[0].q).slice();
+      result.qEnd = (qE && qE.q ? qE.q : result.samples[result.samples.length - 1].q).slice();
+    }
     world.arm.setJoints(HOME);
     prevQ = HOME.slice();
-    let minSin = 1;
-    for (const s of samples) {
-      if (s.q) minSin = Math.min(minSin, Math.abs(Math.sin(s.q[4])));
-    }
-    const failed = chain.failed ? samples[chain.failedAt] : null;
+    const f = found.failedAt;
     const pose = {
-      ok: judged.ok,
-      failedAt: failed ? { i: chain.failedAt, u: +failed.u.toFixed(3), v: +failed.v.toFixed(3), kind: failed.kind } : null,
+      ok: found.ok,
+      failedAt: f ? { u: +f.u.toFixed(3), v: +f.v.toFixed(3), kind: f.kind } : null,
       hoverOk: !!(qH && qH.ok),
       endOk: !!(qE && qE.ok),
-      pos: judged.pos,
-      ang: judged.ang,
-      roll: judged.roll,
-      limit: judged.lim,
-      step: judged.step,
-      minSin,
-      n: samples.length,
+      pos: m ? m.pos : 999,
+      ang: m ? m.ang : 999,
+      posMid: m ? m.posMid : 999,
+      angMid: m ? m.angMid : 999,
+      step: m ? m.step : 99,
+      minSin: m ? m.minSin : 0,
+      limit: m ? m.lim : 1,
+      n: result.samples.length,
       x: b.x,
       y: b.y,
       z: b.z,
       ry: b.ry,
     };
     api.pose = pose;
-    api.reach = { max: judged.pos / 1000, mean: judged.pos / 1000, ang: judged.ang, ok: judged.ok, x: b.x, y: b.y, z: b.z };
+    api.reach = { max: pose.pos / 1000, ang: pose.ang, ok: pose.ok, x: b.x, y: b.y, z: b.z };
     return pose;
   }
 
@@ -927,7 +1043,6 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       showError('small');
       return;
     }
-    buildPath(result);
     const pose = placeArm(result);
     if (!pose.ok) {
       clearPath();
@@ -936,7 +1051,11 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       showError('reach');
       return;
     }
-    world.arm.root.visible = false;
+    buildPath(result);
+    // The arm waits at its rest pose, on its base, while the path draws.
+    world.arm.setJoints(HOME);
+    world.arm.setLed(false);
+    world.arm.root.visible = true;
     plan = makePlan();
     report = buildReport();
     api.plan = {
@@ -1159,7 +1278,11 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       scene.add(line);
       return line;
     };
-    debugLines = { n: mk(0xe8c547), a: mk(0xf4f1ea) };
+    const readout = document.createElement('p');
+    readout.className = 'yt-debug mono';
+    readout.hidden = true;
+    document.getElementById('xp-stage')?.append(readout);
+    debugLines = { n: mk(0xe8c547), a: mk(0xf4f1ea), readout };
   }
 
   function setLine(line, a, b) {
@@ -1174,14 +1297,26 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     line.geometry.computeBoundingSphere();
   }
 
-  function syncDebug(pos, normal) {
-    if (!debugNormals) return;
+  /*
+   * ?debug=normals: gold is the exact surface normal at the probe's (s, t),
+   * ivory is the probe axis from forward kinematics, and the readout gives
+   * the angle between them and the tip-to-surface distance.
+   */
+  function syncDebug(smp) {
+    if (!debugNormals || !smp) return;
     ensureDebug();
+    targetOf(smp, _tp, _tn);
     world.arm.toolAxes(_aim, null);
-    setLine(debugLines.n, pos, _p.copy(pos).addScaledVector(normal, 0.12));
-    setLine(debugLines.a, _tip.copy(pos).addScaledVector(_aim, -0.11), pos);
+    const tip = world.arm.tipWorld(_tip);
+    setLine(debugLines.n, _tp, _p.copy(_tp).addScaledVector(_tn, 0.12));
+    setLine(debugLines.a, _hover.copy(tip).addScaledVector(_aim, -0.11), tip);
     debugLines.n.visible = true;
     debugLines.a.visible = true;
+    const ang = (Math.acos(clamp(-_aim.dot(_tn), -1, 1)) * 180) / Math.PI;
+    const mm = tip.distanceTo(_tp) * 1000;
+    debugLines.readout.hidden = false;
+    debugLines.readout.textContent = `${smp.contact ? 'exact normal' : 'off surface'} · probe ${ang.toFixed(2)}° · tip ${mm.toFixed(2)} mm`;
+    api.debugError = { ang, mm, contact: !!smp.contact };
   }
 
   let hold = null;
@@ -1223,8 +1358,9 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     rig.recenter();
     rig.setShot(shot);
     rig.snap();
-    syncDebug(best.p, best.n);
-    const m = world.arm.measurePose(best.p, _n.copy(best.n).negate(), best.t);
+    syncDebug(best);
+    targetOf(best, _tp, _tn);
+    const m = world.arm.measurePose(_tp, _tn.negate(), best.t);
     api.parked = { u: +best.u.toFixed(3), v: +best.v.toFixed(3), pos: +m.pos.toFixed(2), ang: +m.ang.toFixed(2), roll: +m.roll.toFixed(2) };
     return api.parked;
   }
@@ -1257,7 +1393,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     if (hold) {
       world.arm.root.visible = true;
       world.arm.setJoints(hold.q);
-      syncDebug(hold.p, hold.n);
+      syncDebug(hold);
       if (!rig.isLocked) rig.setShot(shot);
       return;
     }
@@ -1291,13 +1427,13 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       if (scanT < tDescend) {
         const k = scanT < tApproach ? 0 : easeInOutCubic(clamp((scanT - tApproach) / Math.max(plan.approach, 1e-3), 0, 1));
         lerpJoints(HOME, qHover, k);
-        syncDebug(first.p, first.n);
+        syncDebug(first);
         world.arm.setLed(false);
         paintLook(0, false, false);
       } else if (scanT < tScan) {
         const k = easeInOutCubic(clamp((scanT - tDescend) / Math.max(plan.descend, 1e-3), 0, 1));
         lerpJoints(qHover, first.q, k);
-        syncDebug(first.p, first.n);
+        syncDebug(first);
         world.arm.setLed(k > 0.98);
         paintLook(0, false, false);
       } else if (scanT < tLift) {
@@ -1305,14 +1441,14 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
         const s = plan.linear ? traj.total * (tau / Math.max(plan.scan, 1e-3)) : plan.profile.sAt(tau / timeScale);
         traj.at(s, st);
         if (st.q) world.arm.setJoints(st.q);
-        syncDebug(st.p, st.n);
+        syncDebug(st);
         world.arm.setLed(!!st.contact);
         paintLook(s, !!st.contact, true);
         api.pathDraw = traj.total;
       } else if (scanT < tSettle) {
         const k = easeInOutCubic(clamp((scanT - tLift) / Math.max(plan.lift, 1e-3), 0, 1));
         lerpJoints(last.q || first.q, qEnd, k);
-        syncDebug(last.p, last.n);
+        syncDebug(last);
         world.arm.setLed(false);
         paintLook(traj.total, false, true);
       } else {
@@ -1360,8 +1496,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     } else {
       const result = computeZoneTrajectory(part, zone);
       if (result?.tooSmall) return false;
-      buildPath(result);
       const pose = placeArm(result);
+      buildPath(result);
       path.uniforms.uDraw.value = traj.total;
       path.uniforms.uAct3.value = 1;
       path.uniforms.uProbeS.value = traj.total + 1;
@@ -1470,13 +1606,50 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     });
   }
 
+  /* Fallback stills: the chosen zone in white, hidden where the part itself is in front. */
+  function renderZoneMask() {
+    rebuildZone();
+    if (!zoneMesh) return false;
+    const hidden = [];
+    scene.traverse((o) => {
+      if ((o.isMesh || o.isPoints || o.isLine || o.isSprite) && o !== part.pick && o !== zoneMesh && o.visible) {
+        hidden.push(o);
+        o.visible = false;
+      }
+    });
+    const prevPick = part.pick.material;
+    const prevZone = zoneMesh.material;
+    const black = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 3, polygonOffsetUnits: 3 });
+    const white = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+    part.pick.material = black;
+    zoneMesh.material = white;
+    const bg = scene.background;
+    const env = scene.environment;
+    scene.background = new THREE.Color(0x000000);
+    scene.environment = null;
+    stage.renderer.render(scene, stage.camera);
+    part.pick.material = prevPick;
+    zoneMesh.material = prevZone;
+    black.dispose();
+    white.dispose();
+    scene.background = bg;
+    scene.environment = env;
+    hidden.forEach((o) => {
+      o.visible = true;
+    });
+    removeZone();
+    return true;
+  }
+
   api.zone = zone;
   api.setMobile = setMobile;
+  api.renderZoneMask = renderZoneMask;
   api.frame = frame;
   api.shoot = shoot;
   api.projectZone = projectZone;
   api.handleAt = (i) => handleScreen(i);
   api.hideDress = hideDress;
+  Object.defineProperty(api, 'traj', { get: () => traj });
   api.thumbURL = thumbURL;
   api.renderMask = renderMask;
   api.selectPart = selectPart;

@@ -166,27 +166,72 @@ export function computeTrajectory() {
 const ZONE_MIN_TRAVEL = 0.05;
 const ZONE_MIN_CROSS = 0.012;
 
-function smoothPathNormals(samples) {
-  const raw = samples.map((s) => s.n.clone());
-  const acc = new THREE.Vector3();
-  for (let i = 0; i < samples.length; i++) {
-    acc.set(0, 0, 0);
-    for (let k = -2; k <= 2; k++) {
-      const j = i + k;
-      if (j < 0 || j >= samples.length) continue;
-      if (raw[j].dot(raw[i]) < 0.2) continue;
-      const w = k === 0 ? 3 : Math.abs(k) === 1 ? 2 : 1;
-      acc.addScaledVector(raw[j], w);
+/* Exact surface normals turn by at most this much between consecutive contact samples. */
+export const MAX_NORMAL_TURN_DEG = 2;
+const COS_TURN = Math.cos((MAX_NORMAL_TURN_DEG * Math.PI) / 180);
+
+/*
+ * Contact samples carry the exact surface point and normal at their (s, t);
+ * nothing is averaged. Where the exact normal turns more than
+ * MAX_NORMAL_TURN_DEG between neighbours, the segment is split at its
+ * parameter midpoint.
+ */
+function refineByNormal(samples, surface) {
+  const out = [];
+  const split = (a, b, depth) => {
+    if (depth < 8 && a.contact && b.contact && a.pass === b.pass && a.n.dot(b.n) < COS_TURN) {
+      const m = zoneMidSample(surface, a, b);
+      if (m) {
+        split(a, m, depth + 1);
+        split(m, b, depth + 1);
+        return;
+      }
     }
-    if (acc.lengthSq() > 1e-10) samples[i].n.copy(acc).normalize();
-  }
-  for (let i = 1; i < samples.length; i++) {
-    if (samples[i].n.dot(samples[i - 1].n) < 0) samples[i].n.negate();
-  }
+    out.push(b);
+  };
+  out.push(samples[0]);
+  for (let i = 1; i < samples.length; i++) split(out[out.length - 1], samples[i], 0);
+  return out;
 }
 
-function finishZoneSamples(samples) {
-  smoothPathNormals(samples);
+/*
+ * Sample halfway between a and b in (s, t). On the surface it takes the
+ * exact point and normal there; off the surface it interpolates.
+ */
+export function zoneMidSample(surface, a, b) {
+  const u = (a.u + b.u) / 2;
+  const v = (a.v + b.v) / 2;
+  const contact = a.contact && b.contact;
+  if (contact && surface.blocked?.(u, v)) return null;
+  const p = contact ? surface.point(u, v, new THREE.Vector3()) : a.p.clone().lerp(b.p, 0.5);
+  const n = contact ? surface.normal(u, v, new THREE.Vector3()).normalize() : a.n.clone().lerp(b.n, 0.5).normalize();
+  const m = {
+    p,
+    n,
+    u,
+    v,
+    X: (a.X + b.X) / 2,
+    Y: (a.Y + b.Y) / 2,
+    contact,
+    pass: a.pass,
+    kind: a.kind === b.kind ? a.kind : 'turn',
+    s: 0,
+  };
+  const ta = a.t || a.tHint;
+  const tb = b.t || b.tHint;
+  if (ta && tb) {
+    const t = ta.clone().addScaledVector(tb, ta.dot(tb) < 0 ? -1 : 1);
+    if (t.lengthSq() > 1e-10) m.tHint = t.normalize();
+  }
+  return m;
+}
+
+/*
+ * Tangents, arc length and the playback lookup for a zone path. Also used
+ * again after the arm planner inserts samples.
+ */
+export function finishZoneSamples(samples) {
+  for (let i = 0; i < samples.length; i++) samples[i].s = i ? samples[i - 1].s + samples[i].p.distanceTo(samples[i - 1].p) : 0;
   const tmp = new THREE.Vector3();
   let prevB = new THREE.Vector3(1, 0, 0);
   let prevT = new THREE.Vector3(1, 0, 0);
@@ -399,6 +444,17 @@ function makeZoneBuilder(surface) {
   return { samples, push, line, lift, passAlong, uturn };
 }
 
+/* Arc-length span of each pass, from its first sample to the start of its U-turn. */
+export function passInfoOf(samples) {
+  const info = [];
+  for (const smp of samples) {
+    const k = smp.pass ?? 0;
+    if (!info[k]) info[k] = { pass: k, s0: smp.s, s1: smp.s };
+    if (smp.kind !== 'turn') info[k].s1 = smp.s;
+  }
+  return info.filter(Boolean);
+}
+
 /* Passes are at most this fraction of the probe footprint apart, so bands overlap. */
 export const PITCH_OF_SWATH = 0.85;
 
@@ -422,22 +478,19 @@ function buildRaster(surface, alongS, a0, a1, crosses) {
   const hi = a1 - endGap / aScale;
   if (!(hi - lo > ZONE_MIN_TRAVEL / aScale)) return null;
   const bld = makeZoneBuilder(surface);
-  const passInfo = [];
   for (let k = 0; k < crosses.length; k++) {
     const c = crosses[k];
     const fwd = k % 2 === 0;
     const from = fwd ? lo : hi;
     const to = fwd ? hi : lo;
-    const sStart = bld.samples.length ? bld.samples[bld.samples.length - 1].s : 0;
     if (alongS) bld.passAlong(from, to, c, c, k);
     else bld.passAlong(c, c, from, to, k);
-    passInfo.push({ pass: k, s0: sStart, s1: bld.samples.length ? bld.samples[bld.samples.length - 1].s : sStart, dir: fwd ? 1 : -1 });
     if (k < crosses.length - 1) bld.uturn(to, c, crosses[k + 1], fwd ? 1 : -1, alongS, k);
   }
   if (bld.samples.length < 2) return null;
-  const done = finishZoneSamples(bld.samples);
+  const done = finishZoneSamples(refineByNormal(bld.samples, surface));
   if (done.contactLen < ZONE_MIN_TRAVEL * 0.8) return null;
-  done.passInfo = passInfo;
+  done.passInfo = passInfoOf(done.samples);
   done.passes = crosses.length;
   done.pitch = pitch;
   done.swath = surface.swath ?? 0.05;

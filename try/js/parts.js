@@ -448,7 +448,7 @@ function fairRadius(t) {
   return 0.058 * (1.2 - 0.55 * t);
 }
 
-function fairingPoint(s, t, out) {
+function fairLocalPoint(s, t, out) {
   const r = fairRadius(t);
   const ang = (s - 0.5) * FAIR.ang;
   const x = (t - 0.5) * FAIR.span;
@@ -460,7 +460,7 @@ function fairingPoint(s, t, out) {
   return out.set(x, y, z);
 }
 
-function fairingNormal(s, t, out) {
+function fairLocalNormal(s, t, out) {
   const r = fairRadius(t);
   const ang = (s - 0.5) * FAIR.ang;
   const ca = Math.cos(ang);
@@ -472,10 +472,28 @@ function fairingNormal(s, t, out) {
   const dtx = FAIR.span;
   const dty = 0.07 + 0.028 * Math.PI * Math.cos(t * Math.PI) + dr * sa;
   const dtz = 0.3 * t - dr * ca;
-  // ∂P/∂s × ∂P/∂t. At the nose this points forward (−z), out of the solid.
+  // ∂P/∂s × ∂P/∂t. In the local frame this points forward (−z) at the nose, out of the solid.
   out.set(dsy * dtz - dsz * dty, dsz * dtx - dsx * dtz, dsx * dty - dsy * dtx);
   if (out.lengthSq() < 1e-12) return out.set(0, 0, -1);
   return out.normalize();
+}
+
+/*
+ * Fixture: the leading edge lies nose up with its span pointing at the
+ * robot (local x → world z, local −z → world +y, local y → world −x).
+ * Every probe direction around the nose then stays roughly across the
+ * forearm, clear of the J5 = 0 wrist singularity and of the J5 limit.
+ */
+const FIX = { y: 0.86, z: 0 };
+
+function fairingPoint(s, t, out) {
+  fairLocalPoint(s, t, out);
+  return out.set(-(out.y - FAIR.y), FIX.y - (out.z - FAIR.z0), out.x + FIX.z);
+}
+
+function fairingNormal(s, t, out) {
+  fairLocalNormal(s, t, out);
+  return out.set(-out.y, -out.z, out.x);
 }
 
 const FAIR_SPOTS = [
@@ -493,7 +511,7 @@ export function createFairingPart() {
   const geo = buildShell(fairingPoint, fairingNormal, 40, 36, FAIR.thick);
   const pick = mountMesh(group, geo, painted.mat);
   const mid = fairingPoint(0.5, 0.5, new THREE.Vector3());
-  addTable(group, 0, FAIR.y - 0.12, mid.z + 0.04, 0.42, 0.22);
+  addTable(group, mid.x, FIX.y - 0.16, FIX.z + 0.02, 0.26, 0.74);
   group.visible = false;
   return {
     id: 'fairing',
@@ -521,7 +539,7 @@ export function createFairingPart() {
       edge: { s0: 0.04, s1: 0.96, t0: 0, t1: 0.32 },
     },
     defaultPreset: 'center',
-    shot: { az: 0.95, el: 0.42, radius: 0.26, fov: 30 },
+    shot: { az: 0.78, el: 0.72, radius: 0.36, fov: 30 },
     focus(out = new THREE.Vector3()) {
       return fairingPoint(0.5, 0.5, out);
     },

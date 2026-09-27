@@ -57,6 +57,22 @@ export function derivePacing(world) {
 }
 
 /*
+ * Joint speed caps. Along the path no joint turns faster than SCAN_RATE, so a
+ * wrist turning near J5 = 0 slows the tool instead of snapping (0.05 rad per
+ * 60 Hz frame). Joint moves to and from the rest pose are stretched so that
+ * their easeInOutCubic peak (3 × average rate) stays under MOVE_RATE
+ * (0.15 rad per 30 Hz frame).
+ */
+export const SCAN_RATE = 3;
+export const MOVE_RATE = 4.5;
+
+export function moveDuration(qa, qb, base) {
+  let d = 0;
+  for (let j = 0; j < 6; j++) d = Math.max(d, Math.abs(qb[j] - qa[j]));
+  return Math.max(base, (3 * d) / MOVE_RATE);
+}
+
+/*
  * Time along a zone path at the act speed: cumulative seconds per sample,
  * so a long pass takes longer than a short one.
  */
@@ -66,9 +82,16 @@ export function timeProfile(traj, pacing, spots) {
   const near = (smp) => spots.map((sp) => sp.at.distanceTo(smp.p));
   const tCum = new Float32Array(samples.length);
   for (let i = 1; i < samples.length; i++) {
+    const a = samples[i - 1];
     const b = samples[i];
-    const ds = b.s - samples[i - 1].s;
-    tCum[i] = tCum[i - 1] + ds / (pacing.vScan * speedFactor(b, firstPassEnd, near));
+    const ds = b.s - a.s;
+    let dt = ds / (pacing.vScan * speedFactor(b, firstPassEnd, near));
+    if (a.q && b.q) {
+      let dq = 0;
+      for (let j = 0; j < 6; j++) dq = Math.max(dq, Math.abs(b.q[j] - a.q[j]));
+      dt = Math.max(dt, dq / SCAN_RATE);
+    }
+    tCum[i] = tCum[i - 1] + dt;
   }
   const duration = tCum[samples.length - 1] || 0;
   function sAt(tau) {
