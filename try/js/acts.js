@@ -174,7 +174,7 @@ export const ACTS = [
     shot(ctx, t) {
       const k = easeInOutSine(invLerp(0, 6, t));
       if (ctx.mobile) {
-        return shot(0, 0.86, 0.02, lerp(0.02, 0.1, k), 1.1, 0.58, { offY: 0.24, omega: 1.9 });
+        return shot(0, 0.86, 0.02, lerp(0.02, 0.1, k), 1.1, 0.58, { offY: 0.14, omega: 1.9 });
       }
       return shot(0, 0.86, 0.0, lerp(0.0, 0.1, k), 1.12, 0.62, { offX: 0.15, frameW: 0.68, omega: 1.9 });
     },
