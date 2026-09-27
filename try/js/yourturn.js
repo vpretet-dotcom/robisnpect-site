@@ -28,7 +28,7 @@ function useHandles() {
   return !coarse && window.innerWidth > 720;
 }
 
-export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fast }) {
+export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fast, debugNormals = false }) {
   const { scene } = stage;
   const panelPart = createPanelPart(world.panel);
   const factories = {
@@ -240,6 +240,11 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
 
   function leave() {
     if (!api.active) return;
+    hold = null;
+    if (debugLines) {
+      debugLines.n.visible = false;
+      debugLines.a.visible = false;
+    }
     api.active = false;
     root.classList.remove('is-turn');
     clearPath();
@@ -270,6 +275,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
 
   function showPick() {
     if (!api.active) enter();
+    hold = null;
     clearPath();
     hideError();
     world.arm.root.visible = false;
@@ -286,12 +292,17 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
 
   function hideError() {
     api.tooSmall = false;
+    api.outOfReach = false;
     if (dom.error) dom.error.hidden = true;
   }
 
-  function showError() {
-    api.tooSmall = true;
-    if (dom.error) dom.error.hidden = false;
+  function showError(kind) {
+    api.tooSmall = kind !== 'reach';
+    api.outOfReach = kind === 'reach';
+    if (dom.error) {
+      dom.error.hidden = false;
+      dom.error.textContent = kind === 'reach' ? copy?.outOfReach || 'Zone out of reach' : copy?.tooSmall || '';
+    }
   }
 
   async function selectPart(id) {
@@ -631,73 +642,205 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     const stampU = (part.swath || 0.05) / part.lengthS;
     const stampV = (part.swath || 0.05) / part.lengthT;
     coverage = createCoverageUV(stage.renderer, traj, {
-      width: 640,
-      height: 480,
-      stampU: clamp(stampU, 0.02, 0.2),
-      stampV: clamp(stampV, 0.02, 0.22),
+      width: 1024,
+      height: 768,
+      stampU: clamp(stampU, 0.02, 0.22),
+      stampV: clamp(stampV, 0.02, 0.24),
     });
   }
 
-  function placeArm(result) {
-    const samples = result.samples.filter((s) => s.contact);
-    const picks = [];
-    const step = Math.max(1, Math.floor(samples.length / 10));
-    for (let i = 0; i < samples.length; i += step) picks.push(samples[i]);
-    if (!picks.length) picks.push(result.samples[0]);
+  function keySamples(samples) {
+    const src = samples.filter((s) => s.contact);
+    const list = src.length ? src : samples;
+    const n = Math.min(12, list.length);
+    const out = [];
+    for (let i = 0; i < n; i++) out.push(list[Math.round((i * (list.length - 1)) / Math.max(1, n - 1))]);
+    return out;
+  }
+
+  function baseList() {
     const bases = [];
-    for (const z of [-0.95, -1.15, -1.35, -1.55]) {
-      for (const y of [0.28, 0.46, 0.64]) {
-        for (const x of [-0.35, -0.12, 0.12, 0.35]) bases.push({ x, y, z, ry: -Math.PI / 2 });
-      }
-    }
-    let best = null;
-    const limits = [
-      [-2.9, 2.9],
-      [-1.35, 1.7],
-      [-2.3, 1.4],
-      [-3.1, 3.1],
-      [-2.25, 2.25],
-      [-3.4, 3.4],
-    ];
-    for (const b of bases) {
-      world.arm.root.position.set(b.x, b.y, b.z);
-      world.arm.root.rotation.y = b.ry;
-      world.arm.root.updateMatrixWorld(true);
-      let sum = 0;
-      let max = 0;
-      let pen = 0;
-      for (const smp of picks) {
-        const q = world.arm.solve(smp.p, _aim.copy(smp.n).negate(), qbuf);
-        for (let i = 0; i < 6; i++) {
-          if (q[i] < limits[i][0] || q[i] > limits[i][1]) pen += 0.05;
+    for (const z of [-0.85, -1.15, -1.45]) {
+      for (const y of [0.32, 0.55, 0.82]) {
+        for (const x of [-0.28, 0.05, 0.32]) {
+          for (const ry of [-Math.PI / 2, -Math.PI / 2 + 0.4]) bases.push({ x, y, z, ry });
         }
-        world.arm.setJoints(q);
-        const err = world.arm.tipWorld(_tip).distanceTo(smp.p);
-        sum += err;
-        if (err > max) max = err;
       }
-      const score = sum / picks.length + max * 2 + pen;
-      if (!best || score < best.score) best = { score, max, mean: sum / picks.length, ...b };
     }
-    world.arm.root.position.set(best.x, best.y, best.z);
-    world.arm.root.rotation.y = best.ry;
+    return bases;
+  }
+
+  function scoreBase(b, keys) {
+    applyBase(b);
+    const first = keys[0];
+    const seeds = world.arm.poseSeeds(first.p, _aim.copy(first.n).negate(), first.t);
+    if (!seeds.length) return { ok: false, maxPos: 999, maxAng: 999, maxRoll: 999, lim: 1, jump: 99, score: 1e9, ...b };
+    let best = null;
+    for (const seed of seeds) {
+      let prev = seed.q;
+      let maxPos = seed.pos;
+      let maxAng = seed.ang;
+      let maxRoll = seed.roll;
+      let lim = 0;
+      let jump = 0;
+      let dead = false;
+      for (let i = 1; i < keys.length; i++) {
+        const smp = keys[i];
+        const r = world.arm.solvePose(smp.p, _aim.copy(smp.n).negate(), smp.t, prev);
+        if (!r) {
+          dead = true;
+          break;
+        }
+        maxPos = Math.max(maxPos, r.pos);
+        maxAng = Math.max(maxAng, r.ang);
+        maxRoll = Math.max(maxRoll, r.roll);
+        lim += r.limit;
+        jump += r.step || 0;
+        prev = r.q;
+        if (!r.ok && (maxPos > 30 || maxAng > 35 || (r.step || 0) > 1.05)) {
+          dead = true;
+          break;
+        }
+      }
+      const ok = !dead && maxPos <= 2 && maxAng <= 3 && lim === 0;
+      const score = (ok ? 0 : 1e6) + maxPos * 6 + maxAng * 4 + maxRoll * 0.05 + jump + lim * 20;
+      if (!best || score < best.score) best = { ok, maxPos, maxAng, maxRoll, lim, jump, score };
+    }
+    return { ...best, ...b };
+  }
+
+  function solveChain(samples, prev0) {
+    let prev = prev0.slice();
+    let maxPos = 0;
+    let maxAng = 0;
+    let maxRoll = 0;
+    let lim = 0;
+    let maxStep = 0;
+    for (let si = 0; si < samples.length; si++) {
+      const smp = samples[si];
+      const r = world.arm.solvePose(smp.p, _aim.copy(smp.n).negate(), smp.t, prev);
+      if (!r) return null;
+      smp.q = r.q.slice();
+      maxPos = Math.max(maxPos, r.pos);
+      maxAng = Math.max(maxAng, r.ang);
+      maxRoll = Math.max(maxRoll, r.roll);
+      lim += r.limit;
+      maxStep = Math.max(maxStep, r.step || 0);
+      if (!r.ok) {
+        return { maxPos, maxAng, maxRoll, lim, maxStep, qLast: r.q.slice(), n: samples.length, failed: true };
+      }
+      prev = r.q;
+    }
+    return { maxPos, maxAng, maxRoll, lim, maxStep, qLast: prev.slice(), n: samples.length };
+  }
+
+  function applyBase(b) {
+    world.arm.root.position.set(b.x, b.y, b.z);
+    world.arm.root.rotation.y = b.ry;
     world.arm.root.updateMatrixWorld(true);
+  }
+
+  function chainAccept(chain, qH, qE) {
+    if (!chain) return null;
+    const pos = Math.max(chain.maxPos, qH ? qH.pos : 999, qE ? qE.pos : 999);
+    const ang = Math.max(chain.maxAng, qH ? qH.ang : 999, qE ? qE.ang : 999);
+    const lim = chain.lim + (qH ? qH.limit : 1) + (qE ? qE.limit : 1);
+    const step = Math.max(chain.maxStep, qH ? qH.step || 0 : 99, qE ? qE.step || 0 : 99);
+    const hoverOk = qH && qH.ok;
+    const endOk = qE && qE.ok;
+    const ok = pos <= 2 && ang <= 3 && lim === 0 && step <= 1.05 && hoverOk && endOk;
+    return { ok, pos, ang, lim, step, roll: chain.maxRoll };
+  }
+
+  function solveStandoff(sample, prev) {
+    let last = null;
+    for (const dist of [0.09, 0.05, 0.025, 0.012]) {
+      const at = _hover.copy(sample.p).addScaledVector(sample.n, dist);
+      const r = world.arm.solvePose(at, _aim.copy(sample.n).negate(), sample.t, prev);
+      last = r;
+      if (r && r.ok) return r;
+    }
+    return last;
+  }
+
+  function finishOnBase(b, samples, prev0) {
+    applyBase(b);
+    const first = samples[0];
+    const last = samples[samples.length - 1];
+    const qH = solveStandoff(first, prev0);
+    const chain = solveChain(samples, qH && qH.ok ? qH.q : prev0);
+    if (!chain) return null;
+    const qE = solveStandoff(last, chain.qLast);
+    const judged = chainAccept(chain, qH, qE);
+    if (!judged) return null;
+    return { judged, chain, qH, qE, b };
+  }
+
+  function placeArm(result) {
+    const samples = result.samples;
+    const keys = keySamples(samples);
+    const ranked = baseList()
+      .map((b) => scoreBase(b, keys))
+      .sort((a, c) => a.score - c.score);
+    let found = null;
+    const tries = ranked.slice(0, 3);
+    for (const b of tries) {
+      applyBase(b);
+      const first = samples[0];
+      const seeds = world.arm.poseSeeds(first.p, _aim.copy(first.n).negate(), first.t);
+      const starts = seeds.length ? seeds : [{ q: HOME }];
+      for (const seed of starts) {
+        const alt = finishOnBase(b, samples, seed.q);
+        if (!alt) continue;
+        if (!found || alt.judged.ok || alt.judged.lim + alt.judged.step < found.judged.lim + found.judged.step) found = alt;
+        if (found && found.judged.ok) break;
+      }
+      if (found && found.judged.ok) break;
+    }
+    if (!found) return { ok: false, pos: 999, ang: 999, roll: 999, limit: 1, step: 99, n: samples.length };
+    const { judged, chain, qH, qE, b } = found;
+    applyBase(b);
+    if (qH) samples[0].q = samples[0].q || qH.q.slice();
+    result.qHover = (qH && qH.q ? qH.q : samples[0].q).slice();
+    result.qEnd = (qE && qE.q ? qE.q : chain.qLast).slice();
     world.arm.setJoints(HOME);
     prevQ = HOME.slice();
-    api.reach = { max: best.max, mean: best.mean, x: best.x, y: best.y, z: best.z };
-    return best;
+    const pose = {
+      ok: judged.ok,
+      pos: judged.pos,
+      ang: judged.ang,
+      roll: judged.roll,
+      limit: judged.lim,
+      step: judged.step,
+      n: samples.length,
+      x: b.x,
+      y: b.y,
+      z: b.z,
+      ry: b.ry,
+    };
+    api.pose = pose;
+    api.reach = { max: judged.pos / 1000, mean: judged.pos / 1000, ang: judged.ang, ok: judged.ok, x: b.x, y: b.y, z: b.z };
+    return pose;
   }
 
   function compute() {
     if (phase !== 'zone' || busy) return;
+    hold = null;
     hideError();
     const result = computeZoneTrajectory(part, zone);
     if (!result || result.tooSmall) {
-      showError();
+      showError('small');
       return;
     }
     buildPath(result);
-    placeArm(result);
+    const pose = placeArm(result);
+    if (!pose.ok) {
+      clearPath();
+      world.arm.setJoints(HOME);
+      world.arm.root.visible = false;
+      showError('reach');
+      return;
+    }
     world.arm.root.visible = false;
     drawT = 0;
     setPhase('drawing');
@@ -715,21 +858,90 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     setPhase('scan');
   }
 
-  function solveAt(pos, normal) {
-    const q = world.arm.solve(pos, _aim.copy(normal).negate(), qbuf);
-    for (let i = 0; i < 6; i++) {
-      let d = q[i] - prevQ[i];
-      while (d > Math.PI) {
-        q[i] -= Math.PI * 2;
-        d -= Math.PI * 2;
+  function lerpJoints(a, b, k) {
+    for (let i = 0; i < 6; i++) qbuf[i] = a[i] + (b[i] - a[i]) * k;
+    world.arm.setJoints(qbuf);
+  }
+
+  let debugLines = null;
+  function ensureDebug() {
+    if (!debugNormals || debugLines) return;
+    const mk = (color) => {
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));
+      const line = new THREE.Line(g, new THREE.LineBasicMaterial({ color, toneMapped: false, depthTest: false }));
+      line.frustumCulled = false;
+      line.renderOrder = 6;
+      line.visible = false;
+      scene.add(line);
+      return line;
+    };
+    debugLines = { n: mk(0xe8c547), a: mk(0xf4f1ea) };
+  }
+
+  function setLine(line, a, b) {
+    const arr = line.geometry.attributes.position.array;
+    arr[0] = a.x;
+    arr[1] = a.y;
+    arr[2] = a.z;
+    arr[3] = b.x;
+    arr[4] = b.y;
+    arr[5] = b.z;
+    line.geometry.attributes.position.needsUpdate = true;
+    line.geometry.computeBoundingSphere();
+  }
+
+  function syncDebug(pos, normal) {
+    if (!debugNormals) return;
+    ensureDebug();
+    world.arm.toolAxes(_aim, null);
+    setLine(debugLines.n, pos, _p.copy(pos).addScaledVector(normal, 0.12));
+    setLine(debugLines.a, _tip.copy(pos).addScaledVector(_aim, -0.11), pos);
+    debugLines.n.visible = true;
+    debugLines.a.visible = true;
+  }
+
+  let hold = null;
+  function park(u, v) {
+    if (!traj) return null;
+    let best = null;
+    let bd = 1e9;
+    for (const smp of traj.samples) {
+      if (!smp.q) continue;
+      const d = (smp.u - u) ** 2 + (smp.v - v) ** 2;
+      if (d < bd) {
+        bd = d;
+        best = smp;
       }
-      while (d < -Math.PI) {
-        q[i] += Math.PI * 2;
-        d += Math.PI * 2;
-      }
-      prevQ[i] = q[i];
     }
-    world.arm.setJoints(q);
+    if (!best) return null;
+    hold = best;
+    world.arm.root.visible = true;
+    world.arm.setJoints(best.q);
+    world.arm.setLed(true);
+    if (path) {
+      path.uniforms.uDraw.value = traj.total;
+      path.uniforms.uFade.value = 1;
+      path.head.visible = false;
+    }
+    const side = _p.copy(best.t).cross(best.n);
+    if (side.lengthSq() < 1e-8) side.copy(best.t);
+    side.normalize();
+    shot.target.copy(best.p);
+    shot.el = Math.asin(clamp(side.y, -0.82, 0.82));
+    shot.az = Math.atan2(side.x, side.z);
+    shot.radius = 0.32;
+    shot.fov = 26;
+    shot.offY = 0;
+    shotHold = true;
+    if (dom.yt) dom.yt.hidden = true;
+    rig.recenter();
+    rig.setShot(shot);
+    rig.snap();
+    syncDebug(best.p, best.n);
+    const m = world.arm.measurePose(best.p, _n.copy(best.n).negate(), best.t);
+    api.parked = { u: +best.u.toFixed(3), v: +best.v.toFixed(3), pos: +m.pos.toFixed(2), ang: +m.ang.toFixed(2), roll: +m.roll.toFixed(2) };
+    return api.parked;
   }
 
   function paintLook(s, contact) {
@@ -757,6 +969,13 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
   }
 
   function frame(dt) {
+    if (hold) {
+      world.arm.root.visible = true;
+      world.arm.setJoints(hold.q);
+      syncDebug(hold.p, hold.n);
+      if (!rig.isLocked) rig.setShot(shot);
+      return;
+    }
     frameShot();
     if (!rig.isLocked) rig.setShot(shot);
     if (phase === 'drawing' && traj) {
@@ -777,9 +996,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       const last = traj.samples[traj.samples.length - 1];
       if (scanT < approachT) {
         const k = easeInOutSine(scanT / approachT);
-        _hover.copy(first.p).addScaledVector(first.n, 0.09);
-        _p.copy(_hover).lerp(first.p, k);
-        solveAt(_p, first.n);
+        lerpJoints(traj.qHover || first.q, first.q, k);
+        syncDebug(first.p, first.n);
         world.arm.setLed(k > 0.92);
         paintLook(0, false);
         path.head.visible = false;
@@ -787,15 +1005,15 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
         const k = easeInOutSine((scanT - approachT) / scanDur);
         const s = traj.total * k;
         traj.at(s, st);
-        solveAt(st.p, st.n);
+        if (st.q) world.arm.setJoints(st.q);
+        syncDebug(st.p, st.n);
         world.arm.setLed(!!st.contact);
         paintLook(s, !!st.contact);
         api.pathDraw = traj.total;
       } else {
         const k = easeInOutSine(Math.min(1, (scanT - scanEnd) / retractT));
-        _end.copy(last.p).addScaledVector(last.n, 0.09);
-        _p.copy(last.p).lerp(_end, k);
-        solveAt(_p, last.n);
+        lerpJoints(last.q || first.q, traj.qEnd || last.q || first.q, k);
+        syncDebug(last.p, last.n);
         world.arm.setLed(false);
         paintLook(traj.total, false);
         if (k >= 1) setPhase('done');
@@ -879,5 +1097,6 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
   api.selectPart = selectPart;
   api.setPreset = setPreset;
   api.compute = compute;
+  api.park = park;
   return api;
 }

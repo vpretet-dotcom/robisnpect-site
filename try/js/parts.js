@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { P, surfacePoint, surfaceNormal, holeLevel, RAMP } from './panel.js';
+import { P, surfacePoint, radiusAt, holeLevel, RAMP } from './panel.js';
 import { patchMaterial, GOLD_LIN } from './fx.js';
 import { mulberry32 } from './util.js';
 
@@ -396,12 +396,21 @@ function fairingPoint(s, t, out) {
 }
 
 function fairingNormal(s, t, out) {
-  numericNormal(fairingPoint, s, t, out);
-  fairingPoint(s, t, _p);
-  _q.set(_p.x, FAIR.y, _p.z + 0.2);
-  _r.copy(_p).sub(_q);
-  if (out.dot(_r) < 0) out.negate();
-  return out;
+  const r = fairRadius(t);
+  const ang = (s - 0.5) * FAIR.ang;
+  const ca = Math.cos(ang);
+  const sa = Math.sin(ang);
+  const dr = -0.058 * 0.55;
+  const dsx = 0;
+  const dsy = r * ca * FAIR.ang;
+  const dsz = r * sa * FAIR.ang;
+  const dtx = FAIR.span;
+  const dty = 0.07 + 0.028 * Math.PI * Math.cos(t * Math.PI) + dr * sa;
+  const dtz = 0.3 * t - dr * ca;
+  // ∂P/∂s × ∂P/∂t. At the nose this points forward (−z), out of the solid.
+  out.set(dsy * dtz - dsz * dty, dsz * dtx - dsx * dtz, dsx * dty - dsy * dtx);
+  if (out.lengthSq() < 1e-12) return out.set(0, 0, -1);
+  return out.normalize();
 }
 
 export function createFairingPart() {
@@ -416,15 +425,15 @@ export function createFairingPart() {
   return {
     id: 'fairing',
     kind: 'raster',
-    // Span is the long curve (sweep, dihedral, shrinking radius). Passes
-    // follow it; the short wrap around the nose is the cross-track.
-    along: 't',
+    // Passes wrap the leading edge so the probe axis follows the normal
+    // from flank to crest to flank. The span is the cross-track.
+    along: 's',
     lengthS: measureLength(fairingPoint, 's'),
     lengthT: measureLength(fairingPoint, 't'),
-    edge: 0.01,
-    swath: 0.026,
-    lift: 0.04,
-    maxPasses: 6,
+    edge: 0.006,
+    swath: 0.045,
+    lift: 0.035,
+    maxPasses: 4,
     point: fairingPoint,
     normal: fairingNormal,
     group,
@@ -433,8 +442,8 @@ export function createFairingPart() {
     ownsGroup: true,
     presets: {
       all: { s0: 0, s1: 1, t0: 0, t1: 1 },
-      center: { s0: 0.1, s1: 0.9, t0: 0.22, t1: 0.78 },
-      edge: { s0: 0.08, s1: 0.92, t0: 0, t1: 0.36 },
+      center: { s0: 0.02, s1: 0.98, t0: 0.3, t1: 0.7 },
+      edge: { s0: 0.04, s1: 0.96, t0: 0, t1: 0.32 },
     },
     defaultPreset: 'center',
     shot: { az: 0.95, el: 0.42, radius: 0.52, fov: 30 },
@@ -444,9 +453,27 @@ export function createFairingPart() {
   };
 }
 
+function panelNormal(s, t, out) {
+  const th = (s - 0.5) * P.THETA;
+  const R = radiusAt(t);
+  const dR = P.R0 * P.TAPER;
+  const q = 2 * t - 1;
+  const sth = Math.sin(th);
+  const cth = Math.cos(th);
+  const dsx = R * cth * P.THETA;
+  const dsy = -R * sth * P.THETA;
+  const dsz = 0;
+  const dtx = dR * sth;
+  const dty = dR * cth - dR - 4 * P.BOW * q;
+  const dtz = P.LZ;
+  out.set(dty * dsz - dtz * dsy, dtz * dsx - dtx * dsz, dtx * dsy - dty * dsx);
+  if (out.lengthSq() < 1e-12) return out.set(0, 1, 0);
+  return out.normalize();
+}
+
 export function createPanelPart(panel) {
   const point = (s, t, out) => surfacePoint(s, t, out);
-  const normal = (s, t, out) => surfaceNormal(s, t, out);
+  const normal = (s, t, out) => panelNormal(s, t, out);
   return {
     id: 'panel',
     kind: 'raster',

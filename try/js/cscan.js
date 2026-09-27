@@ -128,7 +128,7 @@ export function createCoverage(renderer, traj, { width = 1024, maxStamps = 4096 
  * Coverage in parametric (s, t) UV for a zone trajectory.
  * Samples expose `u` / `v`. The scripted panel painter above is unchanged.
  */
-export function createCoverageUV(renderer, traj, { width = 512, height = 512, stampU = 0.06, stampV = 0.06, maxStamps = 4096 } = {}) {
+export function createCoverageUV(renderer, traj, { width = 1024, height = 768, stampU = 0.06, stampV = 0.06, maxStamps = 8192 } = {}) {
   const rt = new THREE.WebGLRenderTarget(width, height, {
     type: THREE.UnsignedByteType,
     depthBuffer: false,
@@ -158,10 +158,9 @@ export function createCoverageUV(renderer, traj, { width = 512, height = 512, st
       varying vec2 vQ; varying float vT; varying float vG;
       void main() {
         float r = length(vQ);
-        if (r > 1.0) discard;
-        float m = 1.0 - smoothstep(0.7, 1.0, r);
-        float on = step(0.03, m);
-        gl_FragColor = vec4(m, vT * on, vG * on, 1.0);
+        float m = 1.0 - smoothstep(0.4, 1.0, r);
+        if (m < 0.035) discard;
+        gl_FragColor = vec4(m, vT, 1.0, 1.0);
       }`,
     blending: THREE.CustomBlending,
     blendEquation: THREE.MaxEquation,
@@ -177,10 +176,12 @@ export function createCoverageUV(renderer, traj, { width = 512, height = 512, st
   scene.add(mesh);
 
   const m4 = new THREE.Matrix4();
-  const gains = [];
-  const nPass = Math.max(traj.passes || 8, 8);
-  for (let k = 0; k < nPass; k++) gains.push(0.5 + 0.5 * Math.sin(k * 12.9898 + 4.1414) * Math.cos(k * 3.7));
+  const qBrush = new THREE.Quaternion();
+  const sBrush = new THREE.Vector3();
+  const pBrush = new THREE.Vector3();
+  const zAxis = new THREE.Vector3(0, 0, 1);
   const state = {};
+  const ahead = {};
   let painted = 0;
   const step = 0.007;
   const prevColor = new THREE.Color();
@@ -220,13 +221,31 @@ export function createCoverageUV(renderer, traj, { width = 512, height = 512, st
     if (sTarget <= painted) return;
     let n = 0;
     let s = painted === 0 ? 0 : painted + step;
+    const pitchS = traj.pitchS || stampU;
+    const pitchT = traj.pitchT || stampV;
     for (; s <= sTarget; s += step) {
       traj.at(s, state);
       if (!state.contact) continue;
-      m4.makeScale(stampU, stampV, 1).setPosition(state.u, state.v, 0);
+      traj.at(Math.min(traj.total, s + step), ahead);
+      let du = ahead.u - state.u;
+      let dv = ahead.v - state.v;
+      const span = Math.hypot(du, dv);
+      if (span < 1e-6) {
+        du = 1;
+        dv = 0;
+      } else {
+        du /= span;
+        dv /= span;
+      }
+      const along = Math.max(span * 2.6, 0.01);
+      const cross = Math.max(Math.hypot(pitchS * -dv, pitchT * du) * 1.22, 0.014);
+      qBrush.setFromAxisAngle(zAxis, Math.atan2(dv, du));
+      sBrush.set(along, cross, 1);
+      pBrush.set(state.u, state.v, 0);
+      m4.compose(pBrush, qBrush, sBrush);
       mesh.setMatrixAt(n, m4);
       aTime.array[n] = s / traj.total;
-      aGain.array[n] = gains[state.pass] ?? 0.5;
+      aGain.array[n] = 1;
       n++;
       if (n >= maxStamps) {
         flush(n);

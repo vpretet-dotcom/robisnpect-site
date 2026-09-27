@@ -215,6 +215,7 @@ function start(M, stage, world, tierName) {
     copy: copy.turn,
     reduceMotion,
     fast: Q.has('ytfast'),
+    debugNormals: Q.get('debug') === 'normals',
   });
   api.turn = turn;
 

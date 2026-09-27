@@ -219,7 +219,8 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
   .xp-cta{margin-top:.8rem}
   .xp-cta-note{margin-top:.35rem;font-size:.72rem}
   .act-4 .xp-cap-t{display:none}
-  .xp-steps button{flex-direction:column;align-items:flex-start;justify-content:center;gap:.2rem;padding-right:.5rem;font-size:9px;letter-spacing:.06em}
+  .xp-steps button{flex-direction:column;align-items:flex-start;justify-content:center;gap:.12rem;padding-right:.35rem;font-size:8px;letter-spacing:.01em;line-height:1.05;white-space:normal}
+  .xp-step-t{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .xp-step-bar{right:.5rem}
   .xp-bar-in{gap:.5rem}
   .xp-play{padding:0;width:2.75rem}
@@ -275,6 +276,8 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
 .yt-note{margin:0;font-size:.85rem;line-height:1.45;color:var(--muted)}
 .yt-exits{display:flex;flex-wrap:wrap;gap:.5rem}
 .yt-exits .btn,.yt-exits .btn-ghost{flex:1 1 12rem}
+.yt-exits .btn-ghost,.yt-fallback .btn-ghost{background:transparent;color:var(--fg);border:1px solid rgba(244,241,234,.25);font-size:.75rem;font-weight:700;letter-spacing:.04em}
+.yt-exits .btn-ghost:hover,.yt-fallback .btn-ghost:hover{background:rgba(244,241,234,.08);color:var(--fg)}
 .xp.is-turn .xp-badge{opacity:1}
 
 .yt-fallback{display:none;position:absolute;inset:0;z-index:6;flex-direction:column;gap:.55rem;padding:.75rem var(--pad) .8rem;background:#050505;overflow:hidden}
@@ -301,6 +304,9 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
 .yt-fallback[data-phase="done"] [data-yt="done"]{display:flex;flex-direction:column;gap:.45rem}
 .yt-fallback .yt-thumbs{max-width:none}
 .yt-fallback .xp-badge{flex:none}
+@media(max-width:400px){
+  .xp-steps button{font-size:7px;letter-spacing:0;padding-right:.22rem;gap:.08rem}
+}
 @media(max-width:720px){
   .xp.is-turn .xp-cap,.xp.is-turn.act-1 .xp-cap,.xp.is-turn .xp-cap-t,.xp.is-turn.act-4 .xp-cap-t{display:block}
   .xp.is-turn .xp-cap-t[hidden]{display:none}

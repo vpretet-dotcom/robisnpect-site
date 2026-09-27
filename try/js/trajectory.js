@@ -166,16 +166,43 @@ export function computeTrajectory() {
 const ZONE_MIN_TRAVEL = 0.05;
 const ZONE_MIN_CROSS = 0.012;
 
+function smoothPathNormals(samples) {
+  const raw = samples.map((s) => s.n.clone());
+  const acc = new THREE.Vector3();
+  for (let i = 0; i < samples.length; i++) {
+    acc.set(0, 0, 0);
+    for (let k = -2; k <= 2; k++) {
+      const j = i + k;
+      if (j < 0 || j >= samples.length) continue;
+      if (raw[j].dot(raw[i]) < 0.2) continue;
+      const w = k === 0 ? 3 : Math.abs(k) === 1 ? 2 : 1;
+      acc.addScaledVector(raw[j], w);
+    }
+    if (acc.lengthSq() > 1e-10) samples[i].n.copy(acc).normalize();
+  }
+  for (let i = 1; i < samples.length; i++) {
+    if (samples[i].n.dot(samples[i - 1].n) < 0) samples[i].n.negate();
+  }
+}
+
 function finishZoneSamples(samples) {
+  smoothPathNormals(samples);
   const tmp = new THREE.Vector3();
   let prevB = new THREE.Vector3(1, 0, 0);
+  let prevT = new THREE.Vector3(1, 0, 0);
   for (let i = 0; i < samples.length; i++) {
     const a = samples[Math.max(i - 1, 0)].p;
     const b = samples[Math.min(i + 1, samples.length - 1)].p;
-    const T = tmp.subVectors(b, a);
     const smp = samples[i];
-    if (T.lengthSq() < 1e-12) smp.t = samples[Math.max(i - 1, 0)].t?.clone() || new THREE.Vector3(1, 0, 0);
-    else smp.t = T.clone().normalize();
+    const T = smp.tHint ? tmp.copy(smp.tHint) : tmp.subVectors(b, a);
+    if (T.lengthSq() < 1e-12) T.copy(prevT);
+    else T.normalize();
+    T.addScaledVector(smp.n, -T.dot(smp.n));
+    if (T.lengthSq() < 1e-10) T.copy(prevT);
+    else T.normalize();
+    if (i > 0 && T.dot(prevT) < 0) T.negate();
+    smp.t = T.clone();
+    prevT = smp.t;
     const side = new THREE.Vector3().crossVectors(smp.t, smp.n);
     if (side.lengthSq() < 1e-8) smp.b = prevB.clone();
     else {
@@ -211,6 +238,10 @@ function finishZoneSamples(samples) {
     out.Y = a.Y + (b.Y - a.Y) * k;
     out.contact = a.contact && b.contact;
     out.pass = a.pass;
+    if (a.q && b.q) {
+      const qq = out.q || (out.q = [0, 0, 0, 0, 0, 0]);
+      for (let j = 0; j < 6; j++) qq[j] = a.q[j] + (b.q[j] - a.q[j]) * k;
+    }
     return out;
   }
   let contactLen = 0;
@@ -226,7 +257,7 @@ function makeZoneBuilder(surface) {
   let last = null;
   const p = new THREE.Vector3();
   const n = new THREE.Vector3();
-  const push = (s, t, contact, pass, kind, pos, nrm) => {
+    const push = (s, t, contact, pass, kind, pos, nrm, tHint) => {
     const pp = (pos || surface.point(s, t, p)).clone();
     const nn = (nrm || surface.normal(s, t, n)).clone().normalize();
     if (last) {
@@ -248,6 +279,7 @@ function makeZoneBuilder(surface) {
       kind,
       s: L,
     };
+    if (tHint && tHint.lengthSq() > 1e-8) last.tHint = tHint.clone().normalize();
     samples.push(last);
   };
   const line = (s0, s1, t0, t1, pass) => {
@@ -255,6 +287,14 @@ function makeZoneBuilder(surface) {
     const b = surface.point(s1, t1, new THREE.Vector3());
     const dist = a.distanceTo(b);
     const steps = Math.max(2, Math.ceil(dist / (surface.step || 0.008)));
+    const ds = s1 - s0;
+    const dt = t1 - t0;
+    const mag = Math.hypot(ds, dt) || 1;
+    const us = ds / mag;
+    const ut = dt / mag;
+    const hint = new THREE.Vector3();
+    const hintB = new THREE.Vector3();
+    const eps = 0.012;
     for (let i = 0; i <= steps; i++) {
       const k = i / steps;
       const s = s0 + (s1 - s0) * k;
@@ -268,7 +308,10 @@ function makeZoneBuilder(surface) {
         contact = false;
         kind = 'lift';
       }
-      push(s, t, contact, pass, kind, p, n);
+      surface.point(Math.min(1, Math.max(0, s + eps * us)), Math.min(1, Math.max(0, t + eps * ut)), hint);
+      surface.point(Math.min(1, Math.max(0, s - eps * us)), Math.min(1, Math.max(0, t - eps * ut)), hintB);
+      hint.sub(hintB);
+      push(s, t, contact, pass, kind, p, n, hint);
     }
   };
   const lift = (s0, s1, t0, t1, pass) => {
@@ -316,7 +359,29 @@ function makeZoneBuilder(surface) {
     }
     void alongS;
   };
-  return { samples, push, line, lift, passAlong };
+  const transit = (sA, tA, sB, tB, pass, alongS) => {
+    const h = Math.min(surface.lift || 0.04, 0.02);
+    const steps = 22;
+    const hint = new THREE.Vector3();
+    const back = new THREE.Vector3();
+    const eps = 0.015;
+    for (let i = 1; i < steps; i++) {
+      const u = i / steps;
+      const s = sA + (sB - sA) * u;
+      const t = tA + (tB - tA) * u;
+      surface.point(s, t, p);
+      surface.normal(s, t, n);
+      p.addScaledVector(n, h * Math.sin(Math.PI * u));
+      const ds = alongS ? eps : 0;
+      const dt = alongS ? 0 : eps;
+      surface.point(Math.min(1, s + ds), Math.min(1, t + dt), hint);
+      surface.point(Math.max(0, s - ds), Math.max(0, t - dt), back);
+      hint.sub(back);
+      if (hint.lengthSq() < 1e-10) hint.set(alongS ? 1 : 0, 0, alongS ? 0 : 1);
+      push(s, t, false, pass, 'transit', p, n, hint);
+    }
+  };
+  return { samples, push, line, lift, passAlong, transit };
 }
 
 export function computeZoneTrajectory(surface, zone) {
@@ -346,40 +411,32 @@ function computeRasterTrajectory(surface, zone) {
   const cross1 = alongS ? t1 : s1;
   const crossScale = alongS ? Lt : Ls;
   const dCross = nPass === 1 ? 0 : (cross1 - cross0) / (nPass - 1);
-  const naturalR = nPass === 1 ? 0 : Math.abs(dCross * crossScale) / 2;
-  // A full semicircle between passes would eat a short travel direction
-  // (leading edge, narrow edge zone). Flatten the bulge so one pass remains.
-  const rTurnM = nPass === 1 ? 0 : Math.min(naturalR, Math.max(0.006, travelLen * 0.22));
   const travelScale = alongS ? Ls : Lt;
-  const rTravel = rTurnM / travelScale;
-  const a0 = (alongS ? s0 : t0) + rTravel;
-  const a1 = (alongS ? s1 : t1) - rTravel;
+  // Passes all run the same way. The link back is a lifted transit whose
+  // shoe stays on the scan direction, so the wrist untilts instead of
+  // winding through a U-turn.
+  const a0 = alongS ? s0 : t0;
+  const a1 = alongS ? s1 : t1;
   if (a1 - a0 < ZONE_MIN_TRAVEL / travelScale) return { tooSmall: true };
 
   const bld = makeZoneBuilder(surface);
   const passInfo = [];
   for (let k = 0; k < nPass; k++) {
     const cross = cross0 + k * dCross;
-    const dir = k % 2 === 0 ? 1 : -1;
-    const from = dir > 0 ? a0 : a1;
-    const to = dir > 0 ? a1 : a0;
-    const sFrom = alongS ? from : cross;
-    const sTo = alongS ? to : cross;
-    const tFrom = alongS ? cross : from;
-    const tTo = alongS ? cross : to;
+    const sFrom = alongS ? a0 : cross;
+    const sTo = alongS ? a1 : cross;
+    const tFrom = alongS ? cross : a0;
+    const tTo = alongS ? cross : a1;
     const sStart = bld.samples.length ? bld.samples[bld.samples.length - 1].s : 0;
     bld.passAlong(sFrom, sTo, tFrom, tTo, k);
     passInfo.push({ pass: k, s0: sStart, s1: bld.samples.length ? bld.samples[bld.samples.length - 1].s : sStart });
     if (k < nPass - 1 && dCross !== 0) {
-      const steps = 16;
-      for (let i = 1; i < steps; i++) {
-        const phi = -Math.PI / 2 + (Math.PI * i) / steps;
-        const travel = to + dir * rTravel * Math.cos(phi);
-        const c = cross + dCross / 2 + (dCross / 2) * Math.sin(phi);
-        const s = alongS ? travel : c;
-        const t = alongS ? c : travel;
-        bld.push(s, t, !surface.blocked?.(s, t), k, surface.blocked?.(s, t) ? 'lift' : 'turn');
-      }
+      const next = cross0 + (k + 1) * dCross;
+      const sA = alongS ? a1 : cross;
+      const tA = alongS ? cross : a1;
+      const sB = alongS ? a0 : next;
+      const tB = alongS ? next : a0;
+      bld.transit(sA, tA, sB, tB, k, alongS);
     }
   }
   if (bld.samples.length < 2) return { tooSmall: true };
@@ -387,6 +444,10 @@ function computeRasterTrajectory(surface, zone) {
   if (done.contactLen < ZONE_MIN_TRAVEL * 0.8) return { tooSmall: true };
   done.passInfo = passInfo;
   done.passes = nPass;
+  const crossPitch = nPass <= 1 ? swath / crossScale : Math.abs(dCross);
+  const alongPitch = 0.008 / Math.max(travelScale, 1e-4);
+  done.pitchS = alongS ? alongPitch : crossPitch;
+  done.pitchT = alongS ? crossPitch : alongPitch;
   return done;
 }
 
@@ -400,33 +461,24 @@ function computeWeldTrajectory(surface, zone) {
   const offsets = surface.weldOffsets || [-0.032, -0.016, 0, 0.016, 0.032];
   const nPass = offsets.length;
   const dSM = Math.abs(offsets[1] - offsets[0]) || 0.016;
-  const rTurnM = dSM / 2;
-  const rT = rTurnM / Lt;
-  const a0 = t0 + rT;
-  const a1 = t1 - rT;
+  const a0 = t0;
+  const a1 = t1;
   if (a1 - a0 < ZONE_MIN_TRAVEL / Lt) return { tooSmall: true };
   const bld = makeZoneBuilder(surface);
   for (let k = 0; k < nPass; k++) {
     const s = 0.5 + offsets[k] / Ls;
-    const dir = k % 2 === 0 ? 1 : -1;
-    const from = dir > 0 ? a0 : a1;
-    const to = dir > 0 ? a1 : a0;
-    bld.line(s, s, from, to, k);
+    bld.line(s, s, a0, a1, k);
     if (k < nPass - 1) {
       const sNext = 0.5 + offsets[k + 1] / Ls;
-      const steps = 14;
-      for (let i = 1; i < steps; i++) {
-        const phi = -Math.PI / 2 + (Math.PI * i) / steps;
-        const t = to + dir * rT * Math.cos(phi);
-        const ss = s + ((sNext - s) / 2) * (1 + Math.sin(phi));
-        bld.push(ss, t, true, k, 'turn');
-      }
+      bld.transit(s, a1, sNext, a0, k, false);
     }
   }
   if (bld.samples.length < 2) return { tooSmall: true };
   const done = finishZoneSamples(bld.samples);
   if (done.contactLen < ZONE_MIN_TRAVEL * 0.8) return { tooSmall: true };
   done.passes = nPass;
+  done.pitchS = dSM / Math.max(Ls, 1e-4);
+  done.pitchT = 0.008 / Math.max(Lt, 1e-4);
   return done;
 }
 
