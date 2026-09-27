@@ -123,3 +123,126 @@ export function createCoverage(renderer, traj, { width = 1024, maxStamps = 4096 
   clear();
   return { texture: rt.texture, paintTo, clear, get painted() { return painted; }, rt };
 }
+
+/*
+ * Coverage in parametric (s, t) UV for a zone trajectory.
+ * Samples expose `u` / `v`. The scripted panel painter above is unchanged.
+ */
+export function createCoverageUV(renderer, traj, { width = 512, height = 512, stampU = 0.06, stampV = 0.06, maxStamps = 4096 } = {}) {
+  const rt = new THREE.WebGLRenderTarget(width, height, {
+    type: THREE.UnsignedByteType,
+    depthBuffer: false,
+    stencilBuffer: false,
+    generateMipmaps: false,
+    minFilter: THREE.LinearFilter,
+    magFilter: THREE.LinearFilter,
+  });
+  const scene = new THREE.Scene();
+  const cam = new THREE.OrthographicCamera(0, 1, 1, 0, -1, 1);
+  const geo = new THREE.PlaneGeometry(1, 1);
+  const aTime = new THREE.InstancedBufferAttribute(new Float32Array(maxStamps), 1);
+  const aGain = new THREE.InstancedBufferAttribute(new Float32Array(maxStamps), 1);
+  aTime.setUsage(THREE.DynamicDrawUsage);
+  aGain.setUsage(THREE.DynamicDrawUsage);
+  geo.setAttribute('aTime', aTime);
+  geo.setAttribute('aGain', aGain);
+  const mat = new THREE.ShaderMaterial({
+    vertexShader: /* glsl */ `
+      attribute float aTime; attribute float aGain;
+      varying vec2 vQ; varying float vT; varying float vG;
+      void main() {
+        vQ = position.xy * 2.0; vT = aTime; vG = aGain;
+        gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(position, 1.0);
+      }`,
+    fragmentShader: /* glsl */ `
+      varying vec2 vQ; varying float vT; varying float vG;
+      void main() {
+        float r = length(vQ);
+        if (r > 1.0) discard;
+        float m = 1.0 - smoothstep(0.7, 1.0, r);
+        float on = step(0.03, m);
+        gl_FragColor = vec4(m, vT * on, vG * on, 1.0);
+      }`,
+    blending: THREE.CustomBlending,
+    blendEquation: THREE.MaxEquation,
+    blendSrc: THREE.OneFactor,
+    blendDst: THREE.OneFactor,
+    depthTest: false,
+    depthWrite: false,
+  });
+  const mesh = new THREE.InstancedMesh(geo, mat, maxStamps);
+  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  mesh.count = 0;
+  mesh.frustumCulled = false;
+  scene.add(mesh);
+
+  const m4 = new THREE.Matrix4();
+  const gains = [];
+  const nPass = Math.max(traj.passes || 8, 8);
+  for (let k = 0; k < nPass; k++) gains.push(0.5 + 0.5 * Math.sin(k * 12.9898 + 4.1414) * Math.cos(k * 3.7));
+  const state = {};
+  let painted = 0;
+  const step = 0.007;
+  const prevColor = new THREE.Color();
+
+  function clear() {
+    const a = renderer.getClearAlpha();
+    renderer.getClearColor(prevColor);
+    const prevRT = renderer.getRenderTarget();
+    renderer.setRenderTarget(rt);
+    renderer.setClearColor(0x000000, 0);
+    renderer.clear(true, false, false);
+    renderer.setRenderTarget(prevRT);
+    renderer.setClearColor(prevColor, a);
+    painted = 0;
+  }
+
+  function flush(n) {
+    if (!n) return;
+    mesh.count = n;
+    mesh.instanceMatrix.needsUpdate = true;
+    aTime.needsUpdate = true;
+    aGain.needsUpdate = true;
+    const prevRT = renderer.getRenderTarget();
+    const auto = renderer.autoClear;
+    renderer.autoClear = false;
+    renderer.setRenderTarget(rt);
+    renderer.render(scene, cam);
+    renderer.setRenderTarget(prevRT);
+    renderer.autoClear = auto;
+    mesh.count = 0;
+  }
+
+  function paintTo(sTarget) {
+    if (!traj || !traj.total) return;
+    sTarget = Math.min(sTarget, traj.total);
+    if (sTarget < painted - 1e-4) clear();
+    if (sTarget <= painted) return;
+    let n = 0;
+    let s = painted === 0 ? 0 : painted + step;
+    for (; s <= sTarget; s += step) {
+      traj.at(s, state);
+      if (!state.contact) continue;
+      m4.makeScale(stampU, stampV, 1).setPosition(state.u, state.v, 0);
+      mesh.setMatrixAt(n, m4);
+      aTime.array[n] = s / traj.total;
+      aGain.array[n] = gains[state.pass] ?? 0.5;
+      n++;
+      if (n >= maxStamps) {
+        flush(n);
+        n = 0;
+      }
+    }
+    flush(n);
+    painted = sTarget;
+  }
+
+  function dispose() {
+    rt.dispose();
+    geo.dispose();
+    mat.dispose();
+  }
+
+  clear();
+  return { texture: rt.texture, paintTo, clear, dispose, get painted() { return painted; }, rt };
+}

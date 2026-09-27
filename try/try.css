@@ -107,7 +107,7 @@
 /* Bottom act strip (home .specs idiom) */
 .xp-bar{position:absolute;left:0;right:0;bottom:0;z-index:4;height:var(--bar-h);border-top:1px solid rgba(36,33,28,.9);background:rgba(7,7,7,.74);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .xp-bar-in{height:100%;display:flex;align-items:stretch;gap:1rem}
-.xp-steps{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;padding:0;list-style:none}
+.xp-steps{flex:1;min-width:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin:0;padding:0;list-style:none}
 .xp-steps li{min-width:0}
 .xp-steps button{position:relative;display:flex;align-items:center;gap:.6rem;width:100%;height:100%;padding:0 .9rem 0 0;
   font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:left;white-space:nowrap;overflow:hidden}
@@ -234,4 +234,77 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
 @media(prefers-reduced-motion:reduce){
   .xp-cap,.xp-hero,.xp-ascan,.xp-report,.xp-log li,.xp-load{transition:none}
   .xp-status[data-kind=lab]::before{animation:none}
+  .yt-thumb.is-busy{animation:none}
+  .ytf-after{transition:none}
+}
+
+/* Your turn — same type, gold, and borders as the rest of the stage. */
+.xp.is-turn .xp-hero{opacity:0;transform:translateY(12px);pointer-events:none}
+.xp.is-turn .xp-cap{display:block}
+.xp.is-turn .xp-cap-t{display:block}
+.xp.is-turn .xp-cap-t[hidden]{display:none}
+.xp.is-turn .xp-log,.xp.is-turn .xp-ascan,.xp.is-turn .xp-hint{display:none!important}
+.xp.is-turn .xp-play{visibility:hidden;pointer-events:none}
+.xp.is-turn .xp-status{white-space:normal}
+.yt{position:absolute;left:0;right:0;bottom:0;z-index:4;pointer-events:auto;display:flex;flex-direction:column;align-items:flex-start;gap:.55rem;max-width:100%;max-height:100%;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+.yt[hidden]{display:none!important}
+.yt [data-yt]{display:none;width:100%;max-width:36rem}
+.yt[data-phase="pick"] [data-yt="pick"],
+.yt[data-phase="zone"] [data-yt="zone"],
+.yt[data-phase="done"] [data-yt="done"]{display:flex;flex-direction:column;gap:.55rem}
+.yt-thumbs{display:flex;flex-wrap:nowrap;gap:.4rem;width:100%;max-width:36rem}
+.yt-thumb{position:relative;flex:1 1 0;min-width:0;max-width:9.5rem;display:flex;flex-direction:column;gap:.28rem;padding:.28rem;border:1px solid var(--line);background:rgba(7,7,7,.82);text-align:left;color:var(--fg)}
+.yt-thumb.on{border-color:var(--gold)}
+.yt-thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#0c0c0c}
+.yt-thumb-name{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:.78rem;line-height:.95;letter-spacing:-.01em;text-transform:uppercase;overflow-wrap:anywhere}
+.yt-thumb-tag{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.48rem;line-height:1.25;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);overflow-wrap:anywhere}
+.yt-thumb-load{display:none;position:absolute;left:.28rem;right:.28rem;top:.28rem;aspect-ratio:4/3;align-items:flex-end;padding:.25rem;background:rgba(5,5,5,.55);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.48rem;line-height:1.25;letter-spacing:.04em;text-transform:uppercase;color:var(--gold)}
+.yt-thumb.is-busy .yt-thumb-load{display:flex}
+.yt-thumb.is-busy{animation:ytPulse .9s ease-in-out infinite}
+@keyframes ytPulse{50%{opacity:.55;border-color:var(--gold)}}
+.yt-zones{display:flex;gap:.4rem;width:100%}
+.yt-zones button{flex:1 1 0;min-width:0;min-height:2.75rem;padding:.4rem .35rem;border:1px solid var(--line);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);line-height:1.25}
+.yt-zones button.on,.yt-zones button:hover{border-color:var(--gold);color:var(--gold)}
+.yt-weld{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;width:100%}
+.yt-weld[hidden]{display:none!important}
+.yt-weld label{display:flex;flex-direction:column;gap:.3rem;min-width:0;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.yt-weld input[type=range]{width:100%;accent-color:var(--gold);margin:0}
+.yt-error{margin:0;font-size:.82rem;line-height:1.45;color:var(--gold)}
+.yt-error[hidden]{display:none!important}
+.yt-compute{width:100%}
+.yt-note{margin:0;font-size:.85rem;line-height:1.45;color:var(--muted)}
+.yt-exits{display:flex;flex-wrap:wrap;gap:.5rem}
+.yt-exits .btn,.yt-exits .btn-ghost{flex:1 1 12rem}
+.xp.is-turn .xp-badge{opacity:1}
+
+.yt-fallback{display:none;position:absolute;inset:0;z-index:6;flex-direction:column;gap:.55rem;padding:.75rem var(--pad) .8rem;background:#050505;overflow:hidden}
+.yt-fallback[hidden]{display:none!important}
+.xp.is-fallback .yt-fallback{display:flex}
+.xp.is-fallback .xp-fallback-card{display:none!important}
+.ytf-top{display:flex;justify-content:space-between;gap:.6rem;align-items:flex-start}
+.ytf-k{margin:0}
+.ytf-sub{margin:.35rem 0 0;font-size:.84rem;line-height:1.45;color:rgba(244,241,234,.86)}
+.yt-fallback[data-phase="zone"] .ytf-sub,
+.yt-fallback[data-phase="drawing"] .ytf-sub,
+.yt-fallback[data-phase="done"] .ytf-sub{display:none}
+.ytf-view{position:relative;flex:1 1 auto;min-height:8.5rem;border:1px solid var(--line);overflow:hidden;background:#050505}
+.ytf-view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ytf-after{clip-path:inset(0 100% 0 0)}
+.yt-fallback.is-drawn .ytf-after{clip-path:inset(0 0 0 0);transition:clip-path 1.5s linear}
+.ytf-zone{position:absolute;border:1px solid var(--gold);background:rgba(232,197,71,.22);pointer-events:none}
+.yt-fallback[data-phase="drawing"] .ytf-zone,
+.yt-fallback[data-phase="done"] .ytf-zone,
+.yt-fallback[data-phase="pick"] .ytf-zone{display:none}
+.yt-fallback [data-yt]{display:none}
+.yt-fallback[data-phase="pick"] [data-yt="pick"],
+.yt-fallback[data-phase="zone"] [data-yt="zone"],
+.yt-fallback[data-phase="done"] [data-yt="done"]{display:flex;flex-direction:column;gap:.45rem}
+.yt-fallback .yt-thumbs{max-width:none}
+.yt-fallback .xp-badge{flex:none}
+@media(max-width:720px){
+  .xp.is-turn .xp-cap,.xp.is-turn.act-1 .xp-cap,.xp.is-turn .xp-cap-t,.xp.is-turn.act-4 .xp-cap-t{display:block}
+  .xp.is-turn .xp-cap-t[hidden]{display:none}
+  .yt-thumb-name{font-size:.68rem}
+  .yt-exits{flex-direction:column}
+  .yt-exits .btn,.yt-exits .btn-ghost{flex-basis:auto;width:100%}
 }

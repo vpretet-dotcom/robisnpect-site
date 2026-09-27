@@ -3,6 +3,7 @@
  * adaptive quality, and the overlay UI. All copy comes from the page
  * (#xp-copy JSON + markup) so EN and FR share this file.
  */
+import { mountFallbackTurn } from './fallback-turn.js';
 const $ = (id) => document.getElementById(id);
 const root = $('xp');
 const stageEl = $('xp-stage');
@@ -16,6 +17,9 @@ const OPT = {
   at: Q.has('t') ? parseFloat(Q.get('t')) : null,
   paused: Q.has('paused'),
   fallback: Q.get('fallback'),
+  turn: Q.has('turn') || Q.has('shot'),
+  shot: Q.get('shot'),
+  buffer: Q.has('drawbuf'),
 };
 const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const api = (window.__xp = { state: 'boot', fps: 0, tier: null, errors: [] });
@@ -39,6 +43,7 @@ function showFallback(reason) {
   if (gl) gl.remove();
   api.state = 'fallback';
   api.fallbackReason = reason;
+  mountFallbackTurn();
 }
 
 function probeGPU() {
@@ -84,15 +89,16 @@ async function boot() {
 
   let M;
   try {
-    const [stage, world, acts, rig, hud, fx] = await Promise.all([
+    const [stageMod, world, acts, rig, hud, fx, yourturn] = await Promise.all([
       import('./stage.js'),
       import('./world.js'),
       import('./acts.js'),
       import('./rig.js'),
       import('./hud.js'),
       import('./fx.js'),
+      import('./yourturn.js'),
     ]);
-    M = { stage, world, acts, rig, hud, fx };
+    M = { stage: stageMod, world, acts, rig, hud, fx, yourturn };
   } catch (e) {
     console.warn('[try] engine failed to load', e);
     return showFallback('error');
@@ -105,7 +111,7 @@ async function boot() {
   const tierName = pickTier(gpu);
   try {
     const glow = M.fx.makeGlowTexture();
-    stage = M.stage.createStage($('xp-canvas'), { tier: tierName, capture: OPT.capture, glowTexture: glow });
+    stage = M.stage.createStage($('xp-canvas'), { tier: tierName, capture: OPT.capture, buffer: OPT.buffer, glowTexture: glow });
     setLoad(0.58, copy.load[2]);
     await nextFrame();
     world = M.world.createWorld(stage, M.stage.TIERS[tierName]);
@@ -201,13 +207,39 @@ function start(M, stage, world, tierName) {
   });
   story.on('state', syncPlay);
 
+  const turn = M.yourturn.createYourTurn({
+    world,
+    stage,
+    rig,
+    root,
+    copy: copy.turn,
+    reduceMotion,
+    fast: Q.has('ytfast'),
+  });
+  api.turn = turn;
+
   steps.forEach((b, k) =>
     b.addEventListener('click', () => {
+      if (turn.active) turn.leave();
       story.goto(k);
       if (!reduceMotion && !story.playing) story.play();
     })
   );
-  playBtn.addEventListener('click', () => story.toggle());
+  const turnBtn = $('xp-step-turn');
+  if (turnBtn) {
+    turnBtn.addEventListener('click', () => {
+      story.pause();
+      if (!turn.active) turn.enter();
+      else turn.showPick();
+    });
+  }
+  story.on('end', () => {
+    if (!turn.active) turn.enter();
+  });
+  playBtn.addEventListener('click', () => {
+    if (turn.active) return;
+    story.toggle();
+  });
   recenterBtn.addEventListener('click', () => rig.recenter());
   rig.onUser = (on) => {
     root.classList.toggle('is-user', on);
@@ -390,8 +422,19 @@ function start(M, stage, world, tierName) {
   ctx.mobile = stage.size.width < 720 || stage.size.height > stage.size.width * 1.15;
 
   let clock = 0;
+  function frameTurn(dt) {
+    clock += dt;
+    FX.uTime.value = clock;
+    ctx.mobile = stage.size.width < 720 || stage.size.height > stage.size.width * 1.15;
+    turn.setMobile(ctx.mobile);
+    turn.frame(dt, clock);
+    rig.update(dt, stage.size.width, stage.size.height);
+    stage.render(clock);
+  }
   function frame(dt) {
+    if (turn.active) return frameTurn(dt);
     story.tick(dt);
+    if (turn.active) return frameTurn(dt);
     clock += dt;
     const act = story.act;
     const p = act.params(ctx, story.t);
@@ -425,12 +468,20 @@ function start(M, stage, world, tierName) {
 
   root.classList.remove('is-loading');
   root.classList.add('is-live');
+  if (OPT.turn) {
+    story.pause();
+    turn.enter();
+    if (OPT.shot) turn.shoot(OPT.shot, Q.get('phase') || 'before');
+  }
   api.state = 'live';
   api.story = story;
   api.rig = rig;
   api.world = world;
   api.stage = stage;
-  api.goto = (act, frac = 0) => story.goto(act - 1, frac * (acts[act - 1].duration || 1));
+  api.goto = (act, frac = 0) => {
+    if (turn.active) turn.leave();
+    story.goto(act - 1, frac * (acts[act - 1].duration || 1));
+  };
   api.pause = () => story.pause();
   api.play = () => story.play();
   api.setTier = (t) => stage.applyTier(t);
