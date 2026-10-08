@@ -344,3 +344,28 @@ html:not(.js) .xp-ui,.no-module .xp-ui,.xp.is-fallback .xp-ui{bottom:0}
 }
 .yt-debug{position:absolute;right:var(--pad);top:4.6rem;z-index:5;margin:0;padding:.3rem .5rem;border:1px solid var(--line);background:rgba(7,7,7,.85);font-size:.62rem;letter-spacing:.06em;color:var(--fg);pointer-events:none}
 .yt-debug[hidden]{display:none}
+
+/* Your turn · eight parts: one row that scrolls (snap, swipe on touch, arrows with a pointer). */
+.xp-cap-of[hidden]{display:none}
+.yt-carousel{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.4rem;width:100%;max-width:36rem}
+.yt-nav{display:inline-flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border:1px solid var(--line);background:rgba(7,7,7,.82);color:var(--gold);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.85rem;line-height:1;-webkit-tap-highlight-color:transparent}
+.yt-nav:hover:not(:disabled){border-color:var(--gold)}
+.yt-nav:focus-visible{outline:1px solid var(--gold);outline-offset:-1px}
+.yt-nav:disabled{color:var(--dim);opacity:.45;cursor:default}
+.yt-carousel .yt-thumbs{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;touch-action:pan-x;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.yt-carousel .yt-thumbs::-webkit-scrollbar{display:none}
+.yt-carousel .yt-thumb{flex:0 0 calc((100% - 1.2rem) / 4.35);max-width:none;scroll-snap-align:start}
+.yt-fallback .yt-thumbs{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;touch-action:pan-x;scrollbar-width:none}
+.yt-fallback .yt-thumbs::-webkit-scrollbar{display:none}
+.yt-fallback .yt-thumb{flex:0 0 calc((100% - 1.2rem) / 4.35);max-width:9.5rem;scroll-snap-align:start}
+.xp.is-turn.yt-ascan .xp-ascan{display:block!important}
+@media(hover:none),(pointer:coarse){.yt-nav{display:none}}
+/* Desktop: the row takes the whole container (about six vignettes at 1440), arrows sit above it on the right. */
+@media(min-width:721px){
+  .yt [data-yt="pick"],.yt-carousel,.yt-carousel .yt-thumbs{max-width:none}
+  .yt-carousel .yt-thumb{flex-basis:calc((100% - 2rem) / 6.35)}
+}
+@media(max-width:720px){
+  .yt-carousel .yt-thumb,.yt-fallback .yt-thumb{flex-basis:calc((100% - .8rem) / 3.3);max-width:none}
+}
+@media(hover:hover) and (pointer:fine){.yt-fallback .yt-thumbs{scrollbar-width:thin;scrollbar-color:rgba(232,197,71,.35) transparent}}

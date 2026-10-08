@@ -31,10 +31,13 @@ export function createAscan(canvas) {
     return amp * Math.exp(-d * d) * Math.abs(Math.cos((x - x0) * freq));
   };
 
-  function draw(sample, contact, time) {
+  /* `custom` ({ echoes, hot }) comes from a step-5 part that models its own echoes. */
+  function draw(sample, contact, time, custom) {
     if (!w) resize();
     const echoes = [];
-    if (contact && sample) {
+    if (custom) {
+      if (contact) echoes.push(...custom.echoes);
+    } else if (contact && sample) {
       switch (sample.kind) {
         case KIND.FOOT:
           echoes.push([0.8, 0.58]);
@@ -52,7 +55,7 @@ export function createAscan(canvas) {
           echoes.push([0.6, 0.74]);
       }
     }
-    const hot = sample && (sample.kind === KIND.IND1 || sample.kind === KIND.IND2) && contact;
+    const hot = custom ? !!(custom.hot && contact) : sample && (sample.kind === KIND.IND1 || sample.kind === KIND.IND2) && contact;
     flash = hot ? 1 : Math.max(0, flash - 0.04);
     for (let i = 0; i < N; i++) {
       const x = i / (N - 1);
@@ -110,7 +113,12 @@ export function createAscan(canvas) {
     return flash;
   }
 
-  return { draw, resize };
+  /* Clears the indication glow so one scan's last echo does not carry into the next. */
+  function reset() {
+    flash = 0;
+  }
+
+  return { draw, resize, reset };
 }
 
 /** Report thumbnail: the full C-scan field, zone grid and the two indications. */

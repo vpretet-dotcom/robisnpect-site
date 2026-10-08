@@ -43,7 +43,8 @@ export function mountFallbackTurn() {
     })
     .catch(() => null);
 
-  let part = 'panel';
+  // Same default as the 3D step 5: the nozzle, first vignette.
+  let part = 'nozzle';
   let phase = 'pick';
   let preset = 'center';
   let busy = false;
@@ -156,7 +157,7 @@ export function mountFallbackTurn() {
     show('pick');
   });
 
-  thumbs.forEach((b) => b.classList.toggle('on', b.dataset.part === 'panel'));
+  thumbs.forEach((b) => b.classList.toggle('on', b.dataset.part === part));
   applyImages();
   markPreset();
   placeOverlay();

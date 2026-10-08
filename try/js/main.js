@@ -216,6 +216,7 @@ function start(M, stage, world, tierName) {
     reduceMotion,
     fast: Q.has('ytfast'),
     debugNormals: Q.get('debug') === 'normals',
+    ascan,
   });
   api.turn = turn;
 

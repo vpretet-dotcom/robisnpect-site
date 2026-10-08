@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Robotic NDT inspection montage | 3D scan to contact UT | ROBINSPECT Systems</title>
-<meta name="description" content="7 min 35 inspection montage: 3D scan, trajectory generation, robot setup, path quality check, then contact UT acquisition on a welded industrial part. Times measured on the filmed part."/>
+<meta name="description" content="7 min 35 montage: 3D scan, trajectory, robot setup, path check, then contact UT acquisition on a welded industrial part. Times measured on the filmed part."/>
 <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1"/>
 <link rel="canonical" href="https://robinspect-systems.com/watch/"/>
 <link rel="alternate" hreflang="en" href="https://robinspect-systems.com/watch/"/>
@@ -68,7 +68,7 @@ h1{margin:.7rem 0 0;font-size:2.4rem;line-height:1}
 .scrub-ticks{position:absolute;inset:0;pointer-events:none}
 .scrub-tick{position:absolute;top:50%;width:2px;height:10px;background:rgba(244,241,234,.4);transform:translate(-50%,-50%)}
 .scrub-wrap input[type=range]{position:absolute;inset:0;width:100%;margin:0;opacity:0;cursor:pointer}
-.player-row{display:flex;align-items:center;gap:.55rem}
+.player-row{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem}
 .icon-btn{width:2.75rem;height:2.75rem;border:1px solid var(--line);display:grid;place-items:center;flex:none}
 .time-read{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--muted);white-space:nowrap}
 .speed{display:inline-flex;border:1px solid var(--line);height:2.75rem;margin-left:auto}
@@ -93,11 +93,11 @@ h1{margin:.7rem 0 0;font-size:2.4rem;line-height:1}
 footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:var(--dim)}
 
 .desk{display:none;gap:1.1rem;font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-@media(min-width:900px){.desk{display:flex}.menu-btn{display:none}}
+@media(min-width:1100px){.desk{display:flex}.menu-btn{display:none}}
 .desk a:hover,.desk a.on{color:var(--gold)}
 .actions{display:flex;align-items:center;gap:.65rem}
 .menu-btn{display:inline-flex;min-height:2.75rem;min-width:2.75rem;align-items:center;justify-content:center;border:1px solid var(--line);font-size:1.1rem}
-@media(min-width:900px){.menu-btn{display:none}}
+@media(min-width:1100px){.menu-btn{display:none}}
 .desk-cta{display:none}
 @media(min-width:1100px){.desk-cta{display:inline-flex}}
 .mobile{display:none;flex-direction:column;gap:.35rem;padding:0 0 1rem;border-bottom:1px solid var(--line)}
@@ -178,7 +178,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
       <li><b>5:04 – 6:03 · Path quality.</b> Check that the TCP (tool center point) follows the weld before acquisition.</li>
       <li><b>6:03 – 7:12 · Contact UT.</b> Synchronized contact UT recording along the trajectory. PAUT and TFM: can be integrated, still to validate in a PoC, not shown as proven here.</li>
     </ol>
-    <p>Times are those of the part in the video. A full cycle on the filmed part is about 30 minutes — measured on that part only, not a universal SLA. Acquisition itself is under a minute; the 3D scan about 30 seconds; trajectory in a few seconds. UT expertise stays critical behind the cell.</p>
+    <p>Times are those of the part in the video. About 30 minutes for the full contact-UT cycle, measured on the filmed part only. Not a guaranteed turnaround, and not a figure for PAUT or TFM. Contact-UT acquisition is under a minute on the filmed coupon — not PAUT/TFM, and not a long part. About 30 seconds of 3D scan on the filmed part; on a production part, expect a few minutes. Trajectory generation: a few seconds. UT expertise stays critical behind the cell.</p>
   </article>
   <div class="ctas">
     <span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn btn-lg" href="/contact/#geometry">Send us your part</a><span class="note">CAD file or the physical part, either works.</span></span>
@@ -186,7 +186,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
   </div>
 </main>
 <footer><div class="wrap ft">
-  <div>© 2026 ROBINSPECT Systems — Integrator · Orlando, Florida, USA · Europe</div>
+  <div>© 2026 ROBINSPECT Systems — Integrator · <span style="white-space:nowrap">Orlando, Florida, USA · Europe</span></div>
   <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet us</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Use cases · <a href="/weld/">Weld inspection</a> · <a href="/aerospace/">Curved geometry</a> · <a href="/energy/">Constrained sites</a></div>
 </div></footer>
 <script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>
