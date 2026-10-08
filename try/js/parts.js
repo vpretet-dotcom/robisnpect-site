@@ -46,7 +46,7 @@ function numericNormal(point, s, t, out) {
   return out.normalize();
 }
 
-function measureLength(point, axis) {
+export function measureLength(point, axis) {
   let L = 0;
   const n = 24;
   for (let i = 0; i < n; i++) {
@@ -64,7 +64,7 @@ function measureLength(point, axis) {
   return Math.max(L, 0.05);
 }
 
-function buildShell(point, normal, ns, nt, thick) {
+export function buildShell(point, normal, ns, nt, thick) {
   const pos = [];
   const nor = [];
   const uv = [];
@@ -127,7 +127,7 @@ function buildShell(point, normal, ns, nt, thick) {
   return g;
 }
 
-function addTable(group, x, topY, z, w, d) {
+export function addTable(group, x, topY, z, w, d) {
   const mat = new THREE.MeshStandardMaterial({ color: 0x2b2a28, metalness: 0.55, roughness: 0.46 });
   const top = new THREE.Mesh(new THREE.BoxGeometry(w, 0.018, d), mat);
   top.name = 'yt-support';
@@ -165,7 +165,7 @@ export const FIELD_KIND = { SOUND: 1, IND: 4 };
  * their size on a curved or stretched parameterisation. `spots` carry the
  * indication positions reported at the end of a scan.
  */
-function makeField(seed, { lengthS, lengthT, spots, structure }) {
+export function makeField(seed, { lengthS, lengthT, spots, structure }) {
   const long = Math.max(lengthS, lengthT);
   const w = Math.max(48, Math.round((256 * lengthS) / long));
   const h = Math.max(48, Math.round((256 * lengthT) / long));
@@ -216,7 +216,7 @@ function makeField(seed, { lengthS, lengthT, spots, structure }) {
 
 const RAMP_SRC = rampGLSL();
 
-function makePainted(id, { color, metalness, roughness, clearcoat, bead, field }) {
+export function makePainted(id, { color, metalness, roughness, clearcoat, bead, field, beadV, overlay }) {
   const cover = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);
   cover.needsUpdate = true;
   const uniforms = {
@@ -227,6 +227,9 @@ function makePainted(id, { color, metalness, roughness, clearcoat, bead, field }
     uScanNow: { value: 0 },
     uGlow: { value: 0 },
     uBead: { value: bead ? 1 : 0 },
+    uBeadV: { value: beadV ? 1 : 0 },
+    uBeadVPos: { value: beadV ? beadV.pos : 0 },
+    uBeadVW: { value: beadV ? beadV.w : 1 },
     uRampC: { value: RAMP.map(([, hex]) => new THREE.Color(hex).convertSRGBToLinear()) },
     uGold: { value: GOLD_LIN.clone() },
   };
@@ -238,13 +241,21 @@ function makePainted(id, { color, metalness, roughness, clearcoat, bead, field }
     clearcoatRoughness: 0.22,
     envMapIntensity: 0.9,
   });
+  if (overlay) {
+    // Painted skin laid over a body mesh: always wins the depth test.
+    mat.polygonOffset = true;
+    mat.polygonOffsetFactor = -2;
+    mat.polygonOffsetUnits = -2;
+  }
+  /* The weld (bead across s) keeps its exact shader; the v band only exists where asked. */
+  const vBand = beadV ? ` + uBeadV * exp(-pow((vFxUv.y - uBeadVPos) / uBeadVW, 2.0))` : '';
   patchMaterial(
     mat,
     {
       uniforms,
       fragPars: `
         uniform sampler2D uField; uniform sampler2D uCover;
-        uniform float uCscan; uniform float uCscanGain; uniform float uScanNow; uniform float uGlow; uniform float uBead;
+        uniform float uCscan; uniform float uCscanGain; uniform float uScanNow; uniform float uGlow; uniform float uBead;${beadV ? ' uniform float uBeadV; uniform float uBeadVPos; uniform float uBeadVW;' : ''}
         uniform vec3 uRampC[${RAMP.length}]; uniform vec3 uGold;
         vec3 goldRamp(float v) {
           ${RAMP_SRC}
@@ -252,7 +263,7 @@ function makePainted(id, { color, metalness, roughness, clearcoat, bead, field }
         }
       `,
       fragColor: `
-        float beadTint = uBead * exp(-pow((vFxUv.x - 0.5) / 0.055, 2.0));
+        float beadTint = uBead * exp(-pow((vFxUv.x - 0.5) / 0.055, 2.0))${vBand};
         diffuseColor.rgb *= mix(1.0, 0.78, beadTint);
         vec4 fxCov = texture2D(uCover, vFxUv);
         vec4 fxFld = texture2D(uField, vFxUv);
@@ -268,7 +279,7 @@ function makePainted(id, { color, metalness, roughness, clearcoat, bead, field }
         fxLate += cs * covered * uCscanGain * (1.0 + 0.9 * fresh + 1.6 * hot);
       `,
       fragMaterial: `
-        float beadRough = uBead * exp(-pow((vFxUv.x - 0.5) / 0.055, 2.0));
+        float beadRough = uBead * exp(-pow((vFxUv.x - 0.5) / 0.055, 2.0))${vBand};
         material.roughness = mix(material.roughness, 0.66, beadRough);
         material.clearcoat *= 1.0 - 0.72 * covered;
         material.roughness = mix(material.roughness, 0.7, covered * 0.6);
@@ -281,7 +292,7 @@ function makePainted(id, { color, metalness, roughness, clearcoat, bead, field }
   return { mat, uniforms, field, cover };
 }
 
-function mountMesh(group, geo, mat) {
+export function mountMesh(group, geo, mat) {
   const mesh = new THREE.Mesh(geo, mat);
   mesh.castShadow = true;
   mesh.receiveShadow = true;

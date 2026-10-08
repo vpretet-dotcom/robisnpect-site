@@ -4,6 +4,7 @@ import { FX } from './fx.js';
 import { createPathVisuals, computeZoneTrajectory, zoneMidSample, finishZoneSamples, passInfoOf } from './trajectory.js';
 import { createCoverageUV, coverageGrid, COVER_RADIUS } from './cscan.js';
 import { createWeldPart, createElbowPart, createFairingPart, createPanelPart, IND_THRESHOLD } from './parts.js';
+import { INDUSTRIAL_FACTORIES } from './parts-industrial.js';
 import { derivePacing, timeProfile, moveDuration } from './pacing.js';
 import { renderReport, clearReport, reportCopy } from './report.js';
 import { rampRGB } from './panel.js';
@@ -30,13 +31,14 @@ function useHandles() {
   return !coarse && window.innerWidth > 720;
 }
 
-export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fast, debugNormals = false }) {
+export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fast, debugNormals = false, ascan = null }) {
   const { scene } = stage;
   const panelPart = createPanelPart(world.panel);
   const factories = {
     weld: createWeldPart,
     elbow: createElbowPart,
     fairing: createFairingPart,
+    ...INDUSTRIAL_FACTORIES,
   };
   const cache = { panel: panelPart };
   const saved = {
@@ -63,6 +65,10 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     capStatus: document.getElementById('xp-cap-status'),
     bar: document.querySelector('#xp-step-turn .xp-step-bar i'),
     report: document.getElementById('yt-report'),
+    thumbRow: document.getElementById('yt-thumbs'),
+    prev: document.getElementById('yt-prev'),
+    next: document.getElementById('yt-next'),
+    ascanMethod: document.querySelector('#xp-ascan .xp-ascan-h span + span'),
     reportThumb: document.getElementById('yt-report-thumb'),
   };
   if (dom.error && copy?.tooSmall) dom.error.textContent = copy.tooSmall;
@@ -166,6 +172,9 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       removeZone();
       removeHandles();
     }
+    // Back on the carousel: chosen vignette in view, arrows in step with the row.
+    if (next === 'pick') revealThumb(api.partId);
+    if (next !== 'scan') setAscan(false);
     if (next === 'done') showReport();
     else if (next !== 'drawing' && next !== 'scan') hideReport();
     frameShot();
@@ -173,13 +182,17 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
 
   function caption() {
     if (!copy) return;
-    if (dom.capNum) dom.capNum.textContent = copy.n || '05';
+    if (dom.capNum) dom.capNum.textContent = copy.n || '→';
     if (dom.capName) dom.capName.textContent = copy.name;
     if (dom.capStatus) {
       dom.capStatus.textContent = copy.tag;
       dom.capStatus.dataset.kind = 'direction';
     }
-    if (dom.of) dom.of.textContent = '/ 05';
+    // Step 5 sits outside the 01 / 04 counter: arrow, no total.
+    if (dom.of) {
+      dom.of.textContent = '';
+      dom.of.hidden = true;
+    }
   }
 
   function hideScripted() {
@@ -213,6 +226,16 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     }
   }
 
+  /* Step 5 opens on the nozzle, first vignette of the carousel. Steps 1-4 keep the curved panel. */
+  const DEFAULT_PART = 'nozzle';
+  function ensurePart(id) {
+    if (!cache[id]) {
+      cache[id] = id === 'panel' ? panelPart : factories[id]();
+      if (cache[id].ownsGroup) scene.add(cache[id].group);
+    }
+    return cache[id];
+  }
+
   function applyPart(id) {
     part = cache[id];
     api.partId = id;
@@ -223,6 +246,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     clearPath();
     hideError();
     dom.thumbs.forEach((b) => b.classList.toggle('on', b.dataset.part === id));
+    revealThumb(id);
+    if (dom.ascanMethod && copy?.methods) dom.ascanMethod.textContent = copy.methods[part.method || 'ut'] || ascanLabel || '';
     frameShot();
     rig.setShot(shot);
     rig.recenter();
@@ -241,6 +266,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     if (!shotHold) {
       const dock = phase === 'pick' || phase === 'zone' || phase === 'done';
       shot.offY = dock ? (mobile ? 0.14 : 0.06) : mobile ? 0.06 : 0.02;
+      // Desktop pick: the carousel spans the full width, so the part sits a bit higher to clear it.
+      if (phase === 'pick' && !mobile) shot.offY = 0.1;
       shot.offX = 0;
       shot.distMul = 1;
       // The end report sits in the dock: part above it on phones, right of it on desktop.
@@ -278,7 +305,8 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       dom.yt.hidden = false;
       dom.yt.dataset.phase = 'pick';
     }
-    applyPart('panel');
+    ensurePart(DEFAULT_PART);
+    applyPart(DEFAULT_PART);
     setPhase('pick');
     markSteps();
     rig.setShot(shot);
@@ -315,7 +343,12 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     world.arm.setJoints(HOME);
     world.arm.root.visible = false;
     if (dom.yt) dom.yt.hidden = true;
-    if (dom.of) dom.of.textContent = '/ 04';
+    if (dom.of) {
+      dom.of.textContent = '/ 04';
+      dom.of.hidden = false;
+    }
+    setAscan(false);
+    if (dom.ascanMethod && ascanLabel !== null) dom.ascanMethod.textContent = ascanLabel;
     if (dom.capText) dom.capText.hidden = false;
     if (dom.turnBtn) {
       dom.turnBtn.classList.remove('on');
@@ -347,6 +380,101 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     if (dom.error) dom.error.hidden = true;
   }
 
+  /* Live A-scan of step 5, from the part under the probe. */
+  const ascanLabel = dom.ascanMethod ? dom.ascanMethod.textContent : null;
+  let ascanOn = false;
+  function setAscan(on, hot = false) {
+    if (on !== ascanOn) {
+      ascanOn = on;
+      root.classList.toggle('yt-ascan', on);
+      root.classList.toggle('ascan-on', on);
+      ascan?.reset?.();
+      api.ascanHot = false;
+    }
+    root.classList.toggle('ascan-hot', on && hot);
+  }
+  function drawAscan(smp, time) {
+    if (!ascan) return;
+    const contact = !!smp?.contact;
+    let flash = 0;
+    if (!ascanOn) {
+      setAscan(true);
+      ascan.resize();
+    }
+    if (part.ascan) {
+      const custom = contact ? part.ascan(smp.u, smp.v) : { echoes: [], hot: false };
+      flash = ascan.draw(null, contact, time, custom);
+    } else {
+      flash = ascan.draw(contact ? part.field.sample(smp.u, smp.v) : null, contact, time);
+    }
+    setAscan(true, flash > 0.5);
+    api.ascanHot = flash > 0.5;
+  }
+
+  /* QA probe: walks the planned path and reports what the A-scan would flag, frame-rate independent. */
+  api.ascanTrace = (step = 0.001) => {
+    if (!traj) return null;
+    const o = {};
+    const hits = new Set();
+    let contact = 0;
+    let hot = 0;
+    let xs = [1, 0];
+    for (let s = 0; s <= traj.total; s += step) {
+      traj.at(s, o);
+      if (!o.contact) continue;
+      contact++;
+      let h = false;
+      if (part.ascan) {
+        const c = part.ascan(o.u, o.v);
+        h = c.hot;
+        for (const [x] of c.echoes) xs = [Math.min(xs[0], x), Math.max(xs[1], x)];
+      } else {
+        const k = part.field.sample(o.u, o.v).kind;
+        h = k === 4 || k === 5;
+      }
+      if (!h) continue;
+      hot++;
+      let best = null;
+      let bd = Infinity;
+      for (const sp of part.spots || []) {
+        const d = Math.hypot((o.u - sp.u) * part.lengthS, (o.v - sp.v) * part.lengthT);
+        if (d < bd) { bd = d; best = sp; }
+      }
+      if (best) hits.add(`${best.id}:${best.amp.toFixed(2)}`);
+    }
+    return { contact, hot, hits: [...hits], echoX: xs.map((x) => +x.toFixed(3)) };
+  };
+
+  /* Carousel: keep the chosen vignette in view, arrows on pointer devices. */
+  function revealThumb(id) {
+    const row = dom.thumbRow;
+    const btn = dom.thumbs.find((b) => b.dataset.part === id);
+    if (!row || !btn || row.scrollWidth <= row.clientWidth + 1) return syncArrows();
+    const left = btn.offsetLeft - row.offsetLeft;
+    const right = left + btn.offsetWidth;
+    if (left < row.scrollLeft || right > row.scrollLeft + row.clientWidth) {
+      row.scrollTo({ left: Math.max(0, left - (row.clientWidth - btn.offsetWidth) / 2), behavior: 'auto' });
+    }
+    syncArrows();
+  }
+  function syncArrows() {
+    const row = dom.thumbRow;
+    // Hidden row (zone / report phases): no geometry to read, keep the last state.
+    if (!row || !row.clientWidth) return;
+    const max = row.scrollWidth - row.clientWidth;
+    if (dom.prev) dom.prev.disabled = row.scrollLeft <= 2;
+    if (dom.next) dom.next.disabled = row.scrollLeft >= max - 2;
+  }
+  function pageThumbs(dir) {
+    const row = dom.thumbRow;
+    if (!row) return;
+    const step = Math.max(row.clientWidth * 0.75, dom.thumbs[0]?.offsetWidth || 120);
+    row.scrollBy({ left: dir * step, behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+  dom.prev?.addEventListener('click', () => pageThumbs(-1));
+  dom.next?.addEventListener('click', () => pageThumbs(1));
+  dom.thumbRow?.addEventListener('scroll', syncArrows, { passive: true });
+
   function showError(kind) {
     api.tooSmall = kind !== 'reach';
     api.outOfReach = kind === 'reach';
@@ -365,10 +493,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
       btn.setAttribute('aria-busy', 'true');
     }
     const t0 = performance.now();
-    if (!cache[id]) {
-      cache[id] = id === 'panel' ? panelPart : factories[id]();
-      if (cache[id].ownsGroup) scene.add(cache[id].group);
-    }
+    ensurePart(id);
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     const min = fast ? 80 : 420;
     const wait = min - (performance.now() - t0);
@@ -696,6 +821,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
   }
   function onResize() {
     if (api.active && phase === 'zone') syncHandles();
+    if (api.active && phase === 'pick') syncArrows();
   }
 
   function clearPath() {
@@ -794,7 +920,9 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
         }
       }
     }
-    return bases.filter((b) => clearOf(b.x, b.z));
+    // A part may name preferred bases (camera-friendly); they win among reachable ones.
+    const own = (part.bases || []).map((b) => ({ ...b, own: true }));
+    return own.concat(bases.filter((b) => clearOf(b.x, b.z)));
   }
 
   function scoreBase(b, keys) {
@@ -982,7 +1110,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     const keys = keySamples(samples);
     const ranked = baseList()
       .map((b) => scoreBase(b, keys))
-      .sort((a, c) => a.score - c.score);
+      .sort((a, c) => a.score - (a.own && a.ok ? 1e5 : 0) - (c.score - (c.own && c.ok ? 1e5 : 0)));
     let found = null;
     for (const b of ranked.slice(0, 16)) {
       applyBase(b);
@@ -1389,7 +1517,7 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
     path.uniforms.uFade.value = 1;
   }
 
-  function frame(dt) {
+  function frame(dt, time = 0) {
     if (hold) {
       world.arm.root.visible = true;
       world.arm.setJoints(hold.q);
@@ -1444,10 +1572,12 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
         syncDebug(st);
         world.arm.setLed(!!st.contact);
         paintLook(s, !!st.contact, true);
+        drawAscan(st, time);
         api.pathDraw = traj.total;
       } else if (scanT < tSettle) {
         const k = easeInOutCubic(clamp((scanT - tLift) / Math.max(plan.lift, 1e-3), 0, 1));
         lerpJoints(last.q || first.q, qEnd, k);
+        setAscan(false);
         syncDebug(last);
         world.arm.setLed(false);
         paintLook(traj.total, false, true);
@@ -1652,6 +1782,10 @@ export function createYourTurn({ world, stage, rig, root, copy, reduceMotion, fa
   Object.defineProperty(api, 'traj', { get: () => traj });
   api.thumbURL = thumbURL;
   api.renderMask = renderMask;
+  /* Stills: show or hide the painted C-scan without touching the camera. */
+  api.paintVisible = (on) => {
+    if (part?.uniforms) part.uniforms.uCscan.value = on ? 1 : 0;
+  };
   api.selectPart = selectPart;
   api.setPreset = setPreset;
   api.compute = compute;

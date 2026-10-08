@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Montage d’inspection CND robotisée | Scan 3D à UT au contact | ROBINSPECT Systems</title>
-<meta name="description" content="Montage 7&nbsp;min&nbsp;35 : scan 3D, génération de trajectoire, mise en place robot, contrôle de trajectoire, puis acquisition UT au contact sur une pièce soudée. Temps mesurés sur la pièce filmée."/>
+<meta name="description" content="Montage de 7&nbsp;min&nbsp;35&nbsp;: scan 3D, trajectoire, mise en place robot, contrôle, puis UT au contact sur une pièce soudée. Temps mesurés sur la pièce filmée."/>
 <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1"/>
 <link rel="canonical" href="https://robinspect-systems.com/fr/watch/"/>
 <link rel="alternate" hreflang="en" href="https://robinspect-systems.com/watch/"/>
@@ -12,7 +12,7 @@
 <link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/watch/"/>
 <meta property="og:type" content="video.other"/>
 <meta property="og:site_name" content="ROBINSPECT Systems"/>
-<meta property="og:locale" content="fr_BE"/>
+<meta property="og:locale" content="fr_FR"/>
 <meta property="og:url" content="https://robinspect-systems.com/fr/watch/"/>
 <meta property="og:title" content="Montage d’inspection CND robotisée | Scan 3D à UT au contact | ROBINSPECT Systems"/>
 <meta property="og:description" content="7&nbsp;min&nbsp;35 : scan 3D, trajectoire, mise en place robot, contrôle, acquisition UT au contact. PAUT et TFM : intégrables, à valider en PoC."/>
@@ -69,7 +69,7 @@ h1{margin:.7rem 0 0;font-size:2.4rem;line-height:1}
 .scrub-ticks{position:absolute;inset:0;pointer-events:none}
 .scrub-tick{position:absolute;top:50%;width:2px;height:10px;background:rgba(244,241,234,.4);transform:translate(-50%,-50%)}
 .scrub-wrap input[type=range]{position:absolute;inset:0;width:100%;margin:0;opacity:0;cursor:pointer}
-.player-row{display:flex;align-items:center;gap:.55rem}
+.player-row{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem}
 .icon-btn{width:2.75rem;height:2.75rem;border:1px solid var(--line);display:grid;place-items:center;flex:none}
 .time-read{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--muted);white-space:nowrap}
 .speed{display:inline-flex;border:1px solid var(--line);height:2.75rem;margin-left:auto}
@@ -94,11 +94,11 @@ h1{margin:.7rem 0 0;font-size:2.4rem;line-height:1}
 footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:var(--dim)}
 
 .desk{display:none;gap:1.1rem;font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-@media(min-width:900px){.desk{display:flex}.menu-btn{display:none}}
+@media(min-width:1100px){.desk{display:flex}.menu-btn{display:none}}
 .desk a:hover,.desk a.on{color:var(--gold)}
 .actions{display:flex;align-items:center;gap:.65rem}
 .menu-btn{display:inline-flex;min-height:2.75rem;min-width:2.75rem;align-items:center;justify-content:center;border:1px solid var(--line);font-size:1.1rem}
-@media(min-width:900px){.menu-btn{display:none}}
+@media(min-width:1100px){.menu-btn{display:none}}
 .desk-cta{display:none}
 @media(min-width:1100px){.desk-cta{display:inline-flex}}
 .mobile{display:none;flex-direction:column;gap:.35rem;padding:0 0 1rem;border-bottom:1px solid var(--line)}
@@ -137,7 +137,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
   <h1 class="font-display">Du scan 3D<br/>à l’UT au contact.</h1>
   <p class="lead">Le processus d’inspection sur une pièce industrielle soudée&nbsp;: géométrie, trajectoire, mise en place robot, contrôle de trajectoire, puis acquisition <b>UT au contact</b>. Pause, faites défiler, sautez à un chapitre. PAUT et TFM&nbsp;: intégrables, à valider en PoC — non prouvés par cette vidéo.</p>
 
-  <div class="player" data-presentation data-chapters='[{"t":0,"title":"Scan 3D","sub":"0:00 – 0:30"},{"t":30,"title":"Trajectoire","sub":"Génération · 0:30 – 1:22"},{"t":83,"title":"Préparation robot","sub":"Environnement · 1:23 – 5:04"},{"t":304,"title":"Qualité chemin","sub":"Vérification · 5:04 – 6:03"},{"t":363,"title":"UT au contact","sub":"Acquisition · 6:03 – 7:12"}]' tabindex="0">
+  <div class="player" data-presentation data-chapters='[{"t":0,"title":"Scan 3D","sub":"0:00 – 0:30"},{"t":30,"title":"Trajectoire","sub":"Génération · 0:30 – 1:22"},{"t":83,"title":"Préparation robot","sub":"Environnement · 1:23 – 5:04"},{"t":304,"title":"Qualité de trajectoire","sub":"Vérification · 5:04 – 6:03"},{"t":363,"title":"UT au contact","sub":"Acquisition · 6:03 – 7:12"}]' tabindex="0">
     <div class="player-layout">
       <div>
         <div class="player-stage">
@@ -179,7 +179,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
       <li><b>5:04 – 6:03 · Qualité de trajectoire.</b> Vérifier que le TCP (point de centre de l’outil) suit le cordon avant l’acquisition.</li>
       <li><b>6:03 – 7:12 · UT au contact.</b> Enregistrement UT au contact synchronisé le long de la trajectoire. PAUT et TFM&nbsp;: intégrables, à valider en PoC, non prouvés ici.</li>
     </ol>
-    <p>Les temps sont ceux de la pièce en vidéo. Une fois la cellule programmée, un cycle complet tourne environ 30 minutes, mesurées sur l’éprouvette filmée uniquement — pas un SLA universel. Un inspecteur niveau 2 signe toujours l’acquisition et l’interprétation. L’acquisition elle-même dure moins d’une minute&#8239;; le scan 3D environ 30 secondes&#8239;; la trajectoire quelques secondes.</p>
+    <p>Les temps sont ceux de la pièce en vidéo. Une fois la cellule programmée&nbsp;: environ 30 minutes pour le cycle complet en UT au contact, mesurées sur la pièce filmée uniquement. Ce n’est pas un délai garanti, ni une valeur pour le PAUT ou le TFM. Un inspecteur niveau 2 signe toujours l’acquisition et l’interprétation. L’acquisition UT contact dure moins d’une minute sur l’éprouvette filmée — pas le PAUT/TFM, pas une longue pièce. Environ 30 secondes de scan 3D sur la pièce filmée&#8239;; sur une pièce de production, comptez quelques minutes. Génération de trajectoire&nbsp;: quelques secondes.</p>
   </article>
   <div class="ctas">
     <span style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:.35rem"><a class="btn btn-lg" href="/fr/contact/#geometry">Envoyer votre pièce</a><span class="note">Fichier CAO ou pièce physique, les deux marchent.</span></span>
@@ -187,7 +187,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
   </div>
 </main>
 <footer><div class="wrap ft">
-  <div>© 2026 ROBINSPECT Systems — Intégrateur · Orlando, Floride, États-Unis · Europe</div>
+  <div>© 2026 ROBINSPECT Systems — Intégrateur · <span style="white-space:nowrap">Orlando, Floride, États-Unis · Europe</span></div>
   <div class="ft-links"><a href="/fr/plateforme/">Plateforme</a> · <a href="/fr/a-propos/">À propos</a> · <a href="/fr/watch/">Démo</a> · <a href="/fr/try/">Simulateur</a> · <a href="/fr/faq/">FAQ</a> · <a href="/fr/contact/">Contact</a> · <a href="/fr/rdv/">Nous rencontrer</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Cas d’usage · <a href="/fr/soudure/">Soudure</a> · <a href="/fr/aero/">Géométrie courbe</a> · <a href="/fr/contraint/">Milieu contraint</a></div>
 </div></footer>
 <script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>

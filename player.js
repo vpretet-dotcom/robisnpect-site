@@ -89,7 +89,7 @@
       var t = video.currentTime || 0;
       var d = video.duration || duration;
       if (isFinite(d) && d > 0) duration = d;
-      if (durEl) durEl.textContent = fmt(duration);
+      if (durEl) durEl.textContent = fmt(Math.round(duration));
       if (curEl) curEl.textContent = fmt(t);
       if (fill) fill.style.width = duration ? (t / duration) * 100 + "%" : "0%";
       if (!dragging) scrub.value = duration ? String((t / duration) * 1000) : "0";

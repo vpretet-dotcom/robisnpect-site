@@ -30,13 +30,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="/inner.css?v=20260926audit"/>
-<link rel="stylesheet" href="/try/try.css?v=20260927f"/>
+<link rel="stylesheet" href="/try/try.css?v=20261008c"/>
 <script>document.documentElement.classList.add('js');</script>
 <script nomodule>document.documentElement.classList.add('no-module');</script>
 <script type="importmap">
 {"imports":{"three":"/try/vendor/three/three.module.min.js","three/addons/":"/try/vendor/three/addons/"}}
 </script>
-<link rel="modulepreload" href="/try/js/main.js?v=20260927f"/>
+<link rel="modulepreload" href="/try/js/main.js?v=20261008c"/>
 <link rel="modulepreload" href="/try/vendor/three/three.module.min.js"/>
 </head>
 <body class="try-page">
@@ -71,27 +71,51 @@
     <div class="yt-fallback" id="yt-fallback" data-phase="pick">
       <div class="ytf-top">
         <div>
-          <div class="mono ytf-k xp-cap-k"><span>05</span><span class="xp-cap-of">/ 05</span><span class="xp-cap-name">Your turn</span></div>
+          <div class="mono ytf-k xp-cap-k"><span>→</span><span class="xp-cap-name">Your turn</span></div>
           <p class="ytf-sub">Pick a part, we compute the probe path.</p>
         </div>
         <p class="xp-badge mono">Illustrative simulation · not&nbsp;real&nbsp;data</p>
       </div>
       <div class="ytf-view">
-        <img class="ytf-before" src="/try/yt/panel-before.webp" alt="" width="960" height="540"/>
-        <img class="ytf-after" src="/try/yt/panel-center-after.webp" alt="" width="960" height="540"/>
+        <img class="ytf-before" src="/try/yt/nozzle-before.webp" alt="" width="960" height="540"/>
+        <img class="ytf-after" src="/try/yt/nozzle-center-after.webp" alt="" width="960" height="540"/>
         <div class="ytf-frame">
-          <img class="ytf-zone" src="/try/yt/panel-center-zone.webp" alt="" width="960" height="540" aria-hidden="true"/>
+          <img class="ytf-zone" src="/try/yt/nozzle-center-zone.webp" alt="" width="960" height="540" aria-hidden="true"/>
         </div>
       </div>
       <div data-yt="pick">
         <div class="yt-thumbs">
+          <button type="button" class="yt-thumb yt-thumb-new on" data-part="nozzle">
+            <img src="/try/yt/nozzle-before.webp" alt="" width="160" height="120"/>
+            <span class="yt-thumb-load">Loading part…</span>
+            <span class="yt-thumb-name">Nozzle on shell</span>
+            <span class="yt-thumb-tag">Illustrative geometry and trajectory</span>
+          </button>
+          <button type="button" class="yt-thumb yt-thumb-new" data-part="dome">
+            <img src="/try/yt/dome-before.webp" alt="" width="160" height="120"/>
+            <span class="yt-thumb-load">Loading part…</span>
+            <span class="yt-thumb-name">Tank dome</span>
+            <span class="yt-thumb-tag">Illustrative geometry and trajectory</span>
+          </button>
+          <button type="button" class="yt-thumb yt-thumb-new" data-part="stringer">
+            <img src="/try/yt/stringer-before.webp" alt="" width="160" height="120"/>
+            <span class="yt-thumb-load">Loading part…</span>
+            <span class="yt-thumb-name">Stiffened composite panel</span>
+            <span class="yt-thumb-tag">Illustrative geometry and trajectory</span>
+          </button>
+          <button type="button" class="yt-thumb yt-thumb-new" data-part="cone">
+            <img src="/try/yt/cone-before.webp" alt="" width="160" height="120"/>
+            <span class="yt-thumb-load">Loading part…</span>
+            <span class="yt-thumb-name">Reducer cone</span>
+            <span class="yt-thumb-tag">Illustrative geometry and trajectory</span>
+          </button>
           <button type="button" class="yt-thumb" data-part="weld">
             <img src="/try/yt/weld-before.webp" alt="" width="160" height="120"/>
             <span class="yt-thumb-load">Loading part…</span>
             <span class="yt-thumb-name">Welded plate</span>
             <span class="yt-thumb-tag">Simulation · illustrative geometry</span>
           </button>
-          <button type="button" class="yt-thumb on" data-part="panel">
+          <button type="button" class="yt-thumb" data-part="panel">
             <img src="/try/yt/panel-before.webp" alt="" width="160" height="120"/>
             <span class="yt-thumb-load">Loading part…</span>
             <span class="yt-thumb-name">Curved panel</span>
@@ -193,14 +217,41 @@
       <p class="xp-hint mono" id="xp-hint">Drag to rotate</p>
       <div class="yt" id="yt" data-phase="pick" hidden>
         <div data-yt="pick">
-          <div class="yt-thumbs" id="yt-thumbs">
+          <div class="yt-carousel">
+            <button type="button" class="yt-nav yt-prev" id="yt-prev" aria-label="Previous parts" aria-controls="yt-thumbs" disabled><span aria-hidden="true">←</span></button>
+            <button type="button" class="yt-nav yt-next" id="yt-next" aria-label="More parts" aria-controls="yt-thumbs"><span aria-hidden="true">→</span></button>
+          <div class="yt-thumbs" id="yt-thumbs" role="group" aria-label="Parts">
+            <button type="button" class="yt-thumb yt-thumb-new on" data-part="nozzle">
+              <img src="/try/yt/nozzle-before.webp" alt="" width="160" height="120"/>
+              <span class="yt-thumb-load">Loading part…</span>
+              <span class="yt-thumb-name">Nozzle on shell</span>
+              <span class="yt-thumb-tag">Illustrative geometry and trajectory</span>
+            </button>
+            <button type="button" class="yt-thumb yt-thumb-new" data-part="dome">
+              <img src="/try/yt/dome-before.webp" alt="" width="160" height="120"/>
+              <span class="yt-thumb-load">Loading part…</span>
+              <span class="yt-thumb-name">Tank dome</span>
+              <span class="yt-thumb-tag">Illustrative geometry and trajectory</span>
+            </button>
+            <button type="button" class="yt-thumb yt-thumb-new" data-part="stringer">
+              <img src="/try/yt/stringer-before.webp" alt="" width="160" height="120"/>
+              <span class="yt-thumb-load">Loading part…</span>
+              <span class="yt-thumb-name">Stiffened composite panel</span>
+              <span class="yt-thumb-tag">Illustrative geometry and trajectory</span>
+            </button>
+            <button type="button" class="yt-thumb yt-thumb-new" data-part="cone">
+              <img src="/try/yt/cone-before.webp" alt="" width="160" height="120"/>
+              <span class="yt-thumb-load">Loading part…</span>
+              <span class="yt-thumb-name">Reducer cone</span>
+              <span class="yt-thumb-tag">Illustrative geometry and trajectory</span>
+            </button>
             <button type="button" class="yt-thumb" data-part="weld">
               <img src="/try/yt/weld-before.webp" alt="" width="160" height="120"/>
               <span class="yt-thumb-load">Loading part…</span>
               <span class="yt-thumb-name">Welded plate</span>
               <span class="yt-thumb-tag">Simulation · illustrative geometry</span>
             </button>
-            <button type="button" class="yt-thumb on" data-part="panel">
+            <button type="button" class="yt-thumb" data-part="panel">
               <img src="/try/yt/panel-before.webp" alt="" width="160" height="120"/>
               <span class="yt-thumb-load">Loading part…</span>
               <span class="yt-thumb-name">Curved panel</span>
@@ -218,6 +269,7 @@
               <span class="yt-thumb-name">Double-curved fairing</span>
               <span class="yt-thumb-tag">Simulation · illustrative geometry</span>
             </button>
+          </div>
           </div>
         </div>
         <div data-yt="zone">
@@ -290,7 +342,7 @@
             <li><button type="button" data-act="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">02</span><span class="xp-step-t">Trajec&shy;tory</span></button></li>
             <li><button type="button" data-act="2"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">03</span><span class="xp-step-t">Scan</span></button></li>
             <li><button type="button" data-act="3"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">04</span><span class="xp-step-t">Report</span></button></li>
-            <li><button type="button" id="xp-step-turn" data-turn="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n">05</span><span class="xp-step-t">Your turn</span></button></li>
+            <li><button type="button" id="xp-step-turn" data-turn="1"><span class="xp-step-bar"><i></i></span><span class="xp-step-n" aria-hidden="true">→</span><span class="xp-step-t">Your turn</span></button></li>
           </ol>
           <div class="xp-ctrl">
             <button type="button" class="xp-recenter mono" id="xp-recenter" hidden>Recenter</button>
@@ -330,7 +382,7 @@
     </div>
     <div class="xp-honest">
       <span class="mono">Status</span>
-      <p><b>Illustrative simulation, not real data.</b> The part, the trajectory, the C-scan and the report on this page are generated in your browser. What is demonstrated today is contact UT, in a <a href="/watch/">filmed lab demo</a> on a welded industrial part, not on this panel: about 30 minutes for the full cycle, measured on the filmed part only. PAUT and TFM are at proof-of-concept stage and are not shown here. Everything else on this page is direction.</p>
+      <p><b>Illustrative simulation, not real data.</b> The part, the trajectory, the C-scan and the report on this page are generated in your browser. What is demonstrated today is contact UT, in a <a href="/watch/">filmed lab demo</a> on a welded industrial part, not on this panel. About 30 minutes for the full contact-UT cycle, measured on the filmed part only. Not a guaranteed turnaround, and not a figure for PAUT or TFM. PAUT and TFM are at proof-of-concept stage and are not shown here. Everything else on this page is direction.</p>
     </div>
   </div>
 </section>
@@ -356,18 +408,28 @@
     "error": "The 3D scene couldn't start here, so here is a still of the result."
   },
   "turn": {
-    "n": "05",
+    "n": "→",
     "name": "Your turn",
     "sub": "Pick a part, we compute the probe path.",
     "tag": "Simulation · illustrative geometry",
     "tooSmall": "Zone too small for a pass, make it bigger.",
+    "methods": {
+      "ut": "Contact UT",
+      "angle": "Angle beam",
+      "composite": "Contact UT · composite",
+      "tof": "Contact UT · thickness"
+    },
     "outOfReach": "Zone out of reach",
     "report": {
       "parts": {
+        "nozzle": "Nozzle on shell",
         "weld": "Welded plate",
         "panel": "Curved panel",
         "elbow": "Pipe elbow",
-        "fairing": "Double-curved fairing"
+        "fairing": "Double-curved fairing",
+        "dome": "Tank dome",
+        "stringer": "Stiffened composite panel",
+        "cone": "Reducer cone"
       },
       "zones": {
         "all": "Whole part",
@@ -387,10 +449,14 @@
         "{n} simulated, for review"
       ],
       "loc": {
+        "nozzle": "{a}° around the nozzle, {b} mm from the weld toe",
         "weld": "{a} mm along the seam, {b} mm from the bead axis",
         "panel": "Zone {cell}",
         "elbow": "{a} mm along the bend, {b} mm from the crown",
-        "fairing": "{a} mm along the span, {b} mm from the leading edge"
+        "fairing": "{a} mm along the span, {b} mm from the leading edge",
+        "dome": "{a}° around the dome, {b} mm from the dome-to-shell weld",
+        "stringer": "{a} mm along the stringer, {b} mm from its web",
+        "cone": "{a} mm from the large end, {b}° from the top"
       },
       "above": "above threshold",
       "thumb": [
@@ -402,6 +468,6 @@
   }
 }</script>
 <script>(function(){var b=document.getElementById('menuBtn'),m=document.getElementById('mobile');if(b&&m)b.addEventListener('click',function(){m.classList.toggle('open');});})();</script>
-<script type="module" src="/try/js/main.js?v=20260927f"></script>
+<script type="module" src="/try/js/main.js?v=20261008c"></script>
 </body>
 </html>
