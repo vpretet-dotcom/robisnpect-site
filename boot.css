@@ -1,45 +1,23 @@
 #boot{
   position:fixed;inset:0;z-index:9999;
   overflow:hidden;
-  background:#050505 url(/media/loader/robinspect-loading-poster-640.jpg) 50% 50%/cover no-repeat;
-  background-image:image-set(url(/media/loader/robinspect-loading-poster-640.webp) type("image/webp"),url(/media/loader/robinspect-loading-poster-640.jpg) type("image/jpeg"));
-  transition:opacity .65s cubic-bezier(.2,0,0,1),visibility .65s linear;
-}
-@media(min-width:768px){
-  #boot{
-    background-image:url(/media/loader/robinspect-loading-poster-960.jpg);
-    background-image:image-set(url(/media/loader/robinspect-loading-poster-960.webp) type("image/webp"),url(/media/loader/robinspect-loading-poster-960.jpg) type("image/jpeg"));
-  }
+  background:#050505;
+  transition:opacity .45s cubic-bezier(.2,0,0,1),visibility .45s linear;
 }
 #boot.out{opacity:0;visibility:hidden;pointer-events:none}
 html:not(.boot) #boot:not(.out){display:none}
 html.boot,html.boot body{overflow:hidden;background:#050505}
-.boot-vid{
-  position:absolute;inset:0;width:100%;height:100%;max-width:none;
-  object-fit:cover;object-position:50% 50%;
-  opacity:0;pointer-events:none;
-}
-.boot-vid.on{opacity:1}
 /* Same face as the header wordmark (.brand span), larger */
 .boot-word{
-  position:absolute;left:0;right:0;top:89%;z-index:1;
+  position:absolute;left:0;right:0;top:50%;
   transform:translateY(-50%);
   margin:0;text-align:center;white-space:nowrap;
-  font-family:"Barlow Condensed","Arial Narrow",sans-serif;
+  font-family:"Barlow Condensed","Barlow Fallback","Arial Narrow",sans-serif;
   font-weight:600;text-transform:uppercase;letter-spacing:.14em;
   text-indent:.14em;
   font-size:clamp(28px,6vw,64px);line-height:1;
   color:#e8c547;
-  opacity:0;transition:opacity .3s linear;
+  opacity:0;transition:opacity .25s linear;
   pointer-events:none;
 }
 .boot-word.on{opacity:1}
-/* Phones: show the whole 960 frame, letterboxed on black, no crop */
-@media(max-width:767px){
-  #boot{
-    background-size:contain;background-position:50% 50%;
-  }
-  .boot-vid{object-fit:contain;object-position:50% 50%}
-}
-/* Reduced motion: word shown at once, full gold, no fade */
-#boot[data-phase="reduced"] .boot-word{transition:none;opacity:1;color:#e8c547}

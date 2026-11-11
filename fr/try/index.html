@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <title>Tester l’idée · de la CAO au rapport | ROBINSPECT Systems</title>
-<meta name="description" content="Simulation illustrative : un panneau composite passe de sa géométrie CAO à une trajectoire de scan calculée, un scan UT contact et un aperçu de rapport, sans programmer le robot à la main."/>
+<meta name="description" content="Simulation illustrative : un panneau composite passe de la CAO à une trajectoire de scan, un scan UT contact et un aperçu de rapport, sans programmer le robot."/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://robinspect-systems.com/fr/try/"/>
 <link rel="alternate" hreflang="en" href="https://robinspect-systems.com/try/"/>
@@ -26,10 +26,9 @@
 <link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/inner.css?v=20260926audit"/>
+<link rel="preload" href="/fonts/barlow-condensed-latin-b57619.woff2" as="font" type="font/woff2" crossorigin/>
+<link rel="stylesheet" href="/fonts/fonts.css?v=20261110b"/>
+<link rel="stylesheet" href="/inner.css?v=20261111dim"/>
 <link rel="stylesheet" href="/try/try.css?v=20261008c"/>
 <script>document.documentElement.classList.add('js');</script>
 <script nomodule>document.documentElement.classList.add('no-module');</script>
@@ -42,7 +41,7 @@
 <body class="try-page">
 <header>
   <div class="wrap hbar">
-    <a class="brand" href="/fr/"><img src="/media/fond-noir.webp" alt="ROBINSPECT" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
+    <a class="brand" href="/fr/"><img src="/media/logo-96.webp" alt="" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a>
     <nav class="desk" aria-label="Navigation principale"><a href="/fr/plateforme/">Plateforme</a><a href="/fr/a-propos/">À propos</a><a href="/fr/watch/">Démo</a><a href="/fr/try/" class="on">Simulateur</a><a href="/fr/faq/">FAQ</a><a href="/fr/contact/">Contact</a></nav>
     <div class="actions">
       <div class="lang" role="group" aria-label="Langue">
@@ -382,7 +381,7 @@
     </div>
     <div class="xp-honest">
       <span class="mono">Statut</span>
-      <p><b>Simulation illustrative, pas de données réelles.</b> La pièce, la trajectoire, le C-scan et le rapport de cette page sont générés dans votre navigateur. Ce qui est démontré aujourd’hui, c’est l’UT contact, dans une <a href="/fr/watch/">démo labo filmée</a> sur une pièce industrielle soudée, et non sur ce panneau. Environ 30&nbsp;minutes pour le cycle complet en UT au contact, mesurées sur la pièce filmée uniquement. Ce n’est pas un délai garanti, ni une valeur pour le PAUT ou le TFM. Le PAUT et le TFM sont au stade de preuve de concept et ne sont pas montrés ici. Tout le reste de cette page relève de la direction.</p>
+      <p><b>Simulation illustrative, pas de données réelles.</b> La pièce, la trajectoire, le C-scan et le rapport de cette page sont générés dans votre navigateur. Ce qui est démontré aujourd’hui, c’est l’UT contact, dans une <a href="/fr/watch/">démo labo filmée</a> sur une pièce industrielle soudée, et non sur ce panneau. Environ 30&nbsp;minutes pour le cycle complet en UT au contact, mesurées sur la pièce filmée uniquement. Ce n’est pas un délai garanti, ni une valeur pour les ultrasons multiéléments (PAUT) ou la méthode de focalisation en tous points (TFM). Le PAUT et le TFM sont démontrés sur matériel réel mais ne sont pas montrés ici. Tout le reste de cette page relève de la direction.</p>
     </div>
   </div>
 </section>

@@ -1,9 +1,9 @@
-:root{--bg:#050505;--fg:#f4f1ea;--muted:#9a958a;--dim:#6b665c;--line:#24211c;--gold:#e8c547;--gold-hot:#f3d56a;--ink:#070707}
+:root{--bg:#050505;--fg:#f4f1ea;--muted:#9a958a;--dim:#7d786d;--line:#24211c;--gold:#e8c547;--gold-hot:#f3d56a;--ink:#070707}
 *{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--bg);color:var(--fg)}
-body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--fg)}
+body{margin:0;font-family:Manrope,"Manrope Fallback",system-ui,sans-serif;background:var(--bg);color:var(--fg)}
 a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;background:none;border:0;color:inherit}
 img,video{max-width:100%;display:block}
-.font-display{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;letter-spacing:-.02em;text-transform:uppercase}
+.font-display{font-family:"Barlow Condensed","Barlow Fallback","Arial Narrow",sans-serif;font-weight:600;letter-spacing:-.02em;text-transform:uppercase}
 .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;font-size:.68rem;color:var(--gold)}
 .wrap{max-width:80rem;margin:0 auto;padding:0 1.25rem}
 @media(min-width:768px){.wrap{padding:0 2rem}}
@@ -12,7 +12,7 @@ header{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(7,7,7,.85);bac
 @media(min-width:768px){.hbar{height:5rem}}
 .brand{display:flex;align-items:center;gap:.65rem}
 .brand img{width:2rem;height:2rem;object-fit:contain}
-.brand span{font-family:"Barlow Condensed",sans-serif;font-size:1.35rem;letter-spacing:.14em}
+.brand span{font-family:"Barlow Condensed","Barlow Fallback",sans-serif;font-size:1.35rem;letter-spacing:.14em}
 .lang{display:inline-flex;height:2.75rem;border:1px solid var(--line);font-size:11px;font-weight:700;letter-spacing:.08em}
 .lang a{display:flex;align-items:center;padding:0 .65rem;min-height:2.75rem;color:var(--muted)}
 .lang a.on{background:var(--gold);color:var(--ink)}
@@ -25,9 +25,13 @@ header{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(7,7,7,.85);bac
 h1{margin:.7rem 0 0;font-size:2.4rem;line-height:1}
 @media(min-width:768px){h1{font-size:3.5rem}}
 .lead{max-width:40rem;margin:1.1rem 0 0;color:rgba(244,241,234,.8);line-height:1.6}
+.xlink{color:var(--gold);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:rgba(232,197,71,.5)}
+.xlink:hover{color:var(--gold-hot);text-decoration-color:currentColor}
+.lead.tagline{margin-top:.9rem;color:var(--fg);font-size:1.2rem;font-weight:500;line-height:1.35}
+@media(min-width:768px){.lead.tagline{font-size:1.45rem}}
 .page{padding-block:7rem 4rem}
 .hero-img{margin-top:1.8rem;border:1px solid var(--line);overflow:hidden;background:#000}
-.hero-img img{width:100%;aspect-ratio:16/8;object-fit:cover}
+.hero-img img{width:100%;height:auto;aspect-ratio:16/8;object-fit:cover}
 .copy{max-width:42rem;margin:2.2rem 0 0;color:var(--muted);line-height:1.65;font-size:.95rem}
 .copy p{margin:0 0 1rem}
 .copy h2{margin:1.8rem 0 .7rem;font-size:1.15rem;color:var(--fg)}
@@ -37,7 +41,7 @@ h1{margin:.7rem 0 0;font-size:2.4rem;line-height:1}
 @media(min-width:800px){.more{grid-template-columns:1fr 1fr}}
 .more a{background:var(--ink);padding:1.2rem 1.3rem}
 .more a:hover{background:#141210}
-.more b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:1.35rem;letter-spacing:-.02em;text-transform:uppercase;color:var(--gold);margin-top:.3rem}
+.more b{display:block;font-family:"Barlow Condensed","Barlow Fallback",sans-serif;font-size:1.35rem;letter-spacing:-.02em;text-transform:uppercase;color:var(--gold);margin-top:.3rem}
 .ctas{display:flex;flex-wrap:wrap;align-items:flex-start;gap:.75rem;margin-top:2rem}
 footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:var(--dim)}
 .note{font-size:.8rem;color:var(--dim)}
@@ -83,7 +87,7 @@ footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.875rem;color:v
 .meet-grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1.5rem;max-width:28rem}
 @media(min-width:600px){.meet-grid{grid-template-columns:1fr 1fr 1fr}}
 .meet-cell{background:var(--ink);padding:1rem 1.1rem}
-.meet-cell b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:1.4rem;margin-top:.25rem;line-height:1}
+.meet-cell b{display:block;font-family:"Barlow Condensed","Barlow Fallback",sans-serif;font-size:1.4rem;margin-top:.25rem;line-height:1}
 .meet-code{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-top:1.5rem;padding:1.1rem 1.2rem;border:1px solid var(--line);max-width:36rem}
 .meet-code b{font-family:"IBM Plex Mono",monospace;font-size:1.1rem;color:var(--gold);letter-spacing:.08em}
 
@@ -115,7 +119,7 @@ h2.display{margin:.8rem 0 0;font-size:2.4rem;line-height:1}
 @media(min-width:768px){.idea-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1100px){.idea-grid{grid-template-columns:repeat(4,1fr)}}
 .idea-card{background:var(--ink);padding:1.5rem 1.35rem}
-.idea-card h3{margin:.7rem 0 0;font-family:"Barlow Condensed",sans-serif;font-size:1.55rem;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
+.idea-card h3{margin:.7rem 0 0;font-family:"Barlow Condensed","Barlow Fallback",sans-serif;font-size:1.55rem;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
 .box{border:1px solid var(--line);background:#0a0908;padding:1.5rem}
 .frow{display:flex;flex-direction:column;gap:1.5rem;align-items:flex-start}
 @media(min-width:768px){.frow{flex-direction:row}}
@@ -131,10 +135,12 @@ h2.display{margin:.8rem 0 0;font-size:2.4rem;line-height:1}
 /* Meet — Where to meet us / events */
 .event-list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1.8rem;max-width:42rem}
 .event-card{background:var(--ink);padding:1.5rem 1.35rem;scroll-margin-top:5.5rem}
-.event-card h2{margin:.55rem 0 0;font-family:"Barlow Condensed",sans-serif;font-size:1.85rem;letter-spacing:-.02em;text-transform:uppercase;line-height:.95}
+.event-card h2{margin:.55rem 0 0;font-family:"Barlow Condensed","Barlow Fallback",sans-serif;font-size:1.85rem;letter-spacing:-.02em;text-transform:uppercase;line-height:.95}
 @media(min-width:700px){.event-card h2{font-size:2.2rem}}
 .event-card .meet-grid{max-width:100%}
 .event-card .meet-code{max-width:100%}
 .event-next{margin-top:2.6rem;max-width:42rem}
 .event-next h2{margin:.45rem 0 .7rem;font-size:1.15rem}
 
+
+.more.three{grid-template-columns:1fr}@media(min-width:800px){.more.three{grid-template-columns:repeat(3,1fr)}}
