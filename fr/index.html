@@ -97,6 +97,8 @@ header.open .mobile{display:block}
 .sec{border-top:1px solid var(--line);overflow:hidden;position:relative}
 .split{display:grid}
 @media(min-width:1024px){.split{grid-template-columns:1fr 1fr}}
+.simut-card-shot{display:none}
+@media(min-width:1024px){.simut-card-shot{display:block;width:100%;height:auto}}
 .photo{position:relative;min-height:68vh;overflow:hidden}
 @media(min-width:1024px){.photo{min-height:88dvh}}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -318,11 +320,17 @@ html.boot,html.boot body{overflow:hidden;background:#050505}
     <p class="lead">Même intégrateur, même chaîne logicielle multimarque — arrivez directement sur votre cas.</p>
     <div class="cols3"><a class="card" href="/fr/soudure/"><div class="mono">01</div><h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0">Soudure</h3><p class="muted" style="font-size:.9rem;line-height:1.6">UT au contact sur cordons où l’accès et l’angle compliquent le contrôle manuel.</p><div class="gold-xs">PAUT · intégrateur · soudure</div></a><a class="card" href="/fr/aero/"><div class="mono">02</div><h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0">Géométrie courbe</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Trajectoires rejouables sur peaux et piquages hors catalogue.</p><div class="gold-xs">Composites · 6 axes · sonde à la normale</div></a><a class="card" href="/fr/contraint/"><div class="mono">03</div><h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0">Milieu contraint</h3><p class="muted" style="font-size:.9rem;line-height:1.6">Processus cellule où le temps de mise en place et la répétabilité décident si le scan est utilisable.</p><div class="gold-xs">Énergie · nucléaire · HSE</div></a></div>
     <div class="card" style="margin-top:1.2rem;border:1px solid var(--line)">
-      <div class="mono">Bientôt disponible</div>
-      <h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0"><a href="/fr/simut/">simUT</a></h3>
-      <p class="muted" style="font-size:.9rem;line-height:1.6">simUT calcule le champ ultrasonore rayonné par les sondes mono-élément et multiéléments, au contact, en immersion et sur sabot.</p>
-      <div class="ctas">
-        <a class="btn" href="/fr/simut/beta/">Rejoindre la bêta</a>
+      <div class="split" style="gap:2rem;align-items:center">
+        <div>
+          <div class="mono">Bientôt disponible</div>
+          <h3 class="font-display" style="font-size:1.8rem;margin:1.2rem 0 0;text-transform:none"><a href="/fr/simut/">simUT</a></h3>
+          <p class="muted" style="font-size:.9rem;line-height:1.6">simUT calcule le champ ultrasonore rayonné par les sondes mono-élément et multiéléments, au contact, en immersion et sur sabot.</p>
+          <div class="ctas">
+            <a class="btn" href="/fr/simut/beta/">Rejoindre la bêta</a>
+            <a class="btn btn-ghost" href="/fr/simut/">Découvrir simUT</a>
+          </div>
+        </div>
+        <img class="simut-card-shot" src="/simut/media/shot-5-pa32-2-3mhz-utpa-640.webp" srcset="/simut/media/shot-5-pa32-2-3mhz-utpa-640.webp 640w, /simut/media/shot-5-pa32-2-3mhz-utpa.webp 1080w" sizes="(min-width:1024px) 36rem, 1px" width="1080" height="939" alt="Carte de champ de focalisation UTPA multiéléments, barrette linéaire de 32 éléments" loading="lazy" decoding="async"/>
       </div>
     </div>
   </div>
