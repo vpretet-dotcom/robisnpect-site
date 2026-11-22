@@ -28,6 +28,8 @@
 }
 .hero-copy{display:contents}
 .hero-copy .mono{order:1}
+.hero-copy .hero-kicker{order:1}
+.hero-kicker .badge-coming{margin-top:.75rem}
 .hero-copy h1{order:2}
 .hero-shot{order:3}
 .hero-copy .lead,
