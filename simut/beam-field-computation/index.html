@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>UT and phased array beam field computation | simUT</title>
+<meta name="description" content="Compute ultrasonic beam fields in simUT: single-element and phased array, in contact, in immersion and with a wedge, on flat parts."/>
+<link rel="canonical" href="https://robinspect-systems.com/simut/beam-field-computation/"/>
+<link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/beam-field-computation/"/>
+<link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/calcul-de-champ/"/>
+<link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/beam-field-computation/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="ROBINSPECT Systems"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:locale:alternate" content="fr_FR"/>
+<meta property="og:url" content="https://robinspect-systems.com/simut/beam-field-computation/"/>
+<meta property="og:title" content="UT and phased array beam field computation | simUT"/>
+<meta property="og:description" content="Compute ultrasonic beam fields in simUT: single-element and phased array, in contact, in immersion and with a wedge, on flat parts."/>
+<meta property="og:image" content="https://robinspect-systems.com/simut/media/simut-og-en-1200x630.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="simUT ultrasonic beam field map"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="UT and phased array beam field computation | simUT"/>
+<meta name="twitter:description" content="Compute ultrasonic beam fields in simUT: single-element and phased array, in contact, in immersion and with a wedge, on flat parts."/>
+<meta name="twitter:image" content="https://robinspect-systems.com/simut/media/simut-og-en-1200x630.jpg"/>
+<link rel="icon" href="/simut/favicon.ico" sizes="any"/>
+<link rel="icon" type="image/svg+xml" href="/simut/favicon.svg"/>
+<link rel="apple-touch-icon" href="/simut/apple-touch-icon.png"/>
+<link rel="preload" href="/fonts/barlow-condensed-latin-b57619.woff2" as="font" type="font/woff2" crossorigin/>
+<link rel="stylesheet" href="/fonts/fonts.css?v=20261110b"/>
+<link rel="stylesheet" href="/inner.css?v=20261111dim"/>
+<link rel="stylesheet" href="/simut/site.css"/>
+<script type="application/ld+json" data-crumbs>{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "simUT", "item": "https://robinspect-systems.com/simut/"}, {"@type": "ListItem", "position": 2, "name": "Field computation", "item": "https://robinspect-systems.com/simut/beam-field-computation/"}]}</script>
+</head>
+<body>
+<header>
+  <div class="wrap hbar">
+    <div class="brand-pair"><a class="brand" href="/" aria-label="ROBINSPECT Systems"><img src="/media/logo-96.webp" alt="" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a><span class="brand-sep" aria-hidden="true">/</span><a class="brand brand-sub" href="/simut/">simUT</a></div>
+    <nav class="desk" aria-label="Primary"><a href="/simut/beam-field-computation/" class="on">Field computation</a><a href="/simut/roadmap/">Roadmap</a><a href="/simut/faq/">FAQ</a><a href="/simut/story/">Story</a></nav>
+    <div class="actions">
+      <div class="lang" role="group" aria-label="Language">
+        <a href="/simut/beam-field-computation/" class="on" hreflang="en">EN</a>
+        <a href="/fr/simut/calcul-de-champ/" hreflang="fr">FR</a>
+      </div>
+      <a class="btn nav-cta" href="/simut/beta/"><span class="cta-short">Beta</span><span class="cta-full">Join the beta</span></a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile">☰</button>
+    </div>
+  </div>
+  <div class="mobile wrap" id="mobile"><a href="/simut/beam-field-computation/" class="on">Field computation</a><a href="/simut/roadmap/">Roadmap</a><a href="/simut/faq/">FAQ</a><a href="/simut/story/">Story</a><a class="btn" style="margin-top:.5rem;align-self:flex-start" href="/simut/beta/">Join the beta</a></div>
+</header>
+<main>
+  <div class="wrap page">
+    <nav class="crumb"><a href="/simut/">simUT</a><span>/</span><span>Field computation</span></nav>
+    <div class="mono" style="margin-top:1.2rem">Field computation</div>
+    <h1 class="font-display">UT and phased array beam field computation</h1>
+    <p class="lead">This is what simUT computes today: the emitted beam field, on a desktop workflow an NDT engineer can set up and read.</p>
+
+    <div class="gal-grid">
+      <figure class="shot shot-x" data-gal="1">
+        <button class="shot-open" type="button" data-shot data-full="/simut/media/shot-1-mono-10mm-5mhz-contact.webp" aria-label="Enlarge: Simulated ultrasonic beam from a 10 mm circular single-element probe in contact"><img src="/simut/media/shot-1-mono-10mm-5mhz-contact-640.webp" srcset="/simut/media/shot-1-mono-10mm-5mhz-contact-640.webp 640w, /simut/media/shot-1-mono-10mm-5mhz-contact.webp 1042w" sizes="(min-width:1200px) 34rem, (min-width:720px) 46vw, 92vw" width="1042" height="868" alt="Simulated ultrasonic beam from a 10 mm circular single-element probe in contact" fetchpriority="high" decoding="async"/></button>
+        <figcaption>Circular single element, Ø 10 mm, 5 MHz, contact</figcaption>
+      </figure>
+      <figure class="shot shot-x" data-gal="4">
+        <button class="shot-open" type="button" data-shot data-full="/simut/media/shot-4-pa16-2-3mhz-contact.webp" aria-label="Enlarge: Simulated ultrasonic beam from a 16-element linear array in contact"><img src="/simut/media/shot-4-pa16-2-3mhz-contact-640.webp" srcset="/simut/media/shot-4-pa16-2-3mhz-contact-640.webp 640w, /simut/media/shot-4-pa16-2-3mhz-contact.webp 1008w" sizes="(min-width:1200px) 34rem, (min-width:720px) 46vw, 92vw" width="1008" height="840" alt="Simulated ultrasonic beam from a 16-element linear array in contact" loading="lazy" decoding="async"/></button>
+        <figcaption>Linear array, 16 elements, 1 mm pitch, 2.3 MHz, contact</figcaption>
+      </figure>
+      <figure class="shot shot-x" data-gal="2">
+        <button class="shot-open" type="button" data-shot data-full="/simut/media/shot-2-pa32-2-3mhz-contact.webp" aria-label="Enlarge: Simulated ultrasonic beam from a 32-element linear array at 2.3 MHz in contact"><img src="/simut/media/shot-2-pa32-2-3mhz-contact-640.webp" srcset="/simut/media/shot-2-pa32-2-3mhz-contact-640.webp 640w, /simut/media/shot-2-pa32-2-3mhz-contact.webp 1009w" sizes="(min-width:1200px) 34rem, (min-width:720px) 46vw, 92vw" width="1009" height="841" alt="Simulated ultrasonic beam from a 32-element linear array at 2.3 MHz in contact" loading="lazy" decoding="async"/></button>
+        <figcaption>Linear array, 32 elements, 1 mm pitch, 2.3 MHz, contact</figcaption>
+      </figure>
+      <figure class="shot shot-x" data-gal="3">
+        <button class="shot-open" type="button" data-shot data-full="/simut/media/shot-3-pa32-5mhz-contact.webp" aria-label="Enlarge: Simulated ultrasonic beam from a 32-element linear array at 5 MHz in contact"><img src="/simut/media/shot-3-pa32-5mhz-contact-640.webp" srcset="/simut/media/shot-3-pa32-5mhz-contact-640.webp 640w, /simut/media/shot-3-pa32-5mhz-contact.webp 1012w" sizes="(min-width:1200px) 34rem, (min-width:720px) 46vw, 92vw" width="1012" height="843" alt="Simulated ultrasonic beam from a 32-element linear array at 5 MHz in contact" loading="lazy" decoding="async"/></button>
+        <figcaption>Linear array, 32 elements, 1 mm pitch, 5 MHz, contact</figcaption>
+      </figure>
+    </div>
+    <h2 class="font-display gal-sub">Phased array focusing (UTPA)</h2>
+    <p class="muted gal-intro">The same 32-element linear array, focused with UTPA and shown at the same scale, without and with beam steering.</p>
+    <div class="gal-pair">
+      <figure class="shot shot-x" data-gal="5p">
+        <button class="shot-open" type="button" data-shot data-full="/simut/media/shot-5-pa32-2-3mhz-utpa-pair.webp" aria-label="Enlarge: Simulated ultrasonic beam from a 32-element linear array, focused"><img src="/simut/media/shot-5-pa32-2-3mhz-utpa-pair-640.webp" srcset="/simut/media/shot-5-pa32-2-3mhz-utpa-pair-640.webp 640w, /simut/media/shot-5-pa32-2-3mhz-utpa-pair.webp 874w" sizes="(min-width:1200px) 31rem, (min-width:720px) 42vw, 92vw" width="874" height="848" alt="Simulated ultrasonic beam from a 32-element linear array, focused" loading="lazy" decoding="async"/></button>
+        <figcaption><strong>Without steering</strong> · Linear array, 32 elements, 1 mm pitch, 2.3 MHz, contact, UTPA focusing</figcaption>
+      </figure>
+      <figure class="shot shot-x" data-gal="6">
+        <button class="shot-open" type="button" data-shot data-full="/simut/media/shot-6-pa32-2-3mhz-utpa-steered.webp" aria-label="Enlarge: Simulated ultrasonic beam from a 32-element linear array, focused and steered"><img src="/simut/media/shot-6-pa32-2-3mhz-utpa-steered-640.webp" srcset="/simut/media/shot-6-pa32-2-3mhz-utpa-steered-640.webp 640w, /simut/media/shot-6-pa32-2-3mhz-utpa-steered.webp 1058w" sizes="(min-width:1200px) 37rem, (min-width:720px) 50vw, 92vw" width="1058" height="848" alt="Simulated ultrasonic beam from a 32-element linear array, focused and steered" loading="lazy" decoding="async"/></button>
+        <figcaption><strong>With steering</strong> · Linear array, 32 elements, 1 mm pitch, 2.3 MHz, contact, UTPA focusing with beam steering</figcaption>
+      </figure>
+    </div>
+
+    <div style="margin-top:3rem">
+      <div class="mono">Inputs and outputs</div>
+      <h2 class="font-display" style="font-size:2.2rem;margin:.6rem 0 0">What you set, and what you read.</h2>
+      <div class="proof-cards" style="margin-top:1.4rem">
+        <div class="proof-card">
+          <h3 class="font-display" style="text-transform:uppercase">Inputs</h3>
+        <ul class="copy" style="margin:1rem 0 0;padding-left:1.1rem">
+          <li>Single-element probes</li>
+          <li>Phased array probes</li>
+          <li>Contact coupling, on flat parts</li>
+          <li>Immersion coupling, on flat parts</li>
+          <li>Wedge coupling, on flat parts</li>
+        </ul>
+        <p class="muted" style="margin-top:1rem;font-size:.9rem;line-height:1.55">Curved geometries <span class="badge-coming" style="margin-top:0;margin-left:.35rem">Coming</span></p>
+        <p class="muted" style="margin-top:.8rem;font-size:.9rem;line-height:1.55">Material, probe parameters, and a computation zone (a planar cut or a volume on a regular grid) complete the setup.</p>
+        </div>
+        <div class="proof-card">
+          <h3 class="font-display" style="text-transform:uppercase">Outputs</h3>
+        <ul class="copy" style="margin:1rem 0 0;padding-left:1.1rem">
+          <li>A 2D field map in the computation plane</li>
+          <li>A profile along the beam axis</li>
+          <li>A 3D view of the probe, the part, and the computation zone</li>
+          <li>PNG image and CSV data export from the results view</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top:1.6rem;font-size:.95rem;line-height:1.55">The field computation runs multithreaded on the CPU, with GPU acceleration.</p>
+
+    <div class="ctas">
+      <a class="btn btn-lg" href="/simut/beta/">Join the beta</a>
+    </div>
+  </div>
+</main>
+<footer><div class="wrap ft">
+  <div>© 2026 ROBINSPECT Systems — Integrator · <span style="white-space:nowrap">Orlando, Florida, USA · Europe</span></div>
+  <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet us</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Use cases · <a href="/weld/">Weld inspection</a> · <a href="/aerospace/">Curved geometry</a> · <a href="/energy/">Constrained sites</a><br/><a href="/simut/">simUT</a> · <a href="/simut/beam-field-computation/">Field computation</a> · <a href="/simut/roadmap/">Roadmap</a> · <a href="/simut/faq/">FAQ</a> · <a href="/simut/story/">Story</a> · <a href="/simut/beta/">Join the beta</a></div>
+</div></footer>
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Close image">
+  <button class="lb-close" type="button" data-lb-close aria-label="Close image">×</button>
+  <div>
+    <img data-lb-img alt=""/>
+    <p class="lb-cap" data-lb-cap></p>
+  </div>
+</div>
+
+<script src="/simut/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The story behind simUT | simUT</title>
+<meta name="description" content="Why an NDT engineer built simUT, a new ultrasonic beam simulation engine for inspection preparation, and where it goes next: sensitivity maps and more."/>
+<link rel="canonical" href="https://robinspect-systems.com/simut/story/"/>
+<link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/story/"/>
+<link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/histoire/"/>
+<link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/story/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="ROBINSPECT Systems"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:locale:alternate" content="fr_FR"/>
+<meta property="og:url" content="https://robinspect-systems.com/simut/story/"/>
+<meta property="og:title" content="The story behind simUT | simUT"/>
+<meta property="og:description" content="Why an NDT engineer built simUT, a new ultrasonic beam simulation engine for inspection preparation, and where it goes next: sensitivity maps and more."/>
+<meta property="og:image" content="https://robinspect-systems.com/simut/media/simut-og-en-1200x630.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="simUT ultrasonic beam field map"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="The story behind simUT | simUT"/>
+<meta name="twitter:description" content="Why an NDT engineer built simUT, a new ultrasonic beam simulation engine for inspection preparation, and where it goes next: sensitivity maps and more."/>
+<meta name="twitter:image" content="https://robinspect-systems.com/simut/media/simut-og-en-1200x630.jpg"/>
+<link rel="icon" href="/simut/favicon.ico" sizes="any"/>
+<link rel="icon" type="image/svg+xml" href="/simut/favicon.svg"/>
+<link rel="apple-touch-icon" href="/simut/apple-touch-icon.png"/>
+<link rel="preload" href="/fonts/barlow-condensed-latin-b57619.woff2" as="font" type="font/woff2" crossorigin/>
+<link rel="stylesheet" href="/fonts/fonts.css?v=20261110b"/>
+<link rel="stylesheet" href="/inner.css?v=20261111dim"/>
+<link rel="stylesheet" href="/simut/site.css"/>
+<script type="application/ld+json" data-crumbs>{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "simUT", "item": "https://robinspect-systems.com/simut/"}, {"@type": "ListItem", "position": 2, "name": "Story", "item": "https://robinspect-systems.com/simut/story/"}]}</script>
+</head>
+<body>
+<header>
+  <div class="wrap hbar">
+    <div class="brand-pair"><a class="brand" href="/" aria-label="ROBINSPECT Systems"><img src="/media/logo-96.webp" alt="" width="32" height="32"/><span class="font-display">ROBINSPECT</span></a><span class="brand-sep" aria-hidden="true">/</span><a class="brand brand-sub" href="/simut/">simUT</a></div>
+    <nav class="desk" aria-label="Primary"><a href="/simut/beam-field-computation/">Field computation</a><a href="/simut/roadmap/">Roadmap</a><a href="/simut/faq/">FAQ</a><a href="/simut/story/" class="on">Story</a></nav>
+    <div class="actions">
+      <div class="lang" role="group" aria-label="Language">
+        <a href="/simut/story/" class="on" hreflang="en">EN</a>
+        <a href="/fr/simut/histoire/" hreflang="fr">FR</a>
+      </div>
+      <a class="btn nav-cta" href="/simut/beta/"><span class="cta-short">Beta</span><span class="cta-full">Join the beta</span></a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile">☰</button>
+    </div>
+  </div>
+  <div class="mobile wrap" id="mobile"><a href="/simut/beam-field-computation/">Field computation</a><a href="/simut/roadmap/">Roadmap</a><a href="/simut/faq/">FAQ</a><a href="/simut/story/" class="on">Story</a><a class="btn" style="margin-top:.5rem;align-self:flex-start" href="/simut/beta/">Join the beta</a></div>
+</header>
+<main>
+  <div class="wrap page">
+    <nav class="crumb"><a href="/simut/">simUT</a><span>/</span><span>Story</span></nav>
+    <div class="mono" style="margin-top:1.2rem">Story &amp; direction</div>
+    <h1 class="font-display">Why we built simUT, and where it's going</h1>
+    <p class="lead">simUT is ultrasonic beam simulation software for NDT, built by ROBINSPECT SYSTEMS, LLC. It began as a field engineer's answer to a simple problem: simulation should help you prepare an inspection, not slow you down.</p>
+
+    <div class="story-grid">
+      <figure class="shot shot-x story-shot">
+        <button class="shot-open" type="button" data-shot data-full="/simut/media/shot-6-pa32-2-3mhz-utpa-steered.webp" aria-label="Enlarge: Simulated ultrasonic beam from a 32-element linear array, focused and steered"><img src="/simut/media/shot-6-pa32-2-3mhz-utpa-steered-640.webp" srcset="/simut/media/shot-6-pa32-2-3mhz-utpa-steered-640.webp 640w, /simut/media/shot-6-pa32-2-3mhz-utpa-steered.webp 1058w" sizes="(min-width:1100px) 30rem, 92vw" width="1058" height="848" alt="Simulated ultrasonic beam from a 32-element linear array, focused and steered" decoding="async"/></button>
+        <figcaption>A beam field computed in simUT: 32-element linear array, UTPA focusing with beam steering.</figcaption>
+      </figure>
+    <div class="copy">
+      <h2 class="font-display">Where simUT comes from</h2>
+      <div class="founder-mini"><p><strong>Vincent Pretet</strong>, Founder, ROBINSPECT SYSTEMS, LLC. NDT engineer since 2019, mostly in the nuclear industry.</p></div>
+      <p>Vincent Pretet has worked in NDT since 2019, mostly in the nuclear industry. In 2022 his work moved into phased array UT, and with it into imaging methods, simulation and the post-processing of raw data.</p>
+      <p>That's where the friction started. Every inspection had to be prepared, every project had to be justified, and every result had to be understood. Simulation was the right tool for all three, but it rarely felt like one. Computations were slow to optimize, the software was hard to drive, and getting a usable answer took more time than it should. simUT started from that frustration.</p>
+      <h2 class="font-display">The problem: simulation that stays out of reach</h2>
+      <p>The need for UT simulation keeps growing. Teams use it to prepare inspections, to scope and defend projects, and to understand what they actually see in the data.</p>
+      <p>Existing solutions are complete, but they're also complex and expensive. They assume a trained specialist at the keyboard and a budget to match. That leaves a large part of the market without access: smaller inspection companies, technicians who need an answer rather than a modelling project, and engineers who simply want to check a beam before they go on site.</p>
+      <p>simUT is meant for them, as well as for experienced simulation users who want a faster, more direct tool.</p>
+      <h2 class="font-display">How simUT is built</h2>
+      <p>simUT isn't a new interface on top of old code. It's a completely new engine, designed from the start around a few principles.</p>
+      <ul>
+        <li><strong>Built for parallel computing.</strong> The architecture uses native multithreading, and computations can run on the GPU. The aim is simple: less waiting between a change in the setup and a result you can read.</li>
+        <li><strong>Easy to pick up.</strong> The setup is laid out step by step, so you don't need specialist training to get to a first beam field.</li>
+        <li><strong>Honest about its scope.</strong> simUT shows what the model computes and what it doesn't. A beam field map isn't a full inspection simulation, and the software says so.</li>
+        <li><strong>Checked before it ships.</strong> No module leaves beta until its results have been checked against independent references.</li>
+      </ul>
+      <h2 class="font-display">Where simUT is going</h2>
+      <p>Today, simUT computes the ultrasonic beam field for single-element and phased array probes, in contact, in immersion and with a wedge, on flat parts.</p>
+      <p>The modules that follow build on that field computation, in this order:</p>
+      <ol>
+        <li>Sensitivity maps</li>
+        <li>Inspection simulation</li>
+        <li>Curved geometries</li>
+      </ol>
+      <p>What comes after that will depend on what users need and what they tell us. We're not putting dates on any of it. Each module ships once it's ready.</p>
+    </div>
+    </div>
+
+    <div class="ctas">
+      <a class="btn btn-lg" href="/simut/beta/">Join the beta</a>
+      <a class="btn btn-lg btn-ghost" href="/simut/roadmap/">See the roadmap</a>
+    </div>
+    <p class="muted" style="margin-top:1rem;font-size:.9rem">Field computation is in beta. Try it on your own cases and tell us what you need next.</p>
+  </div>
+</main>
+<footer><div class="wrap ft">
+  <div>© 2026 ROBINSPECT Systems — Integrator · <span style="white-space:nowrap">Orlando, Florida, USA · Europe</span></div>
+  <div class="ft-links"><a href="/platform/">Platform</a> · <a href="/about/">About</a> · <a href="/watch/">Watch</a> · <a href="/try/">Try</a> · <a href="/faq/">FAQ</a> · <a href="/contact/">Contact</a> · <a href="/meet/">Meet us</a> · <a href="https://www.linkedin.com/company/robinspect/">LinkedIn</a><br/>Use cases · <a href="/weld/">Weld inspection</a> · <a href="/aerospace/">Curved geometry</a> · <a href="/energy/">Constrained sites</a><br/><a href="/simut/">simUT</a> · <a href="/simut/beam-field-computation/">Field computation</a> · <a href="/simut/roadmap/">Roadmap</a> · <a href="/simut/faq/">FAQ</a> · <a href="/simut/story/">Story</a> · <a href="/simut/beta/">Join the beta</a></div>
+</div></footer>
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Close image">
+  <button class="lb-close" type="button" data-lb-close aria-label="Close image">×</button>
+  <div>
+    <img data-lb-img alt=""/>
+    <p class="lb-cap" data-lb-cap></p>
+  </div>
+</div>
+
+<script src="/simut/js/site.js"></script>
+</body>
+</html>
