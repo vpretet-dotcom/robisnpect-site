@@ -199,4 +199,113 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/try/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/try/"/>
   </url>
+
+  <url>
+    <loc>https://robinspect-systems.com/simut/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/simut/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/simut/beam-field-computation/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/beam-field-computation/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/calcul-de-champ/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/beam-field-computation/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/simut/calcul-de-champ/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/beam-field-computation/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/calcul-de-champ/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/beam-field-computation/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/simut/story/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/story/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/histoire/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/story/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/simut/histoire/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/story/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/histoire/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/story/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/simut/faq/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/faq/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/faq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/faq/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/simut/faq/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/faq/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/faq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/faq/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/simut/roadmap/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/roadmap/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/feuille-de-route/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/roadmap/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/simut/feuille-de-route/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/roadmap/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/feuille-de-route/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/roadmap/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/simut/beta/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/beta/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/beta/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/beta/"/>
+  </url>
+  <url>
+    <loc>https://robinspect-systems.com/fr/simut/beta/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://robinspect-systems.com/simut/beta/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://robinspect-systems.com/fr/simut/beta/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://robinspect-systems.com/simut/beta/"/>
+  </url>
 </urlset>

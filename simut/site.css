@@ -1,0 +1,282 @@
+/* simUT additions on top of the locked Robinspect DA (inner.css). Tokens unchanged. */
+
+/* Wordmark keeps mixed case (simUT), unlike the all-caps ROBINSPECT mark. */
+.brand span{
+  text-transform:none;
+  letter-spacing:.08em;
+  font-weight:600;
+}
+.boot-word{
+  text-transform:none;
+  letter-spacing:.08em;
+  text-indent:0;
+}
+
+/* Compact beta CTA stays in the header on small screens. */
+.nav-cta{display:inline-flex}
+.cta-full{display:none}
+@media(min-width:1100px){
+  .cta-full{display:inline}
+  .cta-short{display:none}
+}
+
+/* Home hero: copy left, field map right; on mobile the shot sits under the H1. */
+.hero-home{padding-block:7rem 3.2rem}
+.hero-split{display:grid;gap:1.6rem;align-items:center}
+@media(min-width:1024px){
+  .hero-split{grid-template-columns:1fr 1.05fr;gap:2.4rem}
+}
+.hero-copy{display:contents}
+.hero-copy .mono{order:1}
+.hero-copy h1{order:2}
+.hero-shot{order:3}
+.hero-copy .lead,
+.hero-copy .ctas{order:4}
+.hero-copy .lead{order:4}
+.hero-copy .ctas{order:5}
+@media(min-width:1024px){
+  .hero-copy{display:block;order:initial}
+  .hero-shot{order:initial}
+}
+
+/* Framed product screenshots */
+.shot{
+  margin:0;
+  border:1px solid var(--line);
+  background:#000;
+  overflow:hidden;
+  position:relative;
+}
+.shot button.shot-open{
+  display:block;
+  width:100%;
+  padding:0;
+  background:#000;
+  color:inherit;
+  text-align:left;
+  cursor:zoom-in;
+}
+.shot button.shot-open:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:2px;
+}
+.shot img{
+  width:100%;
+  height:auto;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+}
+.shot figcaption{
+  margin:0;
+  padding:.7rem .9rem .8rem;
+  border-top:1px solid var(--line);
+  background:var(--ink);
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.5;
+}
+.shots{display:grid;gap:1.4rem;margin-top:2rem}
+@media(min-width:800px){.shots.two{grid-template-columns:1fr 1fr}}
+
+/* Coming badge: always --dim, never gold */
+.badge-coming{
+  display:inline-block;
+  margin-top:.65rem;
+  border:1px solid var(--line);
+  padding:.2rem .55rem;
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.65rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+
+/* Temporary visual slots (future generated stills) */
+.ph{
+  position:relative;
+  min-height:12rem;
+  border:1px solid var(--line);
+  background:#0a0908;
+  overflow:hidden;
+}
+.ph-art{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 40% 70% at 50% 18%, rgba(232,197,71,.16), transparent 62%),
+    linear-gradient(180deg, transparent 0%, transparent 28%, rgba(232,197,71,.07) 52%, transparent 78%),
+    repeating-linear-gradient(90deg, transparent 0 18px, rgba(36,33,28,.9) 18px 19px);
+}
+.ph-art::after{
+  content:"";
+  position:absolute;left:18%;right:18%;top:12%;bottom:18%;
+  border:1px solid rgba(36,33,28,.95);
+  background:linear-gradient(180deg, rgba(232,197,71,.05), rgba(232,197,71,.18) 46%, rgba(7,7,7,.4));
+  clip-path:polygon(42% 0, 58% 0, 78% 100%, 22% 100%);
+  opacity:.85;
+}
+.ph-label{
+  position:absolute;
+  left:.6rem;bottom:.55rem;
+  z-index:1;
+  border:1px solid var(--line);
+  background:rgba(7,7,7,.88);
+  padding:.2rem .5rem;
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.62rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+
+/* Beta form */
+.form{
+  max-width:32rem;
+  margin-top:1.8rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.form label{display:flex;flex-direction:column;gap:.4rem;font-size:.88rem;color:var(--muted)}
+.form .req{color:var(--gold)}
+.form input,
+.form select{
+  min-height:2.75rem;
+  padding:.55rem .75rem;
+  background:#0a0908;
+  color:var(--fg);
+  border:1px solid var(--line);
+  font:inherit;
+  font-size:.95rem;
+}
+.form input:focus,
+.form select:focus{
+  outline:none;
+  border-color:var(--gold);
+}
+.form .form-error{
+  display:none;
+  margin:0;
+  color:#e8b4a0;
+  font-size:.9rem;
+  line-height:1.5;
+}
+.form.is-error .form-error{display:block}
+.form-ok{
+  display:none;
+  max-width:32rem;
+  margin-top:1.8rem;
+  border:1px solid var(--line);
+  background:var(--ink);
+  padding:1.5rem 1.35rem;
+}
+.form-ok.is-on{display:block}
+.form-ok h2{margin:.4rem 0 .7rem;font-size:1.8rem}
+
+/* Accessible lightbox */
+.lb{
+  display:none;
+  position:fixed;inset:0;z-index:80;
+  background:rgba(5,5,5,.92);
+  padding:1.25rem;
+  overflow:auto;
+}
+.lb.open{display:grid;place-items:center}
+.lb img{max-width:min(1200px,100%);max-height:calc(100vh - 5.5rem);width:auto;height:auto;border:1px solid var(--line);background:#000}
+.lb-close{
+  position:fixed;top:.8rem;right:.8rem;z-index:81;
+  min-height:2.75rem;min-width:2.75rem;
+  border:1px solid var(--line);
+  background:rgba(7,7,7,.9);
+  color:var(--fg);
+}
+.lb-close:hover{border-color:var(--gold);color:var(--gold)}
+.lb-cap{margin:.8rem 0 0;color:var(--muted);font-size:.88rem;max-width:50rem;text-align:center}
+body.lb-on{overflow:hidden}
+
+footer .by-link{color:var(--muted)}
+footer .by-link:hover{color:var(--gold)}
+
+.form[hidden]{display:none}
+/* Header inside the Robinspect site: Robinspect logo, then " / simUT". */
+.brand-pair{display:flex;align-items:center;gap:.6rem;min-width:0}
+.brand-sep{color:var(--dim);font-size:1.2rem;line-height:1}
+.brand-sub{font-family:"Barlow Condensed","Barlow Fallback",sans-serif;font-size:1.35rem;letter-spacing:.06em}
+.brand-sub:hover{color:var(--gold)}
+@media(max-width:430px){.brand-pair .brand:first-child span{display:none}}
+/* Mobile menu: opaque panel under the header, page side padding, gold beta button. */
+.mobile.open{background:var(--bg);min-height:calc(100dvh - 4rem);padding:1rem 1.25rem 2rem;overflow-y:auto}
+@media(min-width:768px){.mobile.open{min-height:calc(100dvh - 5rem);padding-inline:2rem}}
+header:has(.mobile.open){background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}
+html:has(.mobile.open){overflow:hidden}
+.mobile a.btn{padding:.65rem 1rem;font-size:.75rem;color:var(--ink);background:var(--gold)}
+.mobile a.btn:hover{color:var(--ink);background:var(--gold-hot)}
+/* Home: Today / Next on two columns. */
+@media(min-width:800px){.cols3.cols2{grid-template-columns:1fr 1fr}}
+/* Story: copy left, sticky field capture right on desktop; capture above the copy on mobile. */
+.story-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.story-shot{margin:2rem 0 0}
+@media(min-width:1024px){
+  .story-grid{grid-template-columns:minmax(0,42rem) minmax(0,1fr);gap:3.5rem;align-items:start}
+  .story-grid .copy{grid-column:1;grid-row:1}
+  .story-shot{grid-column:2;grid-row:1;position:sticky;top:7rem;margin-top:2.2rem}
+}
+/* Story: numbered roadmap list, founder line (name + role, no photo) at the top of the first section. */
+.copy ol{margin:.2rem 0 1.2rem;padding-left:1.3rem}
+.copy ol li{margin:.35rem 0}
+.founder-mini{margin:0 0 1.2rem}
+.founder-mini p{margin:0;font-size:.85rem;line-height:1.5}
+.founder-mini strong{color:var(--fg)}
+/* Roadmap: three modules side by side, no empty cell. */
+@media(min-width:800px){.proof-cards.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* Roadmap illustrations (Gemini), exported at 16:9 native width. .rm-imgs-off hides them (display:none keeps lazy images from loading). */
+.rm-fig{margin:-1.35rem -1.35rem 1.2rem;border-bottom:1px solid var(--line);background:#000}
+.rm-fig img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center}
+.rm-fig figcaption{padding:.45rem .9rem;color:var(--muted);font-size:.75rem;line-height:1.4;background:var(--ink);border-top:1px solid var(--line)}
+.rm-imgs-off .rm-fig{display:none}
+
+/* Teaser page (/simut/teaser/): hero copy + CTA, then the video slot (still image until the teaser video ships), roadmap glimpse, closing CTA. */
+.teaser .brand-sub:hover{color:inherit}
+.tz-hero{padding-block:6.5rem 2rem}
+.tz-hero h1{max-width:52rem}
+.tz-hero .lead{max-width:44rem}
+.tz-media{padding-bottom:3rem}
+.tz-video{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line);background:#000}
+.tz-video img,.tz-video video{display:block;width:100%;height:100%;object-fit:cover}
+.tz-steps{margin-top:1.6rem}
+.tz-step h3{font-size:1.6rem;margin:1rem 0 0;text-transform:uppercase}
+.tz-step p{font-size:.9rem;line-height:1.6;margin-top:.6rem}
+.tz-step:hover{background:var(--ink)}
+@media(min-width:768px){.tz-hero{padding-block:8rem 2.4rem}}
+
+/* Beta form: honeypot kept off-screen (not display:none, so naive bots still fill it). */
+.form .hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+/* Privacy line under the submit button: --muted on --bg is ~6.9:1; never below 13px; link always underlined. */
+.form .form-privacy{margin:0;color:var(--muted);font-size:.8125rem;line-height:1.55;max-width:32rem}
+.form .form-privacy a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
+.form .form-privacy a:hover,.form .form-privacy a:focus-visible{color:var(--gold)}
+/* Success panel note: same rules as the privacy line (>= 4.5:1, >= 13px, link always underlined). */
+.form-ok .form-ok-note{margin:0;line-height:1.6;color:var(--muted);font-size:max(.95rem,13px)}
+.form-ok .form-ok-note a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
+.form-ok .form-ok-note a:hover,.form-ok .form-ok-note a:focus-visible{color:var(--gold)}
+
+/* Product screenshots shown whole (no 16:9 crop): ratio comes from the width/height attributes. */
+.shot.shot-x{background:#1c2025}
+.shot.shot-x img{aspect-ratio:auto;height:auto;object-fit:contain}
+.shot figcaption strong{color:var(--fg);font-weight:600}
+/* Gallery: progression grid, then the UTPA pair at the same scale (columns sized by native widths 874:1058). */
+.gal-h2{font-size:2.2rem;margin:.6rem 0 0}
+.gal-intro{max-width:44rem;margin:.8rem 0 0;font-size:.95rem;line-height:1.6}
+.gal-grid{display:grid;gap:1.2rem;margin-top:1.8rem}
+.gal-sub{font-size:1.6rem;margin:2.8rem 0 0;text-transform:uppercase}
+.gal-pair{display:grid;gap:1.2rem;margin-top:1.6rem;align-items:start}
+@media(min-width:720px){
+  .gal-grid{grid-template-columns:1fr 1fr}
+  .gal-pair{grid-template-columns:874fr 1058fr}
+}
+.gal-pair .shot figcaption,.gal-grid .shot figcaption{font-size:.84rem}
+/* Teaser: the slot shows the whole UTPA shot until the video lands (then back to 16:9). */
+.tz-video.tz-video-shot{aspect-ratio:1080/939;max-width:56rem;background:#1c2025}
+.tz-video.tz-video-shot img{object-fit:contain}
+.tz-cap{max-width:56rem;margin:.7rem 0 0;color:var(--muted);font-size:.84rem;line-height:1.5}
